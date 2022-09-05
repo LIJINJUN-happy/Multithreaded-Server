@@ -3,35 +3,16 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <pthread.h>
-#include <vector>
-#include "Config.h"
-
-void* CheckTaskList(void *);
+#include "ClassPthread.h"  //线程头文件
 
 using namespace std;
 int main()
 {
 	//1.创建套接字列表，任务列表以及线程列表
 	vector<int>* pSockfdList = new vector<int>;
-	vector<int>* pTaskList = new vector<int>;
-	vector<pthread_t*>* pPthread = new vector<pthread_t*>;
 	 
 	//2.启动各种线程
-	for (int i = 0; i < Config::pollingPthreadNum; i++)
-	{
-		pthread_t tid = 0;
-		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, 0);
-		if (resulCreatePthread == 0)
-		{
-			cout << "第" << i+1 << "个线程启动成功" << endl;
-			pPthread->push_back(&tid);
-		}
-		else
-		{
-			cout << "第" << i+1 << "个线程启动失败" << endl;
-		}
-	}
+	ClassPthread * pthreadObj = new ClassPthread();
  
 
 	//3.创建socket监听
@@ -89,13 +70,4 @@ int main()
 			cout << "当前连接人数为：" << pSockfdList->size() << endl;
 		}
 	}
-}
-
-void* CheckTaskList(void* agrs)
-{
-	while (1)
-	{
-
-	}
-	return NULL;
 }
