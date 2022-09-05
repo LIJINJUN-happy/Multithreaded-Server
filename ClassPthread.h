@@ -22,9 +22,11 @@ public:
     vector<pthread_t*>* GetPthreadVector();
     vector<int>* GetTaskListVector();
     ~ClassPthread();
+    bool Start();
+    bool Stop();
 
 protected:
-    void CreatePthreadByNum(int);
+    bool CreatePthreadByNum(int);
 };
 
 

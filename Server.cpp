@@ -13,6 +13,7 @@ int main()
 	 
 	//2.启动各种线程
 	ClassPthread * pthreadObj = new ClassPthread();
+	pthreadObj->Start();
  
 
 	//3.创建socket监听
@@ -35,12 +36,12 @@ int main()
 	int resultBind = bind(serverSock,(sockaddr*)&serverAddr, sizeof(serverAddr));
 	if (resultBind == -1)
 	{
-		cout << "bind 函数绑定套接字失败" << endl;
+		cout << "bind   函数绑定套接字失败" << endl;
 		return 0;
 	}
 	else
 	{
-		cout << "bind 函数绑定套接字成功" << endl;
+		cout << "bind   函数绑定套接字成功" << endl;
 	}
 
 	int resultListen = listen(serverSock, Config::maxConnect);

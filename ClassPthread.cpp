@@ -6,9 +6,6 @@ ClassPthread::ClassPthread()
     this->pollingPthreadNum = Config::pollingPthreadNum;
     pPthread = new vector<pthread_t*>;
     pTaskList = new vector<int>;
-
-    //生成并，启动线程
-    this->CreatePthreadByNum(Config::pollingPthreadNum);
 }
 
 ClassPthread::~ClassPthread()
@@ -42,7 +39,7 @@ vector<int>* ClassPthread::GetTaskListVector()
     return p;
 }
 
-void ClassPthread::CreatePthreadByNum(int num)
+bool ClassPthread::CreatePthreadByNum(int num)
 {
     for (int i = 0; i < num; i++)
 	{
@@ -56,8 +53,27 @@ void ClassPthread::CreatePthreadByNum(int num)
 		else
 		{
 			cout << "第" << i+1 << "个线程启动失败!" << endl;
+			return false;
 		}
 	}
+    return true;
+}
+
+bool ClassPthread::Start()
+{
+    int num = this->pollingPthreadNum;
+    if (num < 1 )
+	{	
+		cout << "线程数量不可以小于1" << endl;
+		return false;
+	}  
+    bool result = this->CreatePthreadByNum(num);
+    return result;
+}
+
+bool ClassPthread::Stop()
+{
+
 }
 
 void* CheckTaskList(void* agrs)
