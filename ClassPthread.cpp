@@ -26,7 +26,7 @@ int ClassPthread::GetPollingPthreadNum()
 pthread_t* ClassPthread::GetOnePthreadByNum(int num)
 {
     vector<pthread_t*> * p = this->pPthread;
-    pthread_t* pid = ((*p)[num])
+    pthread_t* pid = ((*p)[num]);
     return pid;
 }
 
@@ -60,7 +60,7 @@ void ClassPthread::CreatePthreadByNum(int num)
 	}
 }
 
-void* ClassPthread::CheckTaskList(void* agrs)
+void* CheckTaskList(void* agrs)
 {
 	while (1)
 	{

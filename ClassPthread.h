@@ -1,8 +1,12 @@
 #include "Config.h"
 #include <vector>
 #include <pthread.h>
+#include <iostream>
 
 using namespace std;
+
+//线程执行的程序
+void* CheckTaskList(void *);
 
 class ClassPthread
 {
@@ -21,7 +25,6 @@ public:
 
 protected:
     void CreatePthreadByNum(int);
-    void* CheckTaskList(void *);
 };
 
 

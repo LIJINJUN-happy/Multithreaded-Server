@@ -1,4 +1,4 @@
-#include <string.h>
+#include <string>
 
 namespace Config{
 	const int maxConnect = 1;						//最大连接数量
