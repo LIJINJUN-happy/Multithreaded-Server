@@ -68,6 +68,10 @@ bool ClassPthread::Start()
 		return false;
 	}  
     bool result = this->CreatePthreadByNum(num);
+    if (result == false)
+    {
+        cout << "线程启动步骤失败" << endl;
+    }
     return result;
 }
 

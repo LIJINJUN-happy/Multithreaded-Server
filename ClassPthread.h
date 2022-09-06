@@ -16,17 +16,17 @@ private:
     vector<int>* pTaskList;         //任务池用来取任务
 
 public:
-    ClassPthread();
-    int GetPollingPthreadNum();
-    pthread_t* GetOnePthreadByNum(int num);
-    vector<pthread_t*>* GetPthreadVector();
-    vector<int>* GetTaskListVector();
-    ~ClassPthread();
-    bool Start();
-    bool Stop();
+    ClassPthread();                         //构造函数
+    int GetPollingPthreadNum();             //获取线程数量
+    pthread_t* GetOnePthreadByNum(int num); //获取第几个线程地址
+    vector<pthread_t*>* GetPthreadVector(); //获取线程容器地址
+    vector<int>* GetTaskListVector();       //获取任务列表容器地址
+    ~ClassPthread();                        //析构函数
+    bool Start();                           //开始执行线程
+    bool Stop();                            //停止线程
 
 protected:
-    bool CreatePthreadByNum(int);
+    bool CreatePthreadByNum(int);           //创建线程
 };
 
 
