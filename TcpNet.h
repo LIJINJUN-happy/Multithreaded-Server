@@ -1,8 +1,12 @@
+#ifndef _TCPNET_H_
+#define _TCPNET_H_  
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <vector>
 #include <pthread.h>
+#include <iostream>
 #include "Config.h"
 
 using namespace std;
@@ -19,6 +23,8 @@ private:
 public:
     TcpNet();                                   //构造函数
     ~TcpNet();                                  //析构函数
-    bool Start();                               //开始执行初始化以及监听
-    bool Stop();                                //关闭套接字断开链接
+    void Start();                               //开始执行初始化以及监听
+    void Stop();                                //关闭套接字断开链接
 };
+
+#endif

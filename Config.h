@@ -1,3 +1,6 @@
+#ifndef _CONFIG_H_
+#define _CONFIG_H_  
+
 #include <string>
 
 namespace Config{
@@ -6,3 +9,5 @@ namespace Config{
 	const std::string addrString = "192.168.0.104";	//地址
 	const int pollingPthreadNum = 6;				//轮询任务列表线程数量
 }
+
+#endif

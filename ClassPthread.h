@@ -1,3 +1,6 @@
+#ifndef _CLASSPTHREAD_H_
+#define _CLASSPTHREAD_H_  
+
 #include "Config.h"
 #include <vector>
 #include <pthread.h>
@@ -29,4 +32,4 @@ protected:
     bool CreatePthreadByNum(int);           //创建线程
 };
 
-
+#endif
