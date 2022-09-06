@@ -54,7 +54,7 @@ bool ClassPthread::CreatePthreadByNum(int num)
 		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, &args);
 		if (resulCreatePthread == 0)
 		{
-			cout << "第" << i+1 << "个线程:PID =" << tid << "启动成功!" << endl;
+			cout << "第" << i+1 << "个线程: =" << tid << "启动成功!" << endl;
 			this->pPthread->push_back(&tid);
 		}
 		else
