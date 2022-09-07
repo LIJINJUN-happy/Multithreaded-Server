@@ -11,9 +11,7 @@
 
 using namespace std;
 
-void* StartListening(void *);                  //开始执行监听线程
-
-void* StartEpoll(void *);                      //开始执行Epoll监听线程，把数据存进去Tasklist里面
+void* epollListening(void *);                  //开始执行Epoll监听线程，把数据存进去Tasklist里面
 
 class TcpNet
 {

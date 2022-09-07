@@ -100,15 +100,9 @@ void TcpNet::Init()
     return;
 }
 
-//开始执行监听线程
-void* StartListening(void* args)
+//开始执行Epoll监听线程，把数据存进去Tasklist里面
+void* epollListening(void* args)
 {
     ((TcpNet*)args)->Init();
     return NULL;
-}
-
-//开始执行Epoll监听线程，把数据存进去Tasklist里面
-void* StartEpoll(void* args)
-{
-
 }

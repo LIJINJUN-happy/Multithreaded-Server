@@ -30,7 +30,7 @@ int main()
 	//创建socketObj监听线程
 	TcpNet * tcpNetObj = new TcpNet();
 	pthread_t listen_Tid = 0;
-	int resListen = pthread_create(&listen_Tid, NULL, StartListening, tcpNetObj);
+	int resListen = pthread_create(&listen_Tid, NULL, epollListening, tcpNetObj);
 	if (resListen == 0)
 	{
 		//cout << "监听线程启动步骤成功" << endl;
@@ -41,18 +41,5 @@ int main()
 		return -1;
 	}
 
-	/*创建EPOLL线程获取数据
-	pthread_t epoll_Tid = 0;
-	int resEpoll = pthread_create(&epoll_Tid, NULL, StartEpoll, );
-	if (resListen == 0)
-	{
-		//cout << "监听线程启动步骤成功" << endl;
-	}
-	else
-	{
-		cout << "监听线程启动步骤失败" << endl;
-		return -1;
-	}
-	*/
 	return 0;
 }
