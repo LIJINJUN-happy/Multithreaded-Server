@@ -10,6 +10,7 @@ namespace Config{
 	const int pollingPthreadNum = 6;				//轮询任务列表线程数量
 	const int maxSocketfd = 200;					//最大socket对象监听上限值
 	const int maxEpollEvent = 1024;  				//最大epoll监视事件返回个数
+	const int maxReadDataSize = 1024;				//读取sockfd数据大小上限值
 }
 
 #endif

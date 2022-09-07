@@ -88,26 +88,9 @@ void TcpNet::Init()
         close(this->serverSock);
         return;
     }
+    
+    //开始使用epoll监视监听套接字
     this->startEpoll();
-
-	while (true)
-	{
-		struct sockaddr_in  clientAddr;
-		socklen_t clientAddrSize = sizeof(clientAddr);
-		int clientSock = accept(this->serverSock, (sockaddr*)&clientAddr, &clientAddrSize);
-		if (clientSock == -1)
-		{
-			cout << "accept 函数接受客户端失败！" << endl;
-		}
-		else
-		{
-			cout << "accept 函数接受客户端成功！ clientSock = " << clientSock << endl;
-            string key = to_string(clientSock);
-			((*pSockfdMap)[key]) = clientSock;
-			cout << "当前连接人数为：" << pSockfdMap->size() << endl;
-		}
-	}
-
     return;
 }
 
@@ -115,15 +98,16 @@ void TcpNet::Init()
 void TcpNet::startEpoll()
 {
     const int eventsSize = Config::maxEpollEvent;
-    struct epoll_event event, events[eventsSize];
-    event.data.fd = this->serverSock;
-    event.events = EPOLLIN;
+    struct epoll_event eventServer;
+    eventServer.data.fd = this->serverSock;
+    eventServer.events = EPOLLIN;
     //开始监听服务端的sockfd监听套接字
-    epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &event);
+    epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);
     
     //利用epoll_wait搭配while循环来获取监听结果
     while(true)
     {
+        struct epoll_event events[eventsSize];
         int resEpollwait = epoll_wait(this->epollfd, events, eventsSize, -1);//阻塞（timeout参数为-1）
         if (resEpollwait < 0)
         {
@@ -138,15 +122,53 @@ void TcpNet::startEpoll()
         else
         {
             //接收到信息，开始循环读取文件描述符
-            for(int total = 0; total < resEpollwait; total++)
+            for(int index = 0; index < resEpollwait; index++)
             {
-                if()
+                //假如是服务端的sockfd有信息
+                if(events[index].data.fd == this->serverSock && events[index].events == EPOLLIN)
                 {
-
+                    struct sockaddr_in  clientAddr;
+                    socklen_t clientAddrSize = sizeof(clientAddr);
+                    int clientSock = accept(this->serverSock, (sockaddr*)&clientAddr, &clientAddrSize);
+                    if (clientSock == -1)
+                    {
+                        cout << "accept 函数接受客户端失败！" << endl;
+                    }
+                    else
+                    {
+                        struct epoll_event eventClient;
+                        eventClient.data.fd = clientSock;
+                        eventClient.events = EPOLLIN;
+                        epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
+                        string key = to_string(clientSock);
+                        ((*pSockfdMap)[key]) = clientSock;
+                        cout << "accept 函数接受客户端成功！ clientSock = " << clientSock << endl;
+                        cout << "当前连接人数为：" << pSockfdMap->size() << endl;
+                    }
                 }
-                else
+                //否则是客户端的sockfd有信息
+                else if(events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
-                    
+                    char data[Config::maxReadDataSize] = "";
+                    int resRead = read(events[index].data.fd, data, sizeof(data));
+                    //客户多关闭了
+                    if( resRead == 0 )
+                    {
+                        cout << "客户端:" << events[index].data.fd << "要关闭了" << endl;
+                        close(events[index].data.fd);
+                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &events[index].events);
+                    }
+                    //出错啦
+                    else if(resRead < 0)
+                    {
+                        cout << "客户端:" << events[index].data.fd << "出错了" << endl;
+                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &events[index].events);
+                    }
+                    //数据正确
+                    else
+                    {
+
+                    }
                 }
             }
         }
