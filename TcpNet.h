@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <map>
+#include<sys/epoll.h>
 #include <pthread.h>
 #include <iostream>
 #include "Config.h"
@@ -23,11 +24,13 @@ private:
     int maxConnect;                             //最大连接队列数
     int maxSocketfd;                            //最大socket对象连接数
     int maxEpollEvent;                          //最大epoll监视事件返回个数
+    int epollfd;                                //Epoll_create函数返回的描述符
 
 public:
     TcpNet();                                   //构造函数
     ~TcpNet();                                  //析构函数
-    void Init();                                //初始化（依次执行socket bind listen accept）
+    void Init();                                //初始化（依次执行socket bind listen）
+    void startEpoll();                          //开始进入epoll循环监视
 };
 
 #endif
