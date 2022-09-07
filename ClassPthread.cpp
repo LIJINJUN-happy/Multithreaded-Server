@@ -1,26 +1,38 @@
 #include "ClassPthread.h"
 
+//构造函数
 ClassPthread::ClassPthread()
 {
     //初始化变量
+    if (Config::pollingPthreadNum < 1 )
+	{	
+		cout << "线程数量不可以小于1" << endl;
+		return ;
+	}
+
     this->pollingPthreadNum = Config::pollingPthreadNum;
     this->pPthread = new vector<pthread_t*>;
     this->pTaskList = new vector<string>;
-
+    
+    //初始化锁
+    pthread_mutex_init(&(this->lock),NULL);
 }
 
+//析构函数
 ClassPthread::~ClassPthread()
 {
     delete this->pPthread;
     delete this->pTaskList;
 }
 
+//获取线程数量
 int ClassPthread::GetPollingPthreadNum()
 {
     int num = this->pollingPthreadNum;
     return num;
 }
 
+//获取第几个线程地址
 pthread_t* ClassPthread::GetOnePthreadByNum(int num)
 {
     vector<pthread_t*> * p = this->pPthread;
@@ -28,82 +40,51 @@ pthread_t* ClassPthread::GetOnePthreadByNum(int num)
     return pid;
 }
 
+//获取线程容器地址
 vector<pthread_t*>* ClassPthread::GetPthreadVector()
 {
     vector<pthread_t*> * p = this->pPthread;
     return p;
 }
 
+//获取任务列表容器地址
 vector<string>* ClassPthread::GetTaskListVector()
 {
     vector<string>* p = this->pTaskList;
     return p;
 }
 
-bool ClassPthread::CreatePthreadByNum(int num)
+//添加线程地址入线程容器
+void ClassPthread::AddPthread(pthread_t* tid)
 {
-    //初始化锁
-    pthread_mutex_init(&(this->lock),NULL);
-    Args args;
-    args.pTaskList = this->pTaskList;
-    args.lock = &(this->lock);
-    
-    for (int i = 0; i < num; i++)
-	{
-		pthread_t tid = 0;
-		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, &args);
-		if (resulCreatePthread == 0)
-		{
-			cout << "第" << i+1 << "个线程: =" << tid << "启动成功!" << endl;
-			this->pPthread->push_back(&tid);
-		}
-		else
-		{
-			cout << "第" << i+1 << "个线程启动失败!" << endl;
-			return false;
-		}
-	}
-    return true;
+    this->pPthread->push_back(tid);
 }
 
-bool ClassPthread::Start()
+//获取任务参数
+Task ClassPthread::GetTaskArgs()
 {
-    int num = this->pollingPthreadNum;
-    if (num < 1 )
-	{	
-		cout << "线程数量不可以小于1" << endl;
-		return false;
-	}  
-    bool result = this->CreatePthreadByNum(num);
-    if (result == false)
-    {
-        cout << "线程启动步骤失败" << endl;
-    }
-    else
-    {
-        cout << "线程启动步骤成功" << endl;
-    }
-    return result;
-}
-
-bool ClassPthread::Stop()
-{
-
+    Task task;
+    task.pTaskList = this->pTaskList;
+    task.lock = &(this->lock);
+    return task;
 }
 
 void* CheckTaskList(void* args)
 {
-    vector<string>* pTaskList = ((Args*)args)->pTaskList;
-    pthread_mutex_t* lock = ((Args*)args)->lock;
+    vector<string>* pTaskList = ((Task*)args)->pTaskList;
+    pthread_mutex_t* lock = ((Task*)args)->lock;
+    pthread_t tid = pthread_self();
 	while (1)
 	{
         pthread_mutex_lock(lock);    //先上锁（防止其余线程同时争抢一个任务）
+        //cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
         if(pTaskList->size() >= 1)
         {
             string str = *(pTaskList->begin());         //取出任务容器首部的任务
             pTaskList->erase(pTaskList->begin());       //取出任务后删除（避免多次取出执行）
         }
-        pthread_mutex_unlock(((Args*)args)->lock);  //解锁，释放资源让其余的线程获取任务
-	}
+        pthread_mutex_unlock(((Task*)args)->lock);  //解锁，释放资源让其余的线程获取任务
+        //usleep(1000000);
+    }
 	return NULL;
 }

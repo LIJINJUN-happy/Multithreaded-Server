@@ -3,16 +3,18 @@
 
 #include "Config.h"
 #include <vector>
+#include <sys/syscall.h>
 #include <pthread.h>
+#include <unistd.h>
 #include <iostream>
 
 using namespace std;
 
-typedef struct Args
+typedef struct Task
     {
         vector<string>* pTaskList;
         pthread_mutex_t* lock;
-    } Args;
+    } Task;
 
 //线程执行的程序
 void* CheckTaskList(void *);
@@ -31,12 +33,9 @@ public:
     pthread_t* GetOnePthreadByNum(int num); //获取第几个线程地址
     vector<pthread_t*>* GetPthreadVector(); //获取线程容器地址
     vector<string>* GetTaskListVector();    //获取任务列表容器地址
+    void AddPthread(pthread_t*);            //添加线程地址入线程容器
+    Task GetTaskArgs();                     //获取任务参数
     ~ClassPthread();                        //析构函数
-    bool Start();                           //开始执行线程
-    bool Stop();                            //停止线程
-
-protected:
-    bool CreatePthreadByNum(int);           //创建线程
 };
 
 #endif
