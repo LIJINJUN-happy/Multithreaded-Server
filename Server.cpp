@@ -27,9 +27,33 @@ int main()
     cout << "线程启动步骤成功" << endl;
  
 
-	//创建socketObj监听
+	//创建socketObj监听线程
 	TcpNet * tcpNetObj = new TcpNet();
-	tcpNetObj->Start();
+	pthread_t listen_Tid = 0;
+	int resListen = pthread_create(&listen_Tid, NULL, StartListening, tcpNetObj);
+	if (resListen == 0)
+	{
+		//cout << "监听线程启动步骤成功" << endl;
+	}
+	else
+	{
+		cout << "监听线程启动步骤失败" << endl;
+		return -1;
+	}
 
+	/*创建EPOLL线程获取数据
+	pthread_t epoll_Tid = 0;
+	vector<int>* pSockfdList = tcpNetObj
+	int resEpoll = pthread_create(&epoll_Tid, NULL, StartEpoll, );
+	if (resListen == 0)
+	{
+		//cout << "监听线程启动步骤成功" << endl;
+	}
+	else
+	{
+		cout << "监听线程启动步骤失败" << endl;
+		return -1;
+	}
+	*/
 	return 0;
 }
