@@ -8,12 +8,5 @@
 
 using namespace std;
 
-typedef struct Task
-    {
-        vector<string> TaskList;
-        pthread_mutex_t lock;
-    } Task;
-
-extern Task task;
 
 #endif

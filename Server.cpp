@@ -43,7 +43,6 @@ int main()
 
 	/*创建EPOLL线程获取数据
 	pthread_t epoll_Tid = 0;
-	vector<int>* pSockfdList = tcpNetObj
 	int resEpoll = pthread_create(&epoll_Tid, NULL, StartEpoll, );
 	if (resListen == 0)
 	{

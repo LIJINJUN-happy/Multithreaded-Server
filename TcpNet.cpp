@@ -3,17 +3,19 @@
 //构造函数
 TcpNet::TcpNet()
 {
-    this->pSockfdList = new vector<int>;
+    this->pSockfdMap = new map<string,int>;
     this->port = Config::listenPort;
     this->addr = Config::addrString;
     this->maxConnect = Config::maxConnect;
     this->serverSock = -1;
+    this->maxSocketfd = Config::maxSocketfd;
+    this->maxEpollEvent = Config::maxEpollEvent;
 }
 
 //析构函数
 TcpNet::~TcpNet()
 {
-    delete this->pSockfdList;
+    delete this->pSockfdMap;
 }
 
 //初始化函数
@@ -88,9 +90,10 @@ void TcpNet::Init()
 		}
 		else
 		{
-			cout << "accept 函数接受客户端成功！" << endl;
-			(*pSockfdList).push_back(clientSock);
-			cout << "当前连接人数为：" << pSockfdList->size() << endl;
+			cout << "accept 函数接受客户端成功！ clientSock = " << clientSock << endl;
+            string key = to_string(clientSock);
+			((*pSockfdMap)[key]) = clientSock;
+			cout << "当前连接人数为：" << pSockfdMap->size() << endl;
 		}
 	}
 
