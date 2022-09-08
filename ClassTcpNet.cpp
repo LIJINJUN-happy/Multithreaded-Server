@@ -1,9 +1,9 @@
 #include "ClassTcpNet.h"
 
 //构造函数
-ClassTcpNet::ClassTcpNet(ClassPthread * p)
+ClassTcpNet::ClassTcpNet(ClassPthread *p)
 {
-    this->pSockfdMap = new map<string,int>;
+    this->pSockfdMap = new map<string, int>;
     this->port = Config::listenPort;
     this->addr = Config::addrString;
     this->maxConnect = Config::maxConnect;
@@ -27,71 +27,72 @@ ClassTcpNet::~ClassTcpNet()
 void ClassTcpNet::Init()
 {
     //检测参数
-    if( this->addr.size() <= 0)
+    if (this->addr.size() <= 0)
     {
         cout << "服务器监听地址不正确,长度不可以小于1" << endl;
-        return ;
+        return;
     }
 
-    if( this->port <= 0)
+    if (this->port <= 0)
     {
         cout << "服务器监听端口不正确,大小不可以小于1" << endl;
-        return ;
+        return;
     }
 
-    if( this->maxConnect <= 0)
+    if (this->maxConnect <= 0)
     {
         cout << "服务器最大连接数不正确,大小不可以小于1" << endl;
-        return ;
+        return;
     }
 
     //开始执行socket bind listen
     this->serverSock = socket(AF_INET, SOCK_STREAM, 0);
-	if (this->serverSock == -1)
-	{
-		cout << "socket 函数创建套接字失败" << endl;
-		return;
-	}
-	else
-	{
-		cout << "socket 函数创建套接字成功" << endl;
-	}
-	
-	struct sockaddr_in  serverAddr;
-	serverAddr.sin_port = htons(Config::listenPort);
-	serverAddr.sin_family = AF_INET;
-	string addr = Config::addrString;
-	serverAddr.sin_addr.s_addr = inet_addr(addr.data());
-	int resultBind = bind(this->serverSock,(sockaddr*)&serverAddr, sizeof(serverAddr));
-	if (resultBind == -1)
-	{
-		cout << "bind   函数绑定套接字失败" << endl;
-		return;
-	}
-	else
-	{
-		cout << "bind   函数绑定套接字成功" << endl;
-	}
+    if (this->serverSock == -1)
+    {
+        cout << "socket 函数创建套接字失败" << endl;
+        return;
+    }
+    else
+    {
+        cout << "socket 函数创建套接字成功" << endl;
+    }
 
-	int resultListen = listen(this->serverSock, Config::maxConnect);
-	if (resultBind == -1)
-	{
-		cout << "listen 函数监听失败" << endl;
-		return;
-	}
-	else
-	{
+    struct sockaddr_in serverAddr;
+    serverAddr.sin_port = htons(Config::listenPort);
+    serverAddr.sin_family = AF_INET;
+    string addr = Config::addrString;
+    serverAddr.sin_addr.s_addr = inet_addr(addr.data());
+    int resultBind = bind(this->serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr));
+    if (resultBind == -1)
+    {
+        cout << "bind   函数绑定套接字失败" << endl;
+        return;
+    }
+    else
+    {
+        cout << "bind   函数绑定套接字成功" << endl;
+    }
+
+    int resultListen = listen(this->serverSock, Config::maxConnect);
+    if (resultBind == -1)
+    {
+        cout << "listen 函数监听失败" << endl;
+        return;
+    }
+    else
+    {
+        cout << "正在监听端口：" << Config::listenPort << "................\n"
+             << endl;
         cout << "监听线程启动步骤成功" << endl;
-		cout << "正在监听端口：" << Config::listenPort << "................\n" << endl;
-	}
+    }
 
-    if(this->epollfd == -1) 
+    if (this->epollfd == -1)
     {
         cout << "Epoll_create error ——————epoll创建失败" << endl;
         close(this->serverSock);
         return;
     }
-    
+
     //开始使用epoll监视监听套接字
     this->startEpoll();
     return;
@@ -106,18 +107,18 @@ void ClassTcpNet::startEpoll()
     eventServer.events = EPOLLIN;
     //开始监听服务端的sockfd监听套接字
     epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);
-    
+
     //利用epoll_wait搭配while循环来获取监听结果
-    while(true)
+    while (true)
     {
         struct epoll_event events[eventsSize];
-        int resEpollwait = epoll_wait(this->epollfd, events, eventsSize, -1);//阻塞（timeout参数为-1）
+        int resEpollwait = epoll_wait(this->epollfd, events, eventsSize, -1); //阻塞（timeout参数为-1）
         if (resEpollwait < 0)
         {
             cout << "epoll_wait出现了意外的错误!" << endl;
             break;
         }
-        else if(resEpollwait == 0)
+        else if (resEpollwait == 0)
         {
             cout << "超时........." << endl;
             continue;
@@ -125,14 +126,14 @@ void ClassTcpNet::startEpoll()
         else
         {
             //接收到信息，开始循环读取文件描述符
-            for(int index = 0; index < resEpollwait; index++)
+            for (int index = 0; index < resEpollwait; index++)
             {
                 //假如是服务端的sockfd有信息
-                if(events[index].data.fd == this->serverSock && events[index].events == EPOLLIN)
+                if (events[index].data.fd == this->serverSock && events[index].events == EPOLLIN)
                 {
-                    struct sockaddr_in  clientAddr;
+                    struct sockaddr_in clientAddr;
                     socklen_t clientAddrSize = sizeof(clientAddr);
-                    int clientSock = accept(this->serverSock, (sockaddr*)&clientAddr, &clientAddrSize);
+                    int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize);
                     if (clientSock == -1)
                     {
                         cout << "accept函数接受客户端失败！" << endl;
@@ -150,12 +151,12 @@ void ClassTcpNet::startEpoll()
                     }
                 }
                 //否则是客户端的sockfd有信息
-                else if(events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
+                else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
                     char data[Config::maxReadDataSize] = "";
                     int resRead = read(events[index].data.fd, data, sizeof(data));
                     //客户多关闭了
-                    if( resRead == 0 )
+                    if (resRead == 0)
                     {
                         cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
                         close(events[index].data.fd);
@@ -165,7 +166,7 @@ void ClassTcpNet::startEpoll()
                         cout << "当前连接人数为：" << pSockfdMap->size() << endl;
                     }
                     //出错啦
-                    else if(resRead < 0)
+                    else if (resRead < 0)
                     {
                         cout << "客户端:" << events[index].data.fd << "出错了" << endl;
                         epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
@@ -180,12 +181,12 @@ void ClassTcpNet::startEpoll()
             }
         }
     }
-    return ;
+    return;
 }
 
 //开始执行Epoll监听线程，把数据存进去Tasklist里面
-void* epollListening(void* args)
+void *epollListening(void *args)
 {
-    ((ClassTcpNet*)args)->Init();
+    ((ClassTcpNet *)args)->Init();
     return NULL;
 }
