@@ -81,6 +81,14 @@ Task ClassPthread::GetTaskArgs()
     return task;
 }
 
+//把信息传进任务列表容器
+void ClassPthread::AddMsgIntoTaskList(string msg)
+{
+    this->pTaskList->push_back(msg);
+    cout << "msg:" << msg << "已存放进入任务列表" << endl;
+}
+
+//检测任务列表循环（用锁来获取资源防止线程争抢）
 void* CheckTaskList(void* args)
 {
     list<string>* pTaskList = ((Task*)args)->pTaskList;

@@ -35,6 +35,7 @@ public:
     list<string>* GetTaskList();            //获取任务列表容器地址
     void AddPthread(pthread_t*);            //添加线程地址入线程容器
     Task GetTaskArgs();                     //获取任务参数
+    void AddMsgIntoTaskList(string);        //把信息传进任务列表容器
     ~ClassPthread();                        //析构函数
 };
 

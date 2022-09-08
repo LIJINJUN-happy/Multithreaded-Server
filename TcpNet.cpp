@@ -132,7 +132,7 @@ void TcpNet::startEpoll()
                     int clientSock = accept(this->serverSock, (sockaddr*)&clientAddr, &clientAddrSize);
                     if (clientSock == -1)
                     {
-                        cout << "accept 函数接受客户端失败！" << endl;
+                        cout << "accept函数接受客户端失败！" << endl;
                     }
                     else
                     {
@@ -142,7 +142,7 @@ void TcpNet::startEpoll()
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
                         string key = to_string(clientSock);
                         ((*pSockfdMap)[key]) = clientSock;
-                        cout << "accept 函数接受客户端成功！ clientSock = " << clientSock << endl;
+                        cout << "accept函数接受客户端成功！ clientSock = " << clientSock << endl;
                         cout << "当前连接人数为：" << pSockfdMap->size() << endl;
                     }
                 }
@@ -154,15 +154,18 @@ void TcpNet::startEpoll()
                     //客户多关闭了
                     if( resRead == 0 )
                     {
-                        cout << "客户端:" << events[index].data.fd << "要关闭了" << endl;
+                        cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
                         close(events[index].data.fd);
-                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &events[index].events);
+                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
+                        string key = to_string(events[index].data.fd);
+                        (*pSockfdMap).erase(key);
+                        cout << "当前连接人数为：" << pSockfdMap->size() << endl;
                     }
                     //出错啦
                     else if(resRead < 0)
                     {
                         cout << "客户端:" << events[index].data.fd << "出错了" << endl;
-                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &events[index].events);
+                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
                     }
                     //数据正确
                     else

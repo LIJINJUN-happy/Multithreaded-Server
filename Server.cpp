@@ -24,7 +24,7 @@ int main()
 			return -1;
 		}
 	}
-    cout << "线程启动步骤成功" << endl;
+    cout << "线程启动步骤成功\n" << endl;
  
 
 	//创建socketObj监听线程
@@ -39,6 +39,12 @@ int main()
 	{
 		cout << "监听线程启动步骤失败" << endl;
 		return -1;
+	}
+
+	pthreadObj->AddMsgIntoTaskList("sssssss");
+	while(1)
+	{
+
 	}
 
 	return 0;
