@@ -28,7 +28,7 @@ int main()
  
 
 	//创建socketObj监听线程
-	TcpNet * tcpNetObj = new TcpNet();
+	ClassTcpNet * tcpNetObj = new ClassTcpNet();
 	pthread_t listen_Tid = 0;
 	int resListen = pthread_create(&listen_Tid, NULL, epollListening, tcpNetObj);
 	if (resListen == 0)

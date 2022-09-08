@@ -1,7 +1,7 @@
 #include "ClassTcpNet.h"
 
 //构造函数
-TcpNet::TcpNet()
+ClassTcpNet::ClassTcpNet()
 {
     this->pSockfdMap = new map<string,int>;
     this->port = Config::listenPort;
@@ -16,13 +16,13 @@ TcpNet::TcpNet()
 }
 
 //析构函数
-TcpNet::~TcpNet()
+ClassTcpNet::~ClassTcpNet()
 {
     delete this->pSockfdMap;
 }
 
 //初始化函数
-void TcpNet::Init()
+void ClassTcpNet::Init()
 {
     //检测参数
     if( this->addr.size() <= 0)
@@ -95,7 +95,7 @@ void TcpNet::Init()
 }
 
 //开始进入epoll循环监视
-void TcpNet::startEpoll()
+void ClassTcpNet::startEpoll()
 {
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
@@ -182,6 +182,6 @@ void TcpNet::startEpoll()
 //开始执行Epoll监听线程，把数据存进去Tasklist里面
 void* epollListening(void* args)
 {
-    ((TcpNet*)args)->Init();
+    ((ClassTcpNet*)args)->Init();
     return NULL;
 }

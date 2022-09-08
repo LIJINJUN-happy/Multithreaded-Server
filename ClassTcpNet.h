@@ -15,7 +15,7 @@ using namespace std;
 
 void* epollListening(void *);                  //开始执行Epoll监听线程，把数据存进去Tasklist里面
 
-class TcpNet
+class ClassTcpNet
 {
 private:
     map<string,int>* pSockfdMap;                //套接字的容器（存放客户端套接字描述符）
@@ -28,8 +28,8 @@ private:
     int epollfd;                                //Epoll_create函数返回的描述符
 
 public:
-    TcpNet();                                   //构造函数
-    ~TcpNet();                                  //析构函数
+    ClassTcpNet();                              //构造函数
+    ~ClassTcpNet();                             //析构函数
     void Init();                                //初始化（依次执行socket bind listen）
     void startEpoll();                          //开始进入epoll循环监视
 };
