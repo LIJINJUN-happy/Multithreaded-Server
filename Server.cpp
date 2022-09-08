@@ -14,7 +14,7 @@ int main()
 		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, &task);
 		if (resulCreatePthread == 0)
 		{
-			cout << "第" << i + 1 << "个线程: " << tid << "启动成功!" << endl;
+			cout << "第" << i + 1 << "个轮询线程: " << tid << "启动成功!" << endl;
 			pthreadObj->AddPthread(&tid);
 		}
 		else
@@ -24,7 +24,7 @@ int main()
 			return -1;
 		}
 	}
-	cout << "线程启动步骤成功\n"
+	cout << "任务列表轮询线程启动步骤成功\n"
 		 << endl;
 
 	//创建socketObj监听线程
