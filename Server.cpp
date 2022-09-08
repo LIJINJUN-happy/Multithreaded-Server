@@ -28,12 +28,12 @@ int main()
  
 
 	//创建socketObj监听线程
-	ClassTcpNet * tcpNetObj = new ClassTcpNet();
+	ClassTcpNet * tcpNetObj = new ClassTcpNet(pthreadObj);
 	pthread_t listen_Tid = 0;
 	int resListen = pthread_create(&listen_Tid, NULL, epollListening, tcpNetObj);
 	if (resListen == 0)
 	{
-		//cout << "监听线程启动步骤成功" << endl;
+		;
 	}
 	else
 	{

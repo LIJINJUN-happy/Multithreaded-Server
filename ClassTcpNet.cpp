@@ -81,7 +81,8 @@ void ClassTcpNet::Init()
 	}
 	else
 	{
-		cout << "正在监听端口：" << Config::listenPort << "................" << endl;
+        cout << "监听线程启动步骤成功" << endl;
+		cout << "正在监听端口：" << Config::listenPort << "................\n" << endl;
 	}
 
     if(this->epollfd == -1) 
