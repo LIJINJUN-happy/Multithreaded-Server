@@ -94,17 +94,25 @@ void* CheckTaskList(void* args)
     list<string>* pTaskList = ((Task*)args)->pTaskList;
     pthread_mutex_t* lock = ((Task*)args)->lock;
     pthread_t tid = pthread_self();
-	while (1)
+    string stringMsg = "";
+	while (true)
 	{
         pthread_mutex_lock(lock);                       //先上锁（防止其余线程同时争抢一个任务）
         //cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
         if(pTaskList->size() >= 1)
         {
-            string str = *(pTaskList->begin());         //取出任务容器首部的任务
+            stringMsg.clear();
+            stringMsg = *(pTaskList->begin());          //取出任务容器首部的任务
             pTaskList->erase(pTaskList->begin());       //取出任务后删除（避免多次取出执行）
         }
         pthread_mutex_unlock(((Task*)args)->lock);      //解锁，释放资源让其余的线程获取任务
         //usleep(1000000);
+
+        //在解锁后才执行任务，否者执行完再解锁会存在堵塞
+        if(stringMsg.size() >= 1)
+        {
+
+        }
     }
 	return NULL;
 }

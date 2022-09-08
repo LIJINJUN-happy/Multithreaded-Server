@@ -1,15 +1,12 @@
 #ifndef _CLASSTCPNET_H_
 #define _CLASSTCPNET_H_  
 
+#include<sys/epoll.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <map>
-#include<unistd.h>
-#include<sys/epoll.h>
-#include <pthread.h>
-#include <iostream>
-#include "Config.h"
+#include "ClassPthread.h"
 
 using namespace std;
 
@@ -19,6 +16,7 @@ class ClassTcpNet
 {
 private:
     map<string,int>* pSockfdMap;                //套接字的容器（存放客户端套接字描述符）
+    ClassPthread * pthreadObj;                  //自定义线程类对象的指针（用来传递任务进入任务列表）
     int serverSock;                             //服务端监听套接字描述符
     int port;                                   //监听端口
     string addr;                                //地址字符串
@@ -28,7 +26,7 @@ private:
     int epollfd;                                //Epoll_create函数返回的描述符
 
 public:
-    ClassTcpNet();                              //构造函数
+    ClassTcpNet(ClassPthread *);                //构造函数
     ~ClassTcpNet();                             //析构函数
     void Init();                                //初始化（依次执行socket bind listen）
     void startEpoll();                          //开始进入epoll循环监视

@@ -1,7 +1,7 @@
 #include "ClassTcpNet.h"
 
 //构造函数
-ClassTcpNet::ClassTcpNet()
+ClassTcpNet::ClassTcpNet(ClassPthread * p)
 {
     this->pSockfdMap = new map<string,int>;
     this->port = Config::listenPort;
@@ -10,6 +10,7 @@ ClassTcpNet::ClassTcpNet()
     this->serverSock = -1;
     this->maxSocketfd = Config::maxSocketfd;
     this->maxEpollEvent = Config::maxEpollEvent;
+    this->pthreadObj = p; //把线程对象的地址穿进来，可以调用它的类方法AddMsgIntoTaskList存入任务
 
     //创建Epoll（最大监听sockfd数量为Config::maxSocketfd配置值）
     this->epollfd = epoll_create(Config::maxSocketfd);
@@ -19,6 +20,7 @@ ClassTcpNet::ClassTcpNet()
 ClassTcpNet::~ClassTcpNet()
 {
     delete this->pSockfdMap;
+    delete this->pthreadObj;
 }
 
 //初始化函数
@@ -170,7 +172,8 @@ void ClassTcpNet::startEpoll()
                     //数据正确
                     else
                     {
-
+                        string msg = "";
+                        pthreadObj->AddMsgIntoTaskList(msg);
                     }
                 }
             }
