@@ -1,4 +1,4 @@
-#include "TcpNet.h"
+#include "ClassTcpNet.h"
 
 //构造函数
 TcpNet::TcpNet()

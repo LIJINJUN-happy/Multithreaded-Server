@@ -1,5 +1,5 @@
-#ifndef _TCPNET_H_
-#define _TCPNET_H_  
+#ifndef _CLASSTCPNET_H_
+#define _CLASSTCPNET_H_  
 
 #include <sys/socket.h>
 #include <netinet/in.h>
