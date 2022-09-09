@@ -146,7 +146,7 @@ void ClassTcpNet::startEpoll()
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
                         string key = to_string(clientSock);
                         ((*pSockfdMap)[key]) = clientSock;
-                        cout << "accept函数接受客户端成功！ clientSock = " << clientSock << endl;
+                        cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
                         cout << "当前连接人数为：" << pSockfdMap->size() << endl;
                     }
                 }
@@ -174,6 +174,7 @@ void ClassTcpNet::startEpoll()
                     //数据正确
                     else
                     {
+                        string strMgsTotalNum, sizeLenString, msg;
                         string msg = "";
                         pthreadObj->AddMsgIntoTaskList(msg);
                     }
