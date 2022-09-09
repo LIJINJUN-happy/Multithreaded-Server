@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <map>
+#include "Gate.h"
 #include "ClassPthread.h"
 
 using namespace std;

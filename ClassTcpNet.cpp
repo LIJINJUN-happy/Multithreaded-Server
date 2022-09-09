@@ -136,7 +136,7 @@ void ClassTcpNet::startEpoll()
                     int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize);
                     if (clientSock == -1)
                     {
-                        cout << "accept函数接受客户端失败！" << endl;
+                        cout << "accept函数接受客户端失败!" << endl;
                     }
                     else
                     {
@@ -154,7 +154,7 @@ void ClassTcpNet::startEpoll()
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
                     char data[Config::maxReadDataSize] = "";
-                    int resRead = read(events[index].data.fd, data, sizeof(data));
+                    int resRead = recv(events[index].data.fd, data, sizeof(data), 0);
                     //客户多关闭了
                     if (resRead == 0)
                     {
@@ -174,9 +174,16 @@ void ClassTcpNet::startEpoll()
                     //数据正确
                     else
                     {
-                        string strMgsTotalNum, sizeLenString, msg;
-                        string msg = "";
-                        pthreadObj->AddMsgIntoTaskList(msg);
+                        string allMsg = data;
+                        vector<string> msgTable = GetAndTransformation(allMsg);
+                        for (int index = 0; index < msgTable.size(); index++)
+                        {
+                            if ((msgTable[index]).size() >= 1)
+                            {
+                                pthreadObj->AddMsgIntoTaskList(msgTable[index]);
+                                cout << "第" << index + 1 << "条协议为 " << msgTable[index] << endl;
+                            }
+                        }
                     }
                 }
             }
