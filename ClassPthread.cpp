@@ -104,6 +104,7 @@ void *CheckTaskList(void *args)
             stringMsg.clear();
             stringMsg = *(pTaskList->begin());    //取出任务容器首部的任务
             pTaskList->erase(pTaskList->begin()); //取出任务后删除（避免多次取出执行）
+            // cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
         }
         pthread_mutex_unlock(((Task *)args)->lock); //解锁，释放资源让其余的线程获取任务
         // usleep(1000000);
