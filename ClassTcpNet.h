@@ -30,7 +30,7 @@ public:
     ClassTcpNet(ClassPthread *); //构造函数
     ~ClassTcpNet();              //析构函数
     void Init();                 //初始化（依次执行socket bind listen）
-    void startEpoll();           //开始进入epoll循环监视
+    void StartEpoll();           //开始进入epoll循环监视
 };
 
 #endif

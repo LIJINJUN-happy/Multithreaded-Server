@@ -94,12 +94,12 @@ void ClassTcpNet::Init()
     }
 
     //开始使用epoll监视监听套接字
-    this->startEpoll();
+    this->StartEpoll();
     return;
 }
 
 //开始进入epoll循环监视
-void ClassTcpNet::startEpoll()
+void ClassTcpNet::StartEpoll()
 {
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
