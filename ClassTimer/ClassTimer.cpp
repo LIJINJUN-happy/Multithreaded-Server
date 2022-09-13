@@ -73,7 +73,7 @@ list<LoopEvent> *ClassTimer::GetLoopEventListPtr()
     return this->loopEventList;
 }
 
-//定时器循环阻塞执行
+//定时器循环阻塞执行,select定时器是阻塞的,在等待时间到来之前什么都不做
 void *TimerLooping(void *args)
 {
     //间隔时间
@@ -91,6 +91,7 @@ void *TimerLooping(void *args)
         ((ClassTimer *)args)->CheckoutOnceEventList();
         //检测循环事件
         ((ClassTimer *)args)->CheckoutLoopEventList();
+
         select(0, NULL, NULL, NULL, &temp);
     }
     return NULL;
