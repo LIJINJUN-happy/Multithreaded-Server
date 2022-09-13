@@ -1,6 +1,6 @@
 ﻿/*此为一个单进程服务器，一个定时器线程，一个epoll线程（获取最新动态，且监听端口），多个轮询任务列表线程  */
 #include "./ClassPthread/ClassPthread.h" //自定义线程头文件
-#include "./ClassTcpNet/ClassTcpNet.h"  //自定义TCP头文件
+#include "./Net/ClassTcpNet.h"  //自定义TCP头文件
 
 using namespace std;
 int main()

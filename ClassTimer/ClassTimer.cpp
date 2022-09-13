@@ -1,4 +1,4 @@
-#include "ClassTimer/ClassTimer.h"
+#include "ClassTimer.h"
 
 ClassTimer::ClassTimer()
 {
