@@ -47,7 +47,7 @@ unsigned long client_flag)  暂时为0即可*/
 // int mysql_num_rows(MYSQL_RES* result)
 
 //返回结果集中的列数
-// mysql_field_count(MYSQL *mysql)
+// int mysql_field_count(MYSQL *mysql)
 
 //返回结果集中的字段数
 // int mysql_num_fields(MYSQL_RES* result)
