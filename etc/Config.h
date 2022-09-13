@@ -19,7 +19,7 @@ namespace Config
 	const std::string user = "root";		  //用户，例如：root
 	const std::string passwd = "lijinjun123"; //数据库的密码
 	const std::string db = "";				  //要连接的数据库，例如：student
-	const unsigned int port = "3306";		  //端口
+	const unsigned int port = 3306;			  //端口
 	const char *unix_socket = NULL;			  //一般为NULL
 	const unsigned long client_flag = 0;	  //一般为0
 }
