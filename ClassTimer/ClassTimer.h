@@ -33,18 +33,21 @@ typedef struct OnceEvent
 class ClassTimer
 {
 private:
-    list<OnceEvent> onceEventList; //单次事件容器
-    list<LoopEvent> loopEventList; //循环事件列表
-    int intervalTime;              //时间间隔
+    list<OnceEvent> *onceEventList; //单次事件容器
+    list<LoopEvent> *loopEventList; //循环事件列表
+    int intervalTime;               //时间间隔
 
 public:
     ClassTimer();
     ~ClassTimer();
     ClassTimer(int);
+    int GetIntervalTime();
     bool AddOnceEvent(int, string);
     bool AddLoopEvent(int, int, string);
     void CheckoutOnceEventList();
     void CheckoutLoopEventList();
+    list<OnceEvent> *GetOnceEventListPtr();
+    list<LoopEvent> *GetLoopEventListPtr();
 };
 
 #endif

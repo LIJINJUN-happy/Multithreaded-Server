@@ -3,6 +3,8 @@
 ClassTimer::ClassTimer()
 {
     this->intervalTime = 1; //默认为1
+    this->loopEventList = new list<LoopEvent>;
+    this->onceEventList = new list<OnceEvent>;
 }
 
 ClassTimer::~ClassTimer()
@@ -11,7 +13,17 @@ ClassTimer::~ClassTimer()
 
 ClassTimer::ClassTimer(int time)
 {
+    if (time <= 0)
+    {
+        cout << "间隔不可小于0秒";
+        return;
+    }
     this->intervalTime = time;
+}
+
+int ClassTimer::GetIntervalTime()
+{
+    return this->intervalTime;
 }
 
 bool ClassTimer::AddLoopEvent(int ntime, int ttime, string ev)
@@ -25,6 +37,7 @@ bool ClassTimer::AddLoopEvent(int ntime, int ttime, string ev)
     loopEvent.event = ev;
     loopEvent.nowTime = ntime;
     loopEvent.tarTime = ttime;
+    this->loopEventList->push_back(loopEvent);
     return true;
 }
 
@@ -38,6 +51,7 @@ bool ClassTimer::AddOnceEvent(int thour, string ev)
     OnceEvent onceEvent;
     onceEvent.tarHour = thour;
     onceEvent.event = ev;
+    this->onceEventList->push_back(onceEvent);
     return true;
 }
 
@@ -49,16 +63,34 @@ void ClassTimer::CheckoutLoopEventList()
 {
 }
 
+list<OnceEvent> *ClassTimer::GetOnceEventListPtr()
+{
+    return this->onceEventList;
+}
+
+list<LoopEvent> *ClassTimer::GetLoopEventListPtr()
+{
+    return this->loopEventList;
+}
+
 //定时器循环阻塞执行
 void *TimerLooping(void *args)
 {
-    for (i = 0; i < 100; i++)
+    //间隔时间
+    int seconds = ((ClassTimer *)args)->GetIntervalTime();
+    struct timeval temp;
+    temp.tv_sec = seconds;
+    temp.tv_usec = 0;
+
+    // list<OnceEvent> *onceList = ((ClassTimer *)args)->GetLoopEventListPtr(); //单次事件容器
+    // list<LoopEvent> *loopList = ((ClassTimer *)args)->GetOnceEventListPtr(); //循环事件列表
+
+    for (;;)
     {
-        struct timeval temp;
-
-        temp.tv_sec = seconds;
-        temp.tv_usec = mseconds;
-
+        //检测单次容器
+        ((ClassTimer *)args)->CheckoutOnceEventList();
+        //检测循环事件
+        ((ClassTimer *)args)->CheckoutLoopEventList();
         select(0, NULL, NULL, NULL, &temp);
     }
     return NULL;
