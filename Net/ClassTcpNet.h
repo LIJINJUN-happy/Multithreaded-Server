@@ -7,7 +7,7 @@
 #include <arpa/inet.h>
 #include <map>
 #include "Gate.h"
-#include "ClassPthread.h"
+#include "../ClassPthread/ClassPthread.h"
 
 using namespace std;
 
