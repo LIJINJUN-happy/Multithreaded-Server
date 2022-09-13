@@ -1,7 +1,7 @@
 #ifndef _CLASSPTHREAD_H_
 #define _CLASSPTHREAD_H_
 
-#include "Config.h"
+#include "etc/Config.h"
 #include <list>
 #include <sys/syscall.h>
 #include <pthread.h>

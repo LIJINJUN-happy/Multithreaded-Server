@@ -1,7 +1,7 @@
 #ifndef _CLASSDATABASE_H_
 #define _CLASSDATABASE_H_
 
-#include "Config.h"
+#include "etc/Config.h"
 #include <iostream>
 #include <mysql/mysql.h>
 
