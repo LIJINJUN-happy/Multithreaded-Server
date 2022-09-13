@@ -63,17 +63,19 @@ void ClassTimer::CheckoutLoopEventList()
 {
 }
 
+//检测单次容器
 list<OnceEvent> *ClassTimer::GetOnceEventListPtr()
 {
     return this->onceEventList;
 }
 
+//检测循环事件
 list<LoopEvent> *ClassTimer::GetLoopEventListPtr()
 {
     return this->loopEventList;
 }
 
-//定时器循环阻塞执行,select定时器是阻塞的,在等待时间到来之前什么都不做
+//定时器循环阻塞执行
 void *TimerLooping(void *args)
 {
     //间隔时间
@@ -87,11 +89,9 @@ void *TimerLooping(void *args)
 
     for (;;)
     {
-        //检测单次容器
-        ((ClassTimer *)args)->CheckoutOnceEventList();
-        //检测循环事件
-        ((ClassTimer *)args)->CheckoutLoopEventList();
 
+        ((ClassTimer *)args)->CheckoutOnceEventList();
+        ((ClassTimer *)args)->CheckoutLoopEventList();
         select(0, NULL, NULL, NULL, &temp);
     }
     return NULL;
