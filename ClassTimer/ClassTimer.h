@@ -32,10 +32,7 @@ typedef struct OnceEvent
 void *TimerLooping(void *);
 
 //比较小时数值大小
-bool CompareDiffEvent(OnceEvent x, OnceEvent y)
-{
-    return x.tarHour < y.tarHour;
-}
+bool CompareDiffEvent(OnceEvent, OnceEvent);
 
 class ClassTimer
 {

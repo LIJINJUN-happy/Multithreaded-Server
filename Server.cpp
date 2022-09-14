@@ -1,6 +1,7 @@
 ﻿/*此为一个单进程服务器，一个定时器线程，一个epoll线程（获取最新动态，且监听端口），多个轮询任务列表线程  */
 #include "./ClassPthread/ClassPthread.h" //自定义线程头文件
-#include "./Net/ClassTcpNet.h"  //自定义TCP头文件
+#include "./Net/ClassTcpNet.h"			 //自定义TCP头文件
+#include "./ClassTimer/ClassTimer.h"	 //自定义Timer头文件
 
 using namespace std;
 int main()
@@ -38,6 +39,20 @@ int main()
 	else
 	{
 		cout << "监听线程启动步骤失败" << endl;
+		return -1;
+	}
+
+	//创建计时器线程
+	ClassTimer *timeObj = new ClassTimer(1, timeObj);
+	pthread_t time_Tid = 0;
+	int resTimerCreate = pthread_create(&time_Tid, NULL, TimerLooping, timeObj);
+	if (resTimerCreate == 0)
+	{
+		;
+	}
+	else
+	{
+		cout << "计时器线程启动步骤失败" << endl;
 		return -1;
 	}
 

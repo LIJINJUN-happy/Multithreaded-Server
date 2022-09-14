@@ -68,15 +68,14 @@ void ClassTimer::CheckoutOnceEventList()
     struct tm *localTime = localtime(&timep);
     int nowHour = localTime->tm_hour;
 
-    //按tarhour来排序
-    onceList->sort(CompareDiffEvent);
     list<OnceEvent> *onceList = this->GetOnceEventListPtr();
+    onceList->sort(CompareDiffEvent); //按tarhour来排序
     while (true)
     {
-        list<OnceEvent> iterator index = (*onceList).begin();
+        list<OnceEvent>::iterator index = (*onceList).begin();
         if ((*index).tarHour == nowHour)
         {
-            this->pthreadObj->AddMsgIntoTaskList((*index).ev);
+            this->pthreadObj->AddMsgIntoTaskList((*index).event);
             onceList->pop_front();
             continue;
         }
@@ -92,13 +91,13 @@ void ClassTimer::CheckoutOnceEventList()
 void ClassTimer::CheckoutLoopEventList()
 {
     list<LoopEvent> *loopList = this->GetLoopEventListPtr();
-    list<LoopEvent> iterator index = (*loopList).begin();
+    list<LoopEvent>::iterator index = (*loopList).begin();
     for (index; index != loopList->end(); index++)
     {
         int nowt = (*index).nowTime;
         if (nowt >= (*index).tarTime)
         {
-            this->pthreadObj->AddMsgIntoTaskList((*index).ev);
+            this->pthreadObj->AddMsgIntoTaskList((*index).event);
             (*index).nowTime = 0;
         }
         else
@@ -140,4 +139,9 @@ void *TimerLooping(void *args)
         select(0, NULL, NULL, NULL, &temp);
     }
     return NULL;
+}
+
+bool CompareDiffEvent(OnceEvent x, OnceEvent y)
+{
+    return x.tarHour < y.tarHour;
 }
