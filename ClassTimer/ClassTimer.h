@@ -9,11 +9,9 @@
 #include <sys/time.h>
 #include <sys/select.h>
 #include <time.h>
+#include "../ClassPthread/ClassPthread.h"
 
 using namespace std;
-
-//定时器循环阻塞执行
-void *TimerLooping(void *);
 
 //(循环事件子元素)
 typedef struct LoopEvent
@@ -30,20 +28,30 @@ typedef struct OnceEvent
     string event; //事件容器
 } OnceEvent;
 
+//定时器循环阻塞执行
+void *TimerLooping(void *);
+
+//比较小时数值大小
+bool CompareDiffEvent(OnceEvent x, OnceEvent y)
+{
+    return x.tarHour < y.tarHour;
+}
+
 class ClassTimer
 {
 private:
     list<OnceEvent> *onceEventList; //单次事件容器
     list<LoopEvent> *loopEventList; //循环事件列表
     int intervalTime;               //时间间隔
+    ClassPthread *pthreadObj;       //线程对象的地址（指针）
 
 public:
     ClassTimer();
     ~ClassTimer();
-    ClassTimer(int);
+    ClassTimer(int, ClassPthread *);
     int GetIntervalTime();
     bool AddOnceEvent(int, string);
-    bool AddLoopEvent(int, int, string);
+    bool AddLoopEvent(int, string);
     void CheckoutOnceEventList();
     void CheckoutLoopEventList();
     list<OnceEvent> *GetOnceEventListPtr();
