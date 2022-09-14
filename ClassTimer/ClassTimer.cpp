@@ -47,7 +47,7 @@ bool ClassTimer::AddLoopEvent(int ttime, string ev)
 
 bool ClassTimer::AddOnceEvent(int thour, string ev)
 {
-    if (thour < 0 || thour > 24 || ev.size() < 1)
+    if (thour < 0 || thour >= 24 || ev.size() < 1)
     {
         cout << "参数不正确" << endl;
         return false;
