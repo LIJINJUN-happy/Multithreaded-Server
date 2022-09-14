@@ -48,7 +48,8 @@ int main()
 	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
 	if (resTimerCreate == 0)
 	{
-		;
+		cout << "计时器线程启动步骤成功\n"
+			 << endl;
 	}
 	else
 	{
