@@ -30,8 +30,8 @@ int main()
 
 	//创建socketObj监听线程
 	ClassTcpNet *tcpNetObj = new ClassTcpNet(pthreadObj);
-	pthread_t listen_Tid = 0;
-	int resListen = pthread_create(&listen_Tid, NULL, epollListening, tcpNetObj);
+	pthread_t netTid = 0;
+	int resListen = pthread_create(&netTid, NULL, epollListening, tcpNetObj);
 	if (resListen == 0)
 	{
 		;
@@ -42,10 +42,10 @@ int main()
 		return -1;
 	}
 
-	//创建计时器线程
-	ClassTimer *timeObj = new ClassTimer(1, timeObj);
-	pthread_t time_Tid = 0;
-	int resTimerCreate = pthread_create(&time_Tid, NULL, TimerLooping, timeObj);
+	//创建计时器线程（精度是秒）
+	ClassTimer *timeObj = new ClassTimer(1, pthreadObj);
+	pthread_t timeTid = 0;
+	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
 	if (resTimerCreate == 0)
 	{
 		;

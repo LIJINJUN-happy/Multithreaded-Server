@@ -95,7 +95,7 @@ void ClassTimer::CheckoutLoopEventList()
     for (index; index != loopList->end(); index++)
     {
         int nowt = (*index).nowTime;
-        if (nowt >= (*index).tarTime)
+        if (nowt + 1 >= (*index).tarTime)
         {
             this->pthreadObj->AddMsgIntoTaskList((*index).event);
             (*index).nowTime = 0;
@@ -126,17 +126,16 @@ void *TimerLooping(void *args)
     //间隔时间
     int seconds = ((ClassTimer *)args)->GetIntervalTime();
     struct timeval temp;
-    temp.tv_sec = seconds;
-    temp.tv_usec = 0;
-
     // list<LoopEvent> *loopList = ((ClassTimer *)args)->GetLoopEventListPtr();
     // list<OnceEvent> *onceList = ((ClassTimer *)args)->GetOnceEventListPtr();
 
     for (;;)
     {
+        temp.tv_sec = seconds;
+        temp.tv_usec = 0;
+        select(0, NULL, NULL, NULL, &temp);
         ((ClassTimer *)args)->CheckoutOnceEventList();
         ((ClassTimer *)args)->CheckoutLoopEventList();
-        select(0, NULL, NULL, NULL, &temp);
     }
     return NULL;
 }
