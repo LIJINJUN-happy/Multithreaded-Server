@@ -16,7 +16,7 @@ ClassTimer::ClassTimer(int time, ClassPthread *obj)
 {
     if (time <= 0)
     {
-        cout << "间隔不可小于0秒";
+        cout << "间隔不可小于1秒";
         return;
     }
     this->intervalTime = time;
