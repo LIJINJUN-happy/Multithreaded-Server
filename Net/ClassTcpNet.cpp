@@ -3,7 +3,7 @@
 //构造函数
 ClassTcpNet::ClassTcpNet(ClassPthread *p)
 {
-    this->pSockfdMap = new map<string, int>;
+    this->pSockfdMap = new map<string, Client>;
     this->port = Config::listenPort;
     this->addr = Config::addrString;
     this->maxConnect = Config::maxConnect;
@@ -145,7 +145,8 @@ void ClassTcpNet::StartEpoll()
                         eventClient.events = EPOLLIN;
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
                         string key = to_string(clientSock);
-                        ((*pSockfdMap)[key]) = clientSock;
+                        string ipAddr = inet_ntoa(clientAddr.sin_addr);
+                        ((*pSockfdMap)[key]) = Client(clientSock, key, ipAddr);
                         cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
                         cout << "当前连接人数为：" << pSockfdMap->size() << endl;
                     }

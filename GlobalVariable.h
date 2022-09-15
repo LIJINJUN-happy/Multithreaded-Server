@@ -11,7 +11,7 @@ using namespace std;
 
 namespace Global
 {
-    long GetNowTime();
+    long GetNowTime(); //获取当前时间戳
 }
 
 #endif

@@ -1,7 +1,7 @@
 #include "GlobalVariable.h"
 
 //获取当前时间戳
-long GetNowTime()
+long Global::GetNowTime()
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
