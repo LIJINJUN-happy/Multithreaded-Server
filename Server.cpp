@@ -27,6 +27,21 @@ int main()
 	cout << "任务列表轮询线程启动步骤成功\n"
 		 << endl;
 
+	//创建计时器线程（精度是秒）
+	ClassTimer *timeObj = new ClassTimer(Config::timerIntervalTime, pthreadObj);
+	pthread_t timeTid = 0;
+	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
+	if (resTimerCreate == 0)
+	{
+		cout << "计时器线程启动步骤成功\n"
+			 << endl;
+	}
+	else
+	{
+		cout << "计时器线程启动步骤失败" << endl;
+		return -1;
+	}
+
 	//创建socketObj监听线程
 	ClassTcpNet *tcpNetObj = new ClassTcpNet(pthreadObj);
 	pthread_t netTid = 0;
@@ -38,21 +53,6 @@ int main()
 	else
 	{
 		cout << "监听线程启动步骤失败" << endl;
-		return -1;
-	}
-
-	//创建计时器线程（精度是秒）
-	ClassTimer *timeObj = new ClassTimer(1, pthreadObj);
-	pthread_t timeTid = 0;
-	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
-	if (resTimerCreate == 0)
-	{
-		cout << "计时器线程启动步骤成功\n"
-			 << endl;
-	}
-	else
-	{
-		cout << "计时器线程启动步骤失败" << endl;
 		return -1;
 	}
 

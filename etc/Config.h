@@ -28,6 +28,9 @@ namespace Config
 	//监视检测配置
 	const int HeartbeatIntervalTime = 60; //允许距离上次心跳最大时间
 	const int CheckoutIntervalTime = 10;  //监视线程多久检测一次心跳以及线程状态
+
+	//定时器线程配置
+	const int timerIntervalTime = 1; //计时器精度秒数
 }
 
 #endif
