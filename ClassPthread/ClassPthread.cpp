@@ -117,9 +117,10 @@ void *CheckTaskList(void *args)
             // cout << "取完后任务列表数量为" << pTaskList->size() << endl;
         }
         pthread_mutex_unlock(((Task *)args)->lock); //解锁
-        if (pTaskList->size() > 1)
+
+        //解锁后需要判断是不是还有任务，有的话再唤醒别的线程
+        if (pTaskList->size() > 0)
         {
-            //解锁后需要判断是不是还有任务，有的话再唤醒别的线程
             pthread_cond_signal(cond);
         }
 
