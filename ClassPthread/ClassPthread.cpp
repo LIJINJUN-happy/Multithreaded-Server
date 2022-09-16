@@ -14,8 +14,9 @@ ClassPthread::ClassPthread()
     this->pPthread = new list<pthread_t *>;
     this->pTaskList = new list<string>;
 
-    //初始化锁
+    //初始化锁和变量
     pthread_mutex_init(&(this->lock), NULL);
+    pthread_cond_init(&(this->cond), NULL);
 }
 
 //析构函数
@@ -78,6 +79,7 @@ Task ClassPthread::GetTaskArgs()
     Task task;
     task.pTaskList = this->pTaskList;
     task.lock = &(this->lock);
+    task.cond = &(this->cond);
     return task;
 }
 
@@ -93,23 +95,33 @@ void *CheckTaskList(void *args)
 {
     list<string> *pTaskList = ((Task *)args)->pTaskList;
     pthread_mutex_t *lock = ((Task *)args)->lock;
+    pthread_cond_t *cond = ((Task *)args)->cond;
     pthread_t tid = pthread_self();
     string stringMsg = "";
     while (true)
     {
-        pthread_mutex_lock(lock); //先上锁（防止其余线程同时争抢一个任务）
+        pthread_mutex_lock(lock); //上锁
         // cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
+        if (pTaskList->size() < 1)
+        {
+            // cout<<"等待条件唤醒（等待争抢互斥锁并上锁）"<<endl;
+            pthread_cond_wait(cond, lock);
+        }
         if (pTaskList->size() >= 1)
         {
+            if (pTaskList->size() > 1)
+            {
+                //每多于1个任务就多唤醒一个线程;
+                pthread_cond_signal();
+            }
             stringMsg.clear();
-            stringMsg = *(pTaskList->begin());    //取出任务容器首部的任务
+            stringMsg = *(pTaskList->begin());
             pTaskList->erase(pTaskList->begin()); //取出任务后删除（避免多次取出执行）
 
             // cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
             // cout << "取完后任务列表数量为" << pTaskList->size() << endl;
         }
-        pthread_mutex_unlock(((Task *)args)->lock); //解锁，释放资源让其余的线程获取任务
-        // usleep(1000000);
+        pthread_mutex_unlock(((Task *)args)->lock); //解锁
 
         //在解锁后才执行任务，否者执行完再解锁会存在堵塞
         if (stringMsg.size() >= 1)
