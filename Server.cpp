@@ -57,6 +57,7 @@ int main()
 		return -1;
 	}
 
+	//监视循环
 	ClassMonitor *monitorObj = new ClassMonitor(tcpNetObj, pthreadObj);
 	monitorObj->BeginCheck();
 
