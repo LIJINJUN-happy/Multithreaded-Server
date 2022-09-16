@@ -184,6 +184,13 @@ void ClassTcpNet::StartEpoll()
                                 pthreadObj->AddMsgIntoTaskList(msgTable[index]);
                                 // cout << "第" << index + 1 << "条协议为 " << msgTable[index] << endl;
                             }
+
+                            //任务列表为1的时候才去唤醒,多于1由轮询线程内部唤醒其余线程
+                            if (pthreadObj->GetTaskList()->size() == 1)
+                            {
+                                pthread_cond_t *cond = pthreadObj->GetTaskArgs().cond;
+                                pthread_cond_signal(cond);
+                            }
                         }
                     }
                 }

@@ -100,6 +100,7 @@ void *CheckTaskList(void *args)
     string stringMsg = "";
     while (true)
     {
+        stringMsg.clear();
         pthread_mutex_lock(lock); //上锁
         // cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
         if (pTaskList->size() < 1)
@@ -109,12 +110,6 @@ void *CheckTaskList(void *args)
         }
         if (pTaskList->size() >= 1)
         {
-            if (pTaskList->size() > 1)
-            {
-                //每多于1个任务就多唤醒一个线程;
-                pthread_cond_signal();
-            }
-            stringMsg.clear();
             stringMsg = *(pTaskList->begin());
             pTaskList->erase(pTaskList->begin()); //取出任务后删除（避免多次取出执行）
 
@@ -122,6 +117,11 @@ void *CheckTaskList(void *args)
             // cout << "取完后任务列表数量为" << pTaskList->size() << endl;
         }
         pthread_mutex_unlock(((Task *)args)->lock); //解锁
+        if (pTaskList->size() > 1)
+        {
+            //解锁后需要判断是不是还有任务，有的话再唤醒别的线程
+            pthread_cond_signal(cond);
+        }
 
         //在解锁后才执行任务，否者执行完再解锁会存在堵塞
         if (stringMsg.size() >= 1)
