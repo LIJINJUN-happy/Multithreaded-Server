@@ -2,7 +2,6 @@
 #define _MONITOR_H_
 
 #include "../Net/ClassTcpNet.h"
-#include "../ClassPthread/ClassPthread.h"
 
 using namespace std;
 
