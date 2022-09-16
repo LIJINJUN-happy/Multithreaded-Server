@@ -34,6 +34,11 @@ Net_dir=" $dir/Net/*.cpp "
 echo "网络TCP类文件:$Net_dir"
 echo
 
+#监视类文件
+Monitor_dir=" $dir/Monitor/*.cpp "
+echo "监视类文件文件:$Monitor_dir"
+echo
+
 all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir"
 echo "g++执行$all_Dir"
 g++ $all_Dir -o Server.out

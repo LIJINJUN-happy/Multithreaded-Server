@@ -14,7 +14,7 @@ private:
     string uid;             // 用户id
     string ipAddr;          // 客户端ip地址
     long lastHeartBeatTime; //最后的心跳时间戳
-    int intervalTime;       //允许距离上次心跳最大时间
+    // int intervalTime;       //允许距离上次心跳最大时间
 
 public:
     Client();

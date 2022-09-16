@@ -200,6 +200,23 @@ void ClassTcpNet::StartEpoll()
     return;
 }
 
+//返回套接字容器地址
+map<string, Client> *ClassTcpNet::GetSockfdMap()
+{
+    return this->pSockfdMap;
+}
+
+//关闭与某客户端套接字相关的任何信息
+void ClassTcpNet::CloseClientByFd(string fd)
+{
+    int clientFd = atoi(fd.c_str());
+    close(clientFd);
+    epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
+    (*(this->pSockfdMap)).erase(fd);
+    cout << "客户" << fd << "  断开连接" << endl;
+    cout << "当前连接人数为：" << pSockfdMap->size() << endl;
+}
+
 //开始执行Epoll监听线程，把数据存进去Tasklist里面
 void *epollListening(void *args)
 {

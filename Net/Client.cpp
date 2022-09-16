@@ -30,7 +30,7 @@ void Client::UpdateHeartBeatTime()
 bool Client::CheckoutIfOnLine()
 {
     long nowTime = Global::GetNowTime();
-    int diff = nowTime - this->lastHeartBeatTime;
+    int diff = abs(nowTime - this->lastHeartBeatTime);
 
     //假如间隔时间大于允许的最大心跳间隔时间
     if (diff > Config::HeartbeatIntervalTime)
