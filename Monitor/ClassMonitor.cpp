@@ -1,5 +1,9 @@
 #include "ClassMonitor.h"
 
+ClassMonitor::ClassMonitor()
+{
+}
+
 ClassMonitor::ClassMonitor(ClassTcpNet *tobj, ClassPthread *pobj)
 {
     this->pthreadObj = pobj;

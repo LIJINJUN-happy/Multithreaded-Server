@@ -1,6 +1,7 @@
 ﻿#include "./ClassPthread/ClassPthread.h" //自定义线程头文件
 #include "./Net/ClassTcpNet.h"			 //自定义TCP头文件
 #include "./ClassTimer/ClassTimer.h"	 //自定义Timer头文件
+#include "./Monitor/ClassMonitor.h"		 //自定义监视头文件
 
 using namespace std;
 int main()
@@ -56,9 +57,8 @@ int main()
 		return -1;
 	}
 
-	while (1)
-	{
-	}
+	ClassMonitor *monitorObj = new ClassMonitor(tcpNetObj, pthreadObj);
+	monitorObj->BeginCheck();
 
 	return 0;
 }

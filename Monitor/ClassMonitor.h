@@ -2,6 +2,7 @@
 #define _MONITOR_H_
 
 #include "../Net/ClassTcpNet.h"
+#include "../ClassPthread/ClassPthread.h"
 
 using namespace std;
 
@@ -12,10 +13,11 @@ private:
     ClassPthread *pthreadObj; //自定义线程池类对象地址
 
 public:
+    ClassMonitor();
     ClassMonitor(ClassTcpNet *, ClassPthread *);
     ~ClassMonitor();
-    void CheckoutClientIfOnline();   //检测客户端对象Client心跳间隔
-    void ClassMonitor::BeginCheck(); //检测触发函数
+    void CheckoutClientIfOnline(); //检测客户端对象Client心跳间隔
+    void BeginCheck();             //检测触发函数
 };
 
 #endif

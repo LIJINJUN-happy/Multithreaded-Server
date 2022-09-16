@@ -28,12 +28,12 @@ private:
     int epollfd;                     // Epoll_create函数返回的描述符
 
 public:
-    ClassTcpNet(ClassPthread *);               //构造函数
-    ~ClassTcpNet();                            //析构函数
-    void Init();                               //初始化（依次执行socket bind listen）
-    void StartEpoll();                         //开始进入epoll循环监视
-    map<string, Client> *GetSockfdMap();       //返回套接字容器地址
-    void ClassTcpNet::CloseClientByFd(string); //根据fd关闭与某客户端套接字相关的任何信息
+    ClassTcpNet(ClassPthread *);         //构造函数
+    ~ClassTcpNet();                      //析构函数
+    void Init();                         //初始化（依次执行socket bind listen）
+    void StartEpoll();                   //开始进入epoll循环监视
+    map<string, Client> *GetSockfdMap(); //返回套接字容器地址
+    void CloseClientByFd(string);        //根据fd关闭与某客户端套接字相关的任何信息
 };
 
 #endif
