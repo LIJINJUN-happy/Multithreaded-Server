@@ -5,7 +5,7 @@ echo "当前路径为:$dir"
 echo
 
 #所需链接
-needLink=" -lpthread -std=c++11 "
+needLink=" -lpthread -std=c++11 -L/usr/lib64/mysql -lmysqlclient"
 echo "所需链接:$needLink"
 echo
 
