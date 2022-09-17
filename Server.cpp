@@ -34,6 +34,7 @@ int main()
 	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
 	if (resTimerCreate == 0)
 	{
+		cout << "计时器精度间隔为：" << timeObj->GetIntervalTime() << "秒" << endl;
 		cout << "计时器线程启动步骤成功\n"
 			 << endl;
 	}
