@@ -160,11 +160,7 @@ void ClassTcpNet::StartEpoll()
                     if (resRead == 0)
                     {
                         cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
-                        close(events[index].data.fd);
-                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
-                        string key = to_string(events[index].data.fd);
-                        (*pSockfdMap).erase(key);
-                        cout << "当前连接人数为：" << pSockfdMap->size() << endl;
+                        this->CloseClientByFd(to_string(events[index].data.fd));
                     }
                     //出错啦
                     else if (resRead < 0)
@@ -213,7 +209,6 @@ void ClassTcpNet::CloseClientByFd(string fd)
     close(clientFd);
     epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
     (*(this->pSockfdMap)).erase(fd);
-    cout << "客户" << fd << "  断开连接" << endl;
     cout << "当前连接人数为：" << pSockfdMap->size() << endl;
 }
 

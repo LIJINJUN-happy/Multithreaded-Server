@@ -73,6 +73,10 @@ void ClassTimer::CheckoutOnceEventList()
     while (true)
     {
         list<OnceEvent>::iterator index = (*onceList).begin();
+        if(index == onceList->end())
+        {
+            break;
+        }
         if ((*index).tarHour == nowHour)
         {
             this->pthreadObj->AddMsgIntoTaskList((*index).event);
