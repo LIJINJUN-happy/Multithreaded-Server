@@ -9,7 +9,8 @@ function ServerSatrt()
 
 function ServerStop()
 {
-    result=$(ps -ef|grep Server.out|head -n 1)
+    #端口为8888的进程数据，并获取最后一行(可以用 ps代替lsof 但是ps可能会包含本来的搜索命令的关键字)
+    result=$(lsof -i:8888 | cat | tail -n 1)
     declare -a arr
     index=0
     for i in $(echo $result | awk '{print $1,$2}')
@@ -20,6 +21,7 @@ function ServerStop()
     pid=${arr[1]}
     echo "开始关闭服务器........."
     echo "服务器进程PID= "$pid
+    echo " "
     kill -3 $pid
 }
 
