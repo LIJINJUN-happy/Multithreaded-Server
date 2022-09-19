@@ -29,11 +29,11 @@ function ServerReboot()
 
 function DoCmd()
 {
-    if [ "$param" -eq "start" ]; then
+    if [ "$param" == "start" ]; then
         ServerSatrt
-    elif [ "$param" -eq "stop" ]; then
+    elif [ "$param" == "stop" ]; then
         ServerStop
-    elif [ "$param" -eq "reboot" ]; then
+    elif [ "$param" == "reboot" ]; then
         ServerReboot
     else
         echo "Input Wrong!"
