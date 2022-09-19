@@ -3,6 +3,7 @@
 function ServerSatrt()
 {
     echo "开始启动服务器........."
+    echo " "
     ./Server.out
 }
 
@@ -18,7 +19,7 @@ function ServerStop()
     done
     pid=${arr[1]}
     echo "开始关闭服务器........."
-    echo "进程PID="$pid
+    echo "服务器进程PID= "$pid
     kill -3 $pid
 }
 
