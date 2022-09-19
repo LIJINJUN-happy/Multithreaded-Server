@@ -9,12 +9,16 @@
 #include <signal.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <iostream>
 
 using namespace std;
 
 namespace Global
 {
     long GetNowTime(); //获取当前时间戳
+
+    void ServerQuit(int signum); /*(ctrl + \ )*/
+    void SignalReady();          //信号处理准备工作
 }
 
 #endif
