@@ -9,7 +9,7 @@ function ServerSatrt()
 function ServerStop()
 {
     echo "开始关闭服务器........."
-    result=$(top -u lijinjun -n 1 | grep signal.out )
+    result=$(ps -ef|grep Server.out|head -n 1)
     declare -a arr
     index=0
     for i in $(echo $result | awk '{print $1,$2}')
