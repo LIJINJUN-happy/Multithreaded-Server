@@ -8,7 +8,6 @@ function ServerSatrt()
 
 function ServerStop()
 {
-    echo "开始关闭服务器........."
     result=$(ps -ef|grep Server.out|head -n 1)
     declare -a arr
     index=0
@@ -17,8 +16,10 @@ function ServerStop()
         arr[$index]=$i
         let "index+=1"
     done
-    #echo "进程PID="${arr[0]}
-    kill -s SIGQUIT ${arr[0]}
+    pid=${arr[1]}
+    echo "开始关闭服务器........."
+    echo "进程PID="$pid
+    kill -3 $pid
 }
 
 function ServerReboot()
