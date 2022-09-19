@@ -12,7 +12,6 @@ long Global::GetNowTime()
 /*(ctrl + \ )*/
 void ServerQuit(int signum)
 {
-    cout << "开始关闭服务器........." << endl;
     exit(0);
 }
 
