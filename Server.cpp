@@ -6,6 +6,29 @@
 using namespace std;
 int main()
 {
+	//创建子进程
+	switch (fork())
+	{
+	case -1:
+		//创建子进程失败，这里可以写进日志
+		return -1;
+
+	case 0:
+		//子进程返回
+		break;
+
+	default:
+		//父进程返回，直接退出
+		exit(0);
+	}
+
+	if (setsid() == -1) //新建会话
+	{
+		return -1;
+	}
+	chdir("/"); //改变当前工作目录
+	umask(0);	//防止限制文件权限引起混乱
+
 	//启动多线程执行轮询任务列表
 	ClassPthread *pthreadObj = new ClassPthread();
 	Task task = pthreadObj->GetTaskArgs();
