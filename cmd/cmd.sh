@@ -32,7 +32,7 @@ function ServerStop()
         done
         pid=${arr[1]}
         $GREENBLUE && echo "开始关闭服务器........." && $RESET
-        $GREENBLUE && echo "服务器进程PID= "$pid  && $RESET
+        $GREENBLUE && echo "服务器进程PID: "$pid  && $RESET
         echo " "
         kill -3 $pid
     fi
