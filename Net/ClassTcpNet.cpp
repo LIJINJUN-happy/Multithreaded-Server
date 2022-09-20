@@ -49,12 +49,12 @@ void ClassTcpNet::Init()
     this->serverSock = socket(AF_INET, SOCK_STREAM, 0);
     if (this->serverSock == -1)
     {
-        cout << "socket 函数创建套接字失败" << endl;
+        cout << "\033[31msocket 函数创建套接字失败\033[0m" << endl;
         return;
     }
     else
     {
-        cout << "socket 函数创建套接字成功" << endl;
+        cout << "\033[32msocket 函数创建套接字成功\033[0m" << endl;
     }
 
     struct sockaddr_in serverAddr;
@@ -65,24 +65,24 @@ void ClassTcpNet::Init()
     int resultBind = bind(this->serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr));
     if (resultBind == -1)
     {
-        cout << "bind   函数绑定套接字失败" << endl;
+        cout << "\033[31mbind   函数绑定套接字失败\033[0m" << endl;
         return;
     }
     else
     {
-        cout << "bind   函数绑定套接字成功" << endl;
+        cout << "\033[32mbind   函数绑定套接字成功\033[0m" << endl;
     }
 
     int resultListen = listen(this->serverSock, Config::maxConnect);
     if (resultBind == -1)
     {
-        cout << "listen 函数监听失败" << endl;
+        cout << "\033[31mlisten 函数监听失败\033[0m" << endl;
         return;
     }
     else
     {
-        cout << "正在监听端口：" << Config::listenPort << "................" << endl;
-        cout << "监听线程启动步骤成功\n"
+        cout << "\033[32m正在监听端口：" << Config::listenPort << "\033[5m................\033[0m" << endl;
+        cout << "\033[35m监听线程启动步骤成功\033[0m\n"
              << endl;
     }
 

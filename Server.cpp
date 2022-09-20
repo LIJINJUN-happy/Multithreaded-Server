@@ -38,17 +38,17 @@ int main()
 		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, &task);
 		if (resulCreatePthread == 0)
 		{
-			cout << "第" << i + 1 << "个轮询线程: " << tid << "启动成功!" << endl;
+			cout << "\033[32m第" << i + 1 << "个轮询线程: " << tid << "启动成功!\033[0m" << endl;
 			pthreadObj->AddPthread(&tid);
 		}
 		else
 		{
-			cout << "第" << i + 1 << "个线程启动失败!" << endl;
-			cout << "线程启动步骤失败" << endl;
+			cout << "\033[31m第" << i + 1 << "个线程启动失败!\033[0m" << endl;
+			cout << "\033[31m线程启动步骤失败\033[0m" << endl;
 			return -1;
 		}
 	}
-	cout << "任务列表轮询线程启动步骤成功\n"
+	cout << "\033[35m任务列表轮询线程启动步骤成功\033[0m\n"
 		 << endl;
 
 	//创建计时器线程（精度是秒）
@@ -57,13 +57,13 @@ int main()
 	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
 	if (resTimerCreate == 0)
 	{
-		cout << "计时器精度间隔为：" << timeObj->GetIntervalTime() << "秒" << endl;
-		cout << "计时器线程启动步骤成功\n"
+		cout << "\033[32m计时器精度间隔为：" << timeObj->GetIntervalTime() << "秒\033[0m" << endl;
+		cout << "\033[35m计时器线程启动步骤成功\033[0m\n"
 			 << endl;
 	}
 	else
 	{
-		cout << "计时器线程启动步骤失败" << endl;
+		cout << "\033[31m计时器线程启动步骤失败\033[0m" << endl;
 		return -1;
 	}
 
@@ -77,7 +77,7 @@ int main()
 	}
 	else
 	{
-		cout << "监听线程启动步骤失败" << endl;
+		cout << "\033[31m监听线程启动步骤失败\033[0m" << endl;
 		return -1;
 	}
 
