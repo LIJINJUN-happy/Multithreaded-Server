@@ -2,7 +2,7 @@
 
 function ServerSatrt()
 {
-    result=$(lsof -i:8888 | cat | tail -n 1)
+    local result=$(lsof -i:8888 | cat | tail -n 1)
     
     if [ "$result" == "" ]; then
         echo "开始启动服务器........."
@@ -17,7 +17,7 @@ function ServerSatrt()
 function ServerStop()
 {
     #端口为8888的进程数据，并获取最后一行(可以用 ps代替lsof 但是ps可能会包含本来的搜索命令的关键字)
-    result=$(lsof -i:8888 | cat | tail -n 1)
+    local result=$(lsof -i:8888 | cat | tail -n 1)
 
     if [ "$result" == "" ]; then
         echo "暂无服务器可以关闭"
