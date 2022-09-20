@@ -5,11 +5,11 @@ function ServerSatrt()
     local result=$(lsof -i:8888 | cat | tail -n 1)
     
     if [ "$result" == "" ]; then
-        echo "开始启动服务器........."
+        $Purple && echo "开始启动服务器........." && $RESET
         echo " "
         ./Server.out
     else
-        echo "服务器已启动，请勿重复启动"
+        $RED && echo "服务器已启动，请勿重复启动" && $RESET
         echo "  "
     fi
 }
@@ -20,7 +20,7 @@ function ServerStop()
     local result=$(lsof -i:8888 | cat | tail -n 1)
 
     if [ "$result" == "" ]; then
-        echo "暂无服务器可以关闭"
+        $RED && echo "暂无服务器可以关闭" && $RESET
         echo " "
     else
         declare -a arr
@@ -31,8 +31,8 @@ function ServerStop()
             let "index+=1"
         done
         pid=${arr[1]}
-        echo "开始关闭服务器........."
-        echo "服务器进程PID= "$pid
+        $GREENBLUE && echo "开始关闭服务器........." && $RESET
+        $GREENBLUE && echo "服务器进程PID= "$pid  && $RESET
         echo " "
         kill -3 $pid
     fi
@@ -54,10 +54,17 @@ function DoCmd()
     elif [ "$param" == "reboot" ]; then
         ServerReboot
     else
-        echo "Input Wrong!"
+        $RED && echo "Input Wrong!"  && $RESET
     fi
 
 }
+
+RED="echo -en \\E[0;31m"
+GREEN="echo -en \\E[0;32m"
+YELLOW="echo -en \\E[0;33m"
+Purple="echo -en \\E[0;35m"
+GREENBLUE="echo -en \\E[0;36m"
+RESET="echo -en \\E[0;39m"
 
 #参数（1.start 启动 2.stop 关闭 3.reboot 重启）
 param=$1
