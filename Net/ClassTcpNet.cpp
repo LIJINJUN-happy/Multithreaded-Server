@@ -81,7 +81,7 @@ void ClassTcpNet::Init()
     }
     else
     {
-        cout << "\033[32m正在监听端口：" << Config::listenPort << "\033[5m................\033[0m" << endl;
+        cout << "\033[32m正在监听端口: " << Config::listenPort << "\033[5m................\033[0m" << endl;
         cout << "\033[35m监听线程启动步骤成功\033[0m\n"
              << endl;
     }
