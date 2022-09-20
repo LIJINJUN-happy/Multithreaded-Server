@@ -2,12 +2,31 @@
 
 function ServerSatrt()
 {
+    local testPath="../log"
+    #判断文件夹是否存在 -d
+    if [[ ! -d "$testPath" ]]; then
+        #echo "log文件夹不存在,创建一个"
+        mkdir ../log
+    else
+        #echo "log文件夹存在"
+    fi
+
+    local testFile="../log/log.txt"
+    #判断文件是否存在
+    if [ -e "$testFile" ]; then
+        #echo "log.txt文件存在"
+        > ../log/log.txt
+    else
+        #echo "log.txt文件不存在,创建一个"
+        touch ../log/log.txt
+    fi
+
     local result=$(lsof -i:8888 | cat | tail -n 1)
     
     if [ "$result" == "" ]; then
         $Purple && echo "开始启动服务器........." && $RESET
         echo " "
-        ./Server.out
+        ./Server.out > ../log/log.txt
     else
         $RED && echo "服务器已启动，请勿重复启动" && $RESET
         echo "  "
