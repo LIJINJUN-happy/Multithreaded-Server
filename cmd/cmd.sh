@@ -7,7 +7,7 @@ function ServerSatrt()
     if [[ ! -d "$testPath" ]]; then
         #echo "log文件夹不存在,创建一个"
         mkdir ../log
-    else
+    #else
         #echo "log文件夹存在"
     fi
 
