@@ -29,7 +29,7 @@
 
 
 网络问题：
-在网络编程，封装了TCP类模块，ocket bind listen函数的基操，然后利用epoll进行监视，头文件<sys/epoll.h>。
+在网络编程，封装了TCP类模块，socket bind listen函数的基操，然后利用epoll进行监视，头文件<sys/epoll.h>。
 epoll 是 select 以及 poll 的进化体，select 和 poll都是轮询所有的连接对象（客户端的描述套接字fd）来查看是否有消息要处理，效率慢。而epoll则是检测出有信息的套接字然后装进容器内，并返回检测出的套接字数量，我们便可以通过数量做一个循环来从容器内取出套接字并且获取信息，这样就不用遍历所有的套接字描述符，减少了不必要的开支。
 epll用法：
 epoll_create 创建epoll的描述符
