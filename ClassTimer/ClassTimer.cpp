@@ -4,8 +4,6 @@ ClassTimer::ClassTimer()
 {
     this->intervalTime = 1; //默认为1
     this->pthreadObj = NULL;
-    this->loopEventList = new list<LoopEvent>();
-    this->onceEventList = new list<OnceEvent>();
 }
 
 ClassTimer::~ClassTimer()
@@ -116,12 +114,12 @@ void ClassTimer::CheckoutLoopEventList()
 
 list<OnceEvent> *ClassTimer::GetOnceEventListPtr()
 {
-    return this->onceEventList;
+    return &(this->onceEventList);
 }
 
 list<LoopEvent> *ClassTimer::GetLoopEventListPtr()
 {
-    return this->loopEventList;
+    return &(this->loopEventList);
 }
 
 //定时器循环阻塞执行

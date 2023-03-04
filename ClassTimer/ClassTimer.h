@@ -37,8 +37,8 @@ bool CompareDiffEvent(OnceEvent, OnceEvent);
 class ClassTimer
 {
 private:
-    list<OnceEvent> *onceEventList; //单次事件容器
-    list<LoopEvent> *loopEventList; //循环事件列表
+    list<OnceEvent> onceEventList;  //单次事件容器
+    list<LoopEvent> loopEventList;  //循环事件列表
     int intervalTime;               //时间间隔
     ClassPthread *pthreadObj;       //线程对象的地址（指针）
 
