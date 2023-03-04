@@ -3,7 +3,6 @@
 //构造函数
 ClassTcpNet::ClassTcpNet(ClassPthread *p)
 {
-    this->pSockfdMap = new map<string, Client>;
     this->port = Config::listenPort;
     this->addr = Config::addrString;
     this->maxConnect = Config::maxConnect;
@@ -19,8 +18,6 @@ ClassTcpNet::ClassTcpNet(ClassPthread *p)
 //析构函数
 ClassTcpNet::~ClassTcpNet()
 {
-    delete this->pSockfdMap;
-    delete this->pthreadObj;
 }
 
 //初始化函数
@@ -146,9 +143,9 @@ void ClassTcpNet::StartEpoll()
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
                         string key = to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
-                        ((*pSockfdMap)[key]) = Client(clientSock, key, ipAddr);
+                        (pSockfdMap[key]) = Client(clientSock, key, ipAddr);
                         cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
-                        cout << "当前连接人数为：" << pSockfdMap->size() << endl;
+                        cout << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
                 }
                 //否则是客户端的sockfd有信息
@@ -199,7 +196,7 @@ void ClassTcpNet::StartEpoll()
 //返回套接字容器地址
 map<string, Client> *ClassTcpNet::GetSockfdMap()
 {
-    return this->pSockfdMap;
+    return &(this->pSockfdMap);
 }
 
 //关闭与某客户端套接字相关的任何信息
@@ -208,8 +205,8 @@ void ClassTcpNet::CloseClientByFd(string fd)
     int clientFd = atoi(fd.c_str());
     close(clientFd);
     epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
-    (*(this->pSockfdMap)).erase(fd);
-    cout << "当前连接人数为：" << pSockfdMap->size() << endl;
+    this->pSockfdMap.erase(fd);
+    cout << "当前连接人数为：" << pSockfdMap.size() << endl;
 }
 
 //开始执行Epoll监听线程，把数据存进去Tasklist里面

@@ -17,7 +17,7 @@ void *epollListening(void *); //开始执行Epoll监听线程，把数据存进�
 class ClassTcpNet
 {
 private:
-    map<string, Client> *pSockfdMap; //套接字的容器（存放客户端套接字描述符）
+    map<string, Client> pSockfdMap;  //套接字的容器（存放客户端套接字描述符）
     ClassPthread *pthreadObj;        //自定义线程类对象的指针（用来传递任务进入任务列表）
     int serverSock;                  //服务端监听套接字描述符
     int port;                        //监听端口
