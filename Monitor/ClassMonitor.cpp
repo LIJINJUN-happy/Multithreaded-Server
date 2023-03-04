@@ -12,8 +12,6 @@ ClassMonitor::ClassMonitor(ClassTcpNet *tobj, ClassPthread *pobj)
 
 ClassMonitor::~ClassMonitor()
 {
-    delete this->pthreadObj;
-    delete this->tcpNetObj;
 }
 
 //检测客户端对象Client心跳间隔
