@@ -19,8 +19,6 @@ ClassTimer::ClassTimer(int time, ClassPthread *obj)
     }
     this->intervalTime = time;
     this->pthreadObj = obj;
-    this->loopEventList = new list<LoopEvent>();
-    this->onceEventList = new list<OnceEvent>();
 }
 
 int ClassTimer::GetIntervalTime()
@@ -39,7 +37,7 @@ bool ClassTimer::AddLoopEvent(int ttime, string ev)
     loopEvent.event = ev;
     loopEvent.nowTime = 0;
     loopEvent.tarTime = ttime;
-    this->loopEventList->push_back(loopEvent);
+    this->loopEventList.push_back(loopEvent);
     return true;
 }
 
@@ -53,7 +51,7 @@ bool ClassTimer::AddOnceEvent(int thour, string ev)
     OnceEvent onceEvent;
     onceEvent.tarHour = thour;
     onceEvent.event = ev;
-    this->onceEventList->push_back(onceEvent);
+    this->onceEventList.push_back(onceEvent);
     return true;
 }
 
