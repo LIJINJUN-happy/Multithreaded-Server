@@ -23,11 +23,11 @@ void *CheckTaskList(void *);
 class ClassPthreadMgr
 {
 private:
-    int pollingPthreadNum;       //线程数量
-    list<pthread_t *> pPthread;  //线程容器，生成的线程都在这里
-    list<string> pTaskList;      //任务池用来取任务
-    pthread_mutex_t lock;        //线程锁（防止相互争抢任务池资源，以至于一个任务多次重复做多次）
-    pthread_cond_t cond;         //条件变量（用来控制任务列表线程睡眠和唤醒）
+    int pollingPthreadNum;           //线程数量
+    list<pthread_t *> pthreadList;   //线程容器，生成的线程都在这里
+    list<string> pTaskList;          //任务池用来取任务
+    pthread_mutex_t lock;            //线程锁（防止相互争抢任务池资源，以至于一个任务多次重复做多次）
+    pthread_cond_t cond;             //条件变量（用来控制任务列表线程睡眠和唤醒）
 
 public:
     ClassPthreadMgr();                         //构造函数

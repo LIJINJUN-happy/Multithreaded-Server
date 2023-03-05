@@ -32,7 +32,7 @@ int ClassPthreadMgr::GetPollingPthreadNum()
 //获取第几个线程地址
 pthread_t *ClassPthreadMgr::GetOnePthreadByNum(int num)
 {
-    list<pthread_t *> *p = &(this->pPthread);
+    list<pthread_t *> *p = &(this->pthreadList);
     pthread_t *pid = NULL;
     if (p->size() < num)
     {
@@ -52,7 +52,7 @@ pthread_t *ClassPthreadMgr::GetOnePthreadByNum(int num)
 //获取线程容器地址
 list<pthread_t *> *ClassPthreadMgr::GetPthreadList()
 {
-    list<pthread_t *> *p = &(this->pPthread);
+    list<pthread_t *> *p = &(this->pthreadList);
     return p;
 }
 
@@ -66,7 +66,7 @@ list<string> *ClassPthreadMgr::GetTaskList()
 //添加线程地址入线程容器
 void ClassPthreadMgr::AddPthread(pthread_t *tid)
 {
-    this->pPthread.push_back(tid);
+    this->pthreadList.push_back(tid);
 }
 
 //获取任务参数
