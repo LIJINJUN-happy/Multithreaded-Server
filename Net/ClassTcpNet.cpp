@@ -9,7 +9,7 @@ ClassTcpNet::ClassTcpNet(ClassPthreadMgr *p)
     this->serverSock = -1;
     this->maxSocketfd = Config::maxSocketfd;
     this->maxEpollEvent = Config::maxEpollEvent;
-    this->pthreadObj = p; //把线程对象的地址穿进来，可以调用它的类方法AddMsgIntoTaskList存入任务
+    this->pthreadObj = p; //把线程对象的地址穿进来，可以调用它的类方法AddMsgIntoTaskPool存入任务
 
     //创建Epoll（最大监听sockfd数量为Config::maxSocketfd配置值）
     this->epollfd = epoll_create(Config::maxSocketfd);
@@ -168,23 +168,6 @@ void ClassTcpNet::StartEpoll()
                     //数据正确
                     else
                     {
-                        string allMsg = data;
-                        vector<string> msgTable = GetAndTransformation(allMsg);
-                        for (int index = 0; index < msgTable.size(); index++)
-                        {
-                            if ((msgTable[index]).size() >= 1)
-                            {
-                                //pthreadObj->AddMsgIntoTaskList(msgTable[index]);
-                                // cout << "第" << index + 1 << "条协议为 " << msgTable[index] << endl;
-                            }
-
-                            //任务列表为1的时候才去唤醒,多于1由轮询线程内部唤醒其余线程
-                            if (pthreadObj->GetTaskList()->size() == 1)
-                            {
-                                pthread_cond_t *cond = pthreadObj->GetTaskArgs().cond;
-                                pthread_cond_signal(cond);
-                            }
-                        }
                     }
                 }
             }

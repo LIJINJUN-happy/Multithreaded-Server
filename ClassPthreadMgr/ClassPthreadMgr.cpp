@@ -11,10 +11,7 @@ ClassPthreadMgr::ClassPthreadMgr()
     }
 
     this->pollingPthreadNum = Config::pollingPthreadNum;
-
-    //初始化锁和变量
-    pthread_mutex_init(&(this->lock), NULL);
-    pthread_cond_init(&(this->cond), NULL);
+    this->pTaskPool = new ClassTaskPool();
 }
 
 //析构函数
@@ -57,9 +54,10 @@ list<pthread_t *> *ClassPthreadMgr::GetPthreadList()
 }
 
 //获取任务列表容器地址
-list<string> *ClassPthreadMgr::GetTaskList()
+ClassTaskPool* ClassPthreadMgr::GetTaskPool()
 {
-    list<string> *p = &(this->pTaskList);
+    ClassTaskPool* p = nullptr;
+    p = this->pTaskPool;
     return p;
 }
 
@@ -70,19 +68,23 @@ void ClassPthreadMgr::AddPthread(pthread_t *tid)
 }
 
 //获取任务参数
-Task ClassPthreadMgr::GetTaskArgs()
+Task* ClassPthreadMgr::GetTaskArgs(int index)
 {
-    Task task;
-    task.pTaskList = &(this->pTaskList);
-    task.lock = &(this->lock);
-    task.cond = &(this->cond);
+    ClassTaskPool* taskPoolPtr = this->GetTaskPool();
+    ClassTaskList* taskListPtr = taskPoolPtr->GetTaskListByID(index);
+
+    //创建Task对象
+    Task *task = new Task();
+    task->pTaskList = &(taskListPtr.pTaskList);
+    task->lock = &(taskListPtr.lock);
+    task->cond = &(taskListPtr.cond);
     return task;
 }
 
 //把信息传进任务列表容器
-void ClassPthreadMgr::AddMsgIntoTaskList(string msg)
+void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
 {
-    this->pTaskList.push_back(msg);
+    
     // cout << "msg:" << msg << "已存放进入任务列表" << endl;
 }
 

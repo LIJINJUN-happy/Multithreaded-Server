@@ -31,11 +31,11 @@ int main()
 
 	//启动多线程执行轮询任务列表
 	ClassPthreadMgr *pthreadObj = new ClassPthreadMgr();
-	Task task = pthreadObj->GetTaskArgs();
 	for (int i = 0; i < pthreadObj->GetPollingPthreadNum(); i++)
 	{
 		pthread_t tid = 0;
-		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, &task);
+		Task* task = pthreadObj->GetTaskArgs(i);
+		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, task);
 		if (resulCreatePthread == 0)
 		{
 			cout << "\033[32m第" << i + 1 << "个轮询线程: " << tid << "启动成功!\033[0m" << endl;
