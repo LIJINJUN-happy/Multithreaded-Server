@@ -174,7 +174,7 @@ void ClassTcpNet::StartEpoll()
                         {
                             if ((msgTable[index]).size() >= 1)
                             {
-                                pthreadObj->AddMsgIntoTaskList(msgTable[index]);
+                                //pthreadObj->AddMsgIntoTaskList(msgTable[index]);
                                 // cout << "第" << index + 1 << "条协议为 " << msgTable[index] << endl;
                             }
 
