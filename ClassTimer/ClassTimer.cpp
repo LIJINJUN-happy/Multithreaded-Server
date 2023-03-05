@@ -108,7 +108,6 @@ void ClassTimer::CheckoutLoopEventList()
     }
 }
 
-//
 
 list<OnceEvent> *ClassTimer::GetOnceEventListPtr()
 {
