@@ -10,7 +10,7 @@ ClassTimer::~ClassTimer()
 {
 }
 
-ClassTimer::ClassTimer(int time, ClassPthread *obj)
+ClassTimer::ClassTimer(int time, ClassPthreadMgr *obj)
 {
     if (time <= 0)
     {

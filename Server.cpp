@@ -1,4 +1,4 @@
-﻿#include "./ClassPthread/ClassPthread.h" //自定义线程头文件
+﻿#include "./ClassPthreadMgr/ClassPthreadMgr.h" //自定义线程头文件
 #include "./Net/ClassTcpNet.h"			 //自定义TCP头文件
 #include "./ClassTimer/ClassTimer.h"	 //自定义Timer头文件
 #include "./Monitor/ClassMonitor.h"		 //自定义监视头文件
@@ -30,7 +30,7 @@ int main()
 	umask(0);	//防止限制文件权限引起混乱
 
 	//启动多线程执行轮询任务列表
-	ClassPthread *pthreadObj = new ClassPthread();
+	ClassPthreadMgr *pthreadObj = new ClassPthreadMgr();
 	Task task = pthreadObj->GetTaskArgs();
 	for (int i = 0; i < pthreadObj->GetPollingPthreadNum(); i++)
 	{

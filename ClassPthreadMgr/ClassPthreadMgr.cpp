@@ -1,7 +1,7 @@
-#include "ClassPthread.h"
+#include "ClassPthreadMgr.h"
 
 //构造函数
-ClassPthread::ClassPthread()
+ClassPthreadMgr::ClassPthreadMgr()
 {
     //初始化变量
     if (Config::pollingPthreadNum < 1)
@@ -18,19 +18,19 @@ ClassPthread::ClassPthread()
 }
 
 //析构函数
-ClassPthread::~ClassPthread()
+ClassPthreadMgr::~ClassPthreadMgr()
 {
 }
 
 //获取线程数量
-int ClassPthread::GetPollingPthreadNum()
+int ClassPthreadMgr::GetPollingPthreadNum()
 {
     int num = this->pollingPthreadNum;
     return num;
 }
 
 //获取第几个线程地址
-pthread_t *ClassPthread::GetOnePthreadByNum(int num)
+pthread_t *ClassPthreadMgr::GetOnePthreadByNum(int num)
 {
     list<pthread_t *> *p = &(this->pPthread);
     pthread_t *pid = NULL;
@@ -50,27 +50,27 @@ pthread_t *ClassPthread::GetOnePthreadByNum(int num)
 }
 
 //获取线程容器地址
-list<pthread_t *> *ClassPthread::GetPthreadList()
+list<pthread_t *> *ClassPthreadMgr::GetPthreadList()
 {
     list<pthread_t *> *p = &(this->pPthread);
     return p;
 }
 
 //获取任务列表容器地址
-list<string> *ClassPthread::GetTaskList()
+list<string> *ClassPthreadMgr::GetTaskList()
 {
     list<string> *p = &(this->pTaskList);
     return p;
 }
 
 //添加线程地址入线程容器
-void ClassPthread::AddPthread(pthread_t *tid)
+void ClassPthreadMgr::AddPthread(pthread_t *tid)
 {
     this->pPthread.push_back(tid);
 }
 
 //获取任务参数
-Task ClassPthread::GetTaskArgs()
+Task ClassPthreadMgr::GetTaskArgs()
 {
     Task task;
     task.pTaskList = &(this->pTaskList);
@@ -80,7 +80,7 @@ Task ClassPthread::GetTaskArgs()
 }
 
 //把信息传进任务列表容器
-void ClassPthread::AddMsgIntoTaskList(string msg)
+void ClassPthreadMgr::AddMsgIntoTaskList(string msg)
 {
     this->pTaskList.push_back(msg);
     // cout << "msg:" << msg << "已存放进入任务列表" << endl;

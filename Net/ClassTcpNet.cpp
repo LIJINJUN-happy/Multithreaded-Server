@@ -1,7 +1,7 @@
 #include "ClassTcpNet.h"
 
 //构造函数
-ClassTcpNet::ClassTcpNet(ClassPthread *p)
+ClassTcpNet::ClassTcpNet(ClassPthreadMgr *p)
 {
     this->port = Config::listenPort;
     this->addr = Config::addrString;

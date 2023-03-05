@@ -20,7 +20,7 @@ echo "数据库类文件:$DB_dir"
 echo
 
 #线程类文件
-pthread_dir=" $dir/ClassPthread/*.cpp "
+pthread_dir=" $dir/ClassPthreadMgr/*.cpp "
 echo "线程类文件:$pthread_dir"
 echo
 

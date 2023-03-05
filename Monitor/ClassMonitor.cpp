@@ -4,7 +4,7 @@ ClassMonitor::ClassMonitor()
 {
 }
 
-ClassMonitor::ClassMonitor(ClassTcpNet *tobj, ClassPthread *pobj)
+ClassMonitor::ClassMonitor(ClassTcpNet *tobj, ClassPthreadMgr *pobj)
 {
     this->pthreadObj = pobj;
     this->tcpNetObj = tobj;

@@ -9,7 +9,7 @@
 #include <sys/time.h>
 #include <sys/select.h>
 #include <time.h>
-#include "../ClassPthread/ClassPthread.h"
+#include "../ClassPthreadMgr/ClassPthreadMgr.h"
 
 using namespace std;
 
@@ -40,12 +40,12 @@ private:
     list<OnceEvent> onceEventList;  //单次事件容器
     list<LoopEvent> loopEventList;  //循环事件列表
     int intervalTime;               //时间间隔
-    ClassPthread *pthreadObj;       //线程对象的地址（指针）
+    ClassPthreadMgr *pthreadObj;       //线程对象的地址（指针）
 
 public:
     ClassTimer();
     ~ClassTimer();
-    ClassTimer(int, ClassPthread *);
+    ClassTimer(int, ClassPthreadMgr *);
     int GetIntervalTime();
     bool AddOnceEvent(int, string);
     bool AddLoopEvent(int, string);

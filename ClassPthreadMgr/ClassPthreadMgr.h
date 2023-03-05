@@ -1,5 +1,5 @@
-#ifndef _CLASSPTHREAD_H_
-#define _CLASSPTHREAD_H_
+#ifndef _CLASSPTHREADMGR_H_
+#define _CLASSPTHREADMGR_H_
 
 #include "../etc/Config.h"
 #include <list>
@@ -20,7 +20,7 @@ typedef struct Task
 //线程执行的程序
 void *CheckTaskList(void *);
 
-class ClassPthread
+class ClassPthreadMgr
 {
 private:
     int pollingPthreadNum;       //线程数量
@@ -30,7 +30,7 @@ private:
     pthread_cond_t cond;         //条件变量（用来控制任务列表线程睡眠和唤醒）
 
 public:
-    ClassPthread();                         //构造函数
+    ClassPthreadMgr();                         //构造函数
     int GetPollingPthreadNum();             //获取线程数量
     pthread_t *GetOnePthreadByNum(int num); //获取第几个线程地址
     list<pthread_t *> *GetPthreadList();    //获取线程容器地址
@@ -38,7 +38,7 @@ public:
     void AddPthread(pthread_t *);           //添加线程地址入线程容器
     Task GetTaskArgs();                     //获取任务参数
     void AddMsgIntoTaskList(string);        //把信息传进任务列表容器
-    ~ClassPthread();                        //析构函数
+    ~ClassPthreadMgr();                        //析构函数
 };
 
 #endif
