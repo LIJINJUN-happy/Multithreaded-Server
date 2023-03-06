@@ -75,9 +75,9 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 
     //创建Task对象
     Task *task = new Task();
-    task->pTaskList = &(taskListPtr.pTaskList);
-    task->lock = &(taskListPtr.lock);
-    task->cond = &(taskListPtr.cond);
+    task->pTaskList = &(taskListPtr->taskList);
+    task->lock = &(taskListPtr->lock);
+    task->cond = &(taskListPtr->cond);
     return task;
 }
 

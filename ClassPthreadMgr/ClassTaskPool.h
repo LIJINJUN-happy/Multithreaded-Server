@@ -34,7 +34,7 @@ public:
 class ClassTaskPool
 {
 public:
-	map<int,*ClassTaskList> * GetClassTaskMap(); //获取任务容器的地址
+	map<int,ClassTaskList*> * GetClassTaskMap(); //获取任务容器的地址
 	ClassTaskList * GetTaskListByID(int index);  //根据index获取某任务链表类对象的地址
 
 public:
@@ -42,7 +42,7 @@ public:
 	~ClassTaskPool();
 
 private:
-	map<int,*ClassTaskList> taskPool;			//任务容器池
+	map<int,ClassTaskList*> taskPool;			//任务容器池
 	int classTaskListNum;						//任务列表数量
 };
 
