@@ -20,12 +20,21 @@ public:
 	~ClassTaskList();
 
 public:
-	list<string> taskList;           //任务池用来存任务
+	/*
+	这里设置两个链表容器是为了一个用于接受socket来的信息, 一个给work线程执行, 等到work线程执行
+	的那个容器空了之后,就互换,把空的用去接受socket信息,而刚刚装满信息的就用于给work线程去处理
+	*/
+	//list<string> taskList_;
+	list<string> taskList;
     pthread_mutex_t lock;            //线程锁（防止一边存放消息一边取消息造成bug）
     pthread_cond_t cond;             //条件变量（用来控制任务列表线程睡眠和唤醒）
 
+	//list<string>* pMessTaskList;	//指向接受socket信息的taskList
+	//list<string>* pWorkTaskList;	//指向work线程处理的taskList
+
 public:
-    int getListSize();				 //获取任务链表大小
+    int GetListSize();				 //获取用于接受socket信息的任务链表大小
+	void SwapTaskList();			 //互换链表指针指向的容器
 };
 
 

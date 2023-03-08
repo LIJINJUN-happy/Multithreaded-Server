@@ -12,7 +12,7 @@ ClassTaskList::~ClassTaskList()
 {
 }
 
-int ClassTaskList::getListSize()
+int ClassTaskList::GetListSize()
 {
     int size = 0;
     size = this->taskList.size();
