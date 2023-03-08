@@ -5,7 +5,12 @@ ClassTaskList::ClassTaskList()
     //初始化锁和变量
     pthread_mutex_init(&(this->lock), NULL);
     pthread_cond_init(&(this->cond), NULL);
+
     taskList.clear();
+    taskList_.clear();
+    
+    this->pMessTaskList = &(this->taskList_);
+    this->pWorkTaskList = &(this->taskList);
 }
 
 ClassTaskList::~ClassTaskList()
@@ -14,9 +19,22 @@ ClassTaskList::~ClassTaskList()
 
 int ClassTaskList::GetListSize()
 {
-    int size = 0;
-    size = this->taskList.size();
+    int size = this->pMessTaskList->size();
     return size;
+}
+
+void ClassTaskList::SwapTaskList()
+{
+    if (pWorkTaskList == &taskList)
+    {
+        pWorkTaskList = &taskList_;
+        pMessTaskList = &taskList;
+    }
+    else if (pWorkTaskList == &taskList_)
+    {
+        pMessTaskList = &taskList_;
+        pWorkTaskList = &taskList;
+    }
 }
 
 map<int, ClassTaskList*>* ClassTaskPool::GetClassTaskMap()

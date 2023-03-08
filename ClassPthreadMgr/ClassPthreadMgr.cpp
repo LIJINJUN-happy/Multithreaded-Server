@@ -75,7 +75,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 
     //创建Task对象
     Task *task = new Task();
-    task->pTaskList = &(taskListPtr->taskList);
+    task->pTaskList = &(taskListPtr->pWorkTaskList);
     task->lock = &(taskListPtr->lock);
     task->cond = &(taskListPtr->cond);
     return task;
@@ -91,19 +91,20 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
 //检测任务列表循环（用锁来获取资源防止线程争抢）
 void *CheckTaskList(void *args)
 {
-    list<string> *pTaskList = ((Task *)args)->pTaskList;
+    list<string> *pTaskList = *(((Task *)args)->pTaskList);
     pthread_mutex_t *lock = ((Task *)args)->lock;
     pthread_cond_t *cond = ((Task *)args)->cond;
     pthread_t tid = pthread_self();
     string stringMsg = "";
+
+    pthread_mutex_lock(lock); //上锁
+    // cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
     while (true)
     {
         stringMsg.clear();
-        pthread_mutex_lock(lock); //上锁
-        // cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
         if (pTaskList->size() < 1)
         {
-            // cout<<"等待条件唤醒（等待争抢互斥锁并上锁）"<<endl;
+            // cout<<"先解锁并等待条件唤醒（等待争抢互斥锁并上锁）"<<endl;
             pthread_cond_wait(cond, lock);
         }
         if (pTaskList->size() >= 1)
@@ -114,18 +115,12 @@ void *CheckTaskList(void *args)
             // cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
             // cout << "取完后任务列表数量为" << pTaskList->size() << endl;
         }
-        pthread_mutex_unlock(((Task *)args)->lock); //解锁
 
-        //解锁后需要判断是不是还有任务，有的话再唤醒别的线程
-        if (pTaskList->size() > 0)
-        {
-            pthread_cond_signal(cond);
-        }
-
-        //在解锁后才执行任务，否者执行完再解锁会存在堵塞
+        //执行任务
         if (stringMsg.size() >= 1)
         {
         }
     }
+    //pthread_mutex_unlock(((Task*)args)->lock); //解锁,其实这一步解锁还是不解锁已经无所谓了,可以屏蔽掉
     return NULL;
 }
