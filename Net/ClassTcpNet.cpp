@@ -101,7 +101,7 @@ void ClassTcpNet::StartEpoll()
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
     eventServer.data.fd = this->serverSock;
-    eventServer.events = EPOLLIN|EPOLLET;
+    eventServer.events = EPOLLIN | EPOLLET;
     //开始监听服务端的sockfd监听套接字
     epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);
 
@@ -154,7 +154,7 @@ void ClassTcpNet::StartEpoll()
                     {
                         struct epoll_event eventClient;
                         eventClient.data.fd = clientSock;
-                        eventClient.events = EPOLLIN;
+                        eventClient.events = EPOLLIN | EPOLLET;
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
                         string key = to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
