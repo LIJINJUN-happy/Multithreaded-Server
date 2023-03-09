@@ -101,7 +101,7 @@ void ClassTcpNet::StartEpoll()
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
     eventServer.data.fd = this->serverSock;
-    eventServer.events = EPOLLIN;
+    eventServer.events = EPOLLIN|EPOLLET;
     //开始监听服务端的sockfd监听套接字
     epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);
 
@@ -131,6 +131,21 @@ void ClassTcpNet::StartEpoll()
                     struct sockaddr_in clientAddr;
                     socklen_t clientAddrSize = sizeof(clientAddr);
                     int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize);
+
+                    //設置客戶端socket為非堵塞
+                    //fcntl(clientSock, F_SETFL, fcntl(clientSock, F_GETFL, 0) | O_NONBLOCK);
+                    int funResult = fcntl(clientSock, F_GETFL);
+                    if (funResult < 0)
+                    {
+                        perror("perror");
+                        continue;
+                    }
+                    if (fcntl(clientSock, F_SETFL, funResult | O_NONBLOCK))
+                    {
+                        perror("fcntl");
+                        continue;
+                    }
+                    
                     if (clientSock == -1)
                     {
                         cout << "accept函数接受客户端失败!" << endl;
