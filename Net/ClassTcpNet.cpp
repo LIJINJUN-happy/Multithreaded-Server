@@ -167,32 +167,38 @@ void ClassTcpNet::StartEpoll()
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
                     char data[Config::maxReadDataSize] = "";
-                    int resRead = recv(events[index].data.fd, data, sizeof(data), 0);
-                    //客户多关闭了
-                    if (resRead == 0)
-                    {
-                        cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
-                        this->CloseClientByFd(to_string(events[index].data.fd));
-                    }
-                    //出错啦
-                    else if (resRead < 0)
-                    {
-                        cout << "客户端:" << events[index].data.fd << "出错了" << endl;
-                        if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
+                    char lastChar = '';
+                    do{
+                        memset(data, 0, 0);//清空缓存
+                        int resRead = recv(events[index].data.fd, data, sizeof(data), 0);
+                        //客户多关闭了
+                        if (resRead == 0)
                         {
-                            //cout << "errno == EAGAIN";
-                            continue;
+                            cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
+                            this->CloseClientByFd(to_string(events[index].data.fd));
+                            break;
                         }
+                        //出错啦
+                        else if (resRead < 0)
+                        {
+                            cout << "客户端:" << events[index].data.fd << "出错了" << endl;
+                            if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
+                            {
+                                //这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
+                                break;
+                            }
+                            else
+                            {
+                                epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
+                                break;
+                            }
+                        }
+                        //数据正确
                         else
                         {
-                            epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
-                            continue;
+
                         }
-                    }
-                    //数据正确
-                    else
-                    {
-                    }
+                    }while(true)
                 }
             }
         }

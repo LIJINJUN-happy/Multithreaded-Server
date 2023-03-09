@@ -10,6 +10,7 @@
 #include "../ClassPthreadMgr/ClassPthreadMgr.h"
 #include "Client.h"
 #include <fcntl.h>
+#include <algorithm>
 
 using namespace std;
 
