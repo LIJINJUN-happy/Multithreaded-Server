@@ -178,7 +178,16 @@ void ClassTcpNet::StartEpoll()
                     else if (resRead < 0)
                     {
                         cout << "客户端:" << events[index].data.fd << "出错了" << endl;
-                        epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
+                        if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
+                        {
+                            //cout << "errno == EAGAIN";
+                            continue;
+                        }
+                        else
+                        {
+                            epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
+                            continue;
+                        }
                     }
                     //数据正确
                     else
