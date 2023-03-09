@@ -106,6 +106,7 @@ void ClassTcpNet::StartEpoll()
     epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);
 
     //利用epoll_wait搭配while循环来获取监听结果
+    char data[Config::maxReadDataSize] = "";
     while (true)
     {
         struct epoll_event events[eventsSize];
@@ -166,11 +167,11 @@ void ClassTcpNet::StartEpoll()
                 //否则是客户端的sockfd有信息
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
-                    char data[Config::maxReadDataSize] = "";
                     char lastChar = '';
                     do{
-                        memset(data, 0, 0);//清空缓存
-                        int resRead = recv(events[index].data.fd, data, sizeof(data), 0);
+                        memset(data, 0, 0);
+                        //需要一次性读取完,因为是边沿触发
+                        int resRead = recv(events[index].data.fd, data, sizeof(data), MSG_DONTWAIT);
                         //客户多关闭了
                         if (resRead == 0)
                         {
