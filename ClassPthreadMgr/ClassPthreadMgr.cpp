@@ -56,9 +56,7 @@ list<pthread_t *> *ClassPthreadMgr::GetPthreadList()
 //获取任务列表容器地址
 ClassTaskPool* ClassPthreadMgr::GetTaskPool()
 {
-    ClassTaskPool* p = nullptr;
-    p = this->pTaskPool;
-    return p;
+    return this->pTaskPool;
 }
 
 //添加线程地址入线程容器
@@ -74,7 +72,8 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
     ClassTaskList* taskListPtr = taskPoolPtr->GetTaskListByID(index);
 
     //创建Task对象
-    Task *task = new Task();
+    //Task *task = new Task();
+    shared_ptr<Task> task(new Task());
     task->pTaskList = &(taskListPtr->pWorkTaskList);
     task->lock = &(taskListPtr->lock);
     task->cond = &(taskListPtr->cond);
@@ -84,7 +83,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 //把信息传进任务列表容器
 void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
 {
-    
+    map<int, ClassTaskList*> p = this->pTaskPool->GetClassTaskMap();
     // cout << "msg:" << msg << "已存放进入任务列表" << endl;
 }
 

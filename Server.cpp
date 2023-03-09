@@ -33,8 +33,9 @@ int main()
 	ClassPthreadMgr *pthreadObj = new ClassPthreadMgr();
 	for (int i = 0; i < pthreadObj->GetPollingPthreadNum(); i++)
 	{
-		pthread_t tid = 0;
+		//每个工作线程对应一个任务链表,避免了多个工作线程争抢一个任务链表的情况
 		Task* task = pthreadObj->GetTaskArgs(i);
+		pthread_t tid = 0;
 		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, task);
 		if (resulCreatePthread == 0)
 		{
