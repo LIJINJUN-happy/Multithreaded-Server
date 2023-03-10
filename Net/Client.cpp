@@ -17,6 +17,7 @@ Client::Client(int clientFd, string clientUid, string clientIp)
     this->uid = clientUid;
     this->ipAddr = clientIp;
     this->lastHeartBeatTime = Global::GetNowTime();
+    this->pMyself = this;
 }
 
 //更新心跳时间
@@ -40,4 +41,9 @@ bool Client::CheckoutIfOnLine()
     }
 
     return true;
+}
+
+Client* Client::GetMyself()
+{
+    return this->pMyself;
 }

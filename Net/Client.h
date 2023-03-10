@@ -9,6 +9,7 @@ using namespace std;
 class Client
 {
 private:
+    Client* pMyself;        //指向自己
     int fd;                 //套接字
     string uid;             //用户id
     string ipAddr;          //客户端ip地址
@@ -28,6 +29,7 @@ public:
     Client(int clientFd, string clientUid, string clientIp);
     void UpdateHeartBeatTime();
     bool CheckoutIfOnLine();
+    Client* GetMyself();
 };
 
 #endif

@@ -168,9 +168,9 @@ void ClassTcpNet::StartEpoll()
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
                     char lastChar = '';
+                    //需要一次性读取完,因为是边沿触发,所以用while来清空socket缓存
                     do{
                         memset(data, 0, 0);
-                        //需要一次性读取完,因为是边沿触发
                         int resRead = recv(events[index].data.fd, data, sizeof(data), MSG_DONTWAIT);
                         //客户多关闭了
                         if (resRead == 0)
