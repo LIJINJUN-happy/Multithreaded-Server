@@ -77,13 +77,13 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
     task->pTaskList = &(taskListPtr->pWorkTaskList);
     task->lock = &(taskListPtr->lock);
     task->cond = &(taskListPtr->cond);
-    return task;
+    return task.get();
 }
 
 //把信息传进任务列表容器
 void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
 {
-    map<int, ClassTaskList*> p = this->pTaskPool->GetClassTaskMap();
+    map<int, ClassTaskList*> *p = this->pTaskPool->GetClassTaskMap();
     // cout << "msg:" << msg << "已存放进入任务列表" << endl;
 }
 

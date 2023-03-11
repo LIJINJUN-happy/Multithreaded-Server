@@ -166,7 +166,6 @@ void ClassTcpNet::StartEpoll()
                 //否则是客户端的sockfd有信息
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
-                    char lastChar = '';
                     //需要一次性读取完,因为是边沿触发,所以用while来清空socket缓存
                     do{
                         memset(data, 0, 0);
