@@ -17,17 +17,20 @@ ClassMonitor::~ClassMonitor()
 //检测客户端对象Client心跳间隔
 void ClassMonitor::CheckoutClientIfOnline()
 {
-    map<string, Client> *pSockfdMap = this->tcpNetObj->GetSockfdMap();
+    map<string, Client*> *pSockfdMap = this->tcpNetObj->GetSockfdMap();
     if (pSockfdMap->size() <= 0)
     {
         return;
     }
     for (auto mapIter : (*pSockfdMap))
     {
-        if (mapIter.second.CheckoutIfOnLine() == false)
+        if (mapIter.second->CheckoutIfOnLine() == false)
         {
             cout << "客户端 " << mapIter.first << " 心跳间隔过大，服务器主动与之断开连接" << endl;
             tcpNetObj->CloseClientByFd(mapIter.first);
+            Client* pClient = mapIter.second->GetMyself();
+            delete pClient;
+            pSockfdMap->erase(mapIter.first);
         }
         else
             continue;

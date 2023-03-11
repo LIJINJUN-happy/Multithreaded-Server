@@ -131,35 +131,34 @@ void ClassTcpNet::StartEpoll()
                 {
                     struct sockaddr_in clientAddr;
                     socklen_t clientAddrSize = sizeof(clientAddr);
-                    int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize);
-
-                    //設置客戶端socket為非堵塞
-                    //fcntl(clientSock, F_SETFL, fcntl(clientSock, F_GETFL, 0) | O_NONBLOCK);
-                    int funResult = fcntl(clientSock, F_GETFL);
-                    if (funResult < 0)
-                    {
-                        perror("perror");
-                        continue;
-                    }
-                    if (fcntl(clientSock, F_SETFL, funResult | O_NONBLOCK))
-                    {
-                        perror("fcntl");
-                        continue;
-                    }
-                    
+                    int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize); 
                     if (clientSock == -1)
                     {
                         cout << "accept函数接受客户端失败!" << endl;
                     }
                     else
                     {
+                        //設置客戶端socket為非堵塞
+                        //fcntl(clientSock, F_SETFL, fcntl(clientSock, F_GETFL, 0) | O_NONBLOCK);
+                        int funResult = fcntl(clientSock, F_GETFL);
+                        if (funResult < 0)
+                        {
+                            perror("-----------perror--------------");
+                            continue;
+                        }
+                        if (fcntl(clientSock, F_SETFL, funResult | O_NONBLOCK) == -1)
+                        {
+                            perror("------------fcntl--------------");
+                            continue;
+                        }
+
                         struct epoll_event eventClient;
                         eventClient.data.fd = clientSock;
                         eventClient.events = EPOLLIN | EPOLLET;
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
                         string key = to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
-                        (pSockfdMap[key]) = Client(clientSock, key, ipAddr);
+                        (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
                         cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
                         cout << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
@@ -197,7 +196,7 @@ void ClassTcpNet::StartEpoll()
                         //数据正确
                         else
                         {
-
+                            
                         }
                     }while(true)
                 }
@@ -208,7 +207,7 @@ void ClassTcpNet::StartEpoll()
 }
 
 //返回套接字容器地址
-map<string, Client> *ClassTcpNet::GetSockfdMap()
+map<string, Client*> *ClassTcpNet::GetSockfdMap()
 {
     return &(this->pSockfdMap);
 }
@@ -219,6 +218,8 @@ void ClassTcpNet::CloseClientByFd(string fd)
     int clientFd = atoi(fd.c_str());
     close(clientFd);
     epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
+    Client * pClient = pSockfdMap[fd]->GetMyself();
+    delete pClient;
     this->pSockfdMap.erase(fd);
     cout << "当前连接人数为：" << pSockfdMap.size() << endl;
 }
