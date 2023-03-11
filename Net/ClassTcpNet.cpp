@@ -197,7 +197,7 @@ void ClassTcpNet::StartEpoll()
                         {
                             
                         }
-                    }while(true)
+                    } while (true);
                 }
             }
         }
