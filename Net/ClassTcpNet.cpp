@@ -222,6 +222,7 @@ void ClassTcpNet::StartEpoll()
                             }
                         }
                     } while (true);
+                    pClient->UpdateMessageResidue(messageResidue);
                 }
             }
         }

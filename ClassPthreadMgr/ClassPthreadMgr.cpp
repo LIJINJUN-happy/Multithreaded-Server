@@ -72,12 +72,11 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
     ClassTaskList* taskListPtr = taskPoolPtr->GetTaskListByID(index);
 
     //创建Task对象
-    //Task *task = new Task();
-    shared_ptr<Task> task(new Task());
+    Task *task = new Task();
     task->pTaskList = &(taskListPtr->pWorkTaskList);
     task->lock = &(taskListPtr->lock);
     task->cond = &(taskListPtr->cond);
-    return task.get();
+    return task;
 }
 
 //把信息传进任务列表容器
