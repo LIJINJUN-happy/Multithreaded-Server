@@ -96,7 +96,7 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
             minIndex = index;
         }
     }
-    cout << "应该放入index为："<< index << "的任务列表" << endl;
+    cout << "应该放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
     pTaskList->pMessTaskList->push_back(msg);
     cout << "msg:" << msg << "已存放进入任务列表:"<< (pTaskList->pMessTaskList) << endl;
@@ -105,9 +105,9 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
     int resTryLock = pthread_mutex_trylock(&(pTaskList->lock));
     if (resTryLock == 0)
     {
-        cout << "尝试获取线程人物列表锁成功,列表："<< (pTaskList->pWorkTaskList << endl;
+        cout << "尝试获取线程人物列表锁成功,列表："<< (pTaskList->pWorkTaskList) << endl;
         pTaskList->SwapTaskList();
-        pthread_mutex_unlock(((Task*)args)->lock); //唤醒前先解锁，否则work线程被阻塞
+        pthread_mutex_unlock(&(pTaskList->lock); //唤醒前先解锁，否则work线程被阻塞
         pthread_cond_signal(&(pTaskList->cond));
     }
     return;
