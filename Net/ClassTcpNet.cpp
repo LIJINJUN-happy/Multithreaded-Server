@@ -166,6 +166,7 @@ void ClassTcpNet::StartEpoll()
                 //否则是客户端的sockfd有信息
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
+                    string fd = to_string(events[index].data.fd);
                     Client* pClient = pSockfdMap[fd]->GetMyself();
                     string messageResidue = pClient->GetMessageResidue();
 

@@ -3,7 +3,7 @@
 //默认构造函数
 Client::Client()
 {
-    this->fd = NULL;
+    this->fd = -1;
     this->uid = "";
     this->ipAddr = "";
     this->lastHeartBeatTime = Global::GetNowTime();
