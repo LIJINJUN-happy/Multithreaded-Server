@@ -166,10 +166,13 @@ void ClassTcpNet::StartEpoll()
                 //否则是客户端的sockfd有信息
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
+                    Client* pClient = pSockfdMap[fd]->GetMyself();
+                    string messageResidue = pClient->GetMessageResidue();
+
                     //需要一次性读取完,因为是边沿触发,所以用while来清空socket缓存
                     do{
                         memset(data, 0, 0);
-                        int resRead = recv(events[index].data.fd, data, sizeof(data), MSG_DONTWAIT);
+                        int resRead = recv(events[index].data.fd, data, sizeof(data), MSG_DONTWAIT);          
                         //客户多关闭了
                         if (resRead == 0)
                         {
@@ -179,8 +182,7 @@ void ClassTcpNet::StartEpoll()
                         }
                         //出错啦
                         else if (resRead < 0)
-                        {
-                            cout << "客户端:" << events[index].data.fd << "出错了" << endl;
+                        { 
                             if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
                             {
                                 //这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
@@ -188,14 +190,35 @@ void ClassTcpNet::StartEpoll()
                             }
                             else
                             {
+                                cout << "客户端:" << events[index].data.fd << "出错了" << endl;
                                 epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
                                 break;
                             }
                         }
                         //数据正确
-                        else
+                        else if (resRead >= 1)
                         {
-                            
+                            messageResidue += data;
+                            while (true)
+                            {
+                                int findIndex = messageResidue.find('|');
+                                if (findIndex == string::npos)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    string completeStr(messageResidue, 0, findIndex);
+                                    cout << "收到完整信息" << completeStr << endl;
+                                    /*
+                                    解析：待补充
+                                    */
+                                    //this->pthreadObj->AddMsgIntoTaskPool(completeStr);
+
+                                    messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
+                                    continue;
+                                }
+                            }
                         }
                     } while (true);
                 }

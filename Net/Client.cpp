@@ -3,6 +3,13 @@
 //默认构造函数
 Client::Client()
 {
+    this->fd = NULL;
+    this->uid = "";
+    this->ipAddr = "";
+    this->lastHeartBeatTime = Global::GetNowTime();
+    this->pMyself = this;
+    this->messageResidue = "";
+    this->workPthreadIndex = -1;
 }
 
 //析构函数
@@ -18,6 +25,8 @@ Client::Client(int clientFd, string clientUid, string clientIp)
     this->ipAddr = clientIp;
     this->lastHeartBeatTime = Global::GetNowTime();
     this->pMyself = this;
+    this->messageResidue = "";
+    this->workPthreadIndex = -1;//默认一开始没有线程执行该用户的请求
 }
 
 //更新心跳时间
@@ -41,6 +50,27 @@ bool Client::CheckoutIfOnLine()
     }
 
     return true;
+}
+
+void Client::UpdateMessageResidue(string newString)
+{
+    this->messageResidue = newString;
+    return;
+}
+
+string Client::GetMessageResidue()
+{
+    return this->messageResidue;
+}
+
+void Client::UpdateWorkPthreadIndex(int newIndex)
+{
+    this->workPthreadIndex = newIndex;
+}
+
+int Client::GetWorkPthreadIndex()
+{
+    return this->workPthreadIndex;
 }
 
 Client* Client::GetMyself()
