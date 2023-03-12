@@ -144,8 +144,8 @@ void *CheckTaskList(void *args)
                 cout << "work任务容器为空，但mess任务容器不为空,直接交换容器执行任务" << endl;
                 pTaskList->SwapTaskList();
             }
-            
         }
+
         if (pWorkList->size() >= 1)
         {
             stringMsg = *(pWorkList->begin());
