@@ -7,7 +7,9 @@ using namespace std;
 
 typedef struct Task
 {
-    list<string> **pTaskList;//任务列表指针的地址（因为假如单纯复制地址则是浅拷贝）
+    ClassTaskList* pTaskList;
+    list<string>** pWorkList;   //任务列表指针的地址（因为假如单纯复制地址则是浅拷贝）
+    list<string>** pMessList;   //接受socket信息列表指针的地址
     pthread_mutex_t *lock;   //锁地址
     pthread_cond_t *cond;    //条件变量地址
 } Task;

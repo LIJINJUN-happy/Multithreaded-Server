@@ -73,7 +73,9 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 
     //创建Task对象
     Task *task = new Task();
-    task->pTaskList = &(taskListPtr->pWorkTaskList);
+    task->pTaskList = taskListPtr;
+    task->pMessList = &(taskListPtr->pMessTaskList);
+    task->pWorkList = &(taskListPtr->pWorkTaskList);
     task->lock = &(taskListPtr->lock);
     task->cond = &(taskListPtr->cond);
     return task;
@@ -117,29 +119,40 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
 void *CheckTaskList(void *args)
 {
     usleep(1000000);
-    list<string> *pTaskList = *(((Task *)args)->pTaskList);
+    ClassTaskList* pTaskList = ((Task*)args)->pTaskList;
+    list<string> * pMessList = *(((Task *)args)->pMessList);
+    list<string> * pWorkList = *(((Task*)args)->pWorkList);
     pthread_mutex_t *lock = ((Task *)args)->lock;
     pthread_cond_t *cond = ((Task *)args)->cond;
     pthread_t tid = pthread_self();
     string stringMsg = "";
 
     pthread_mutex_lock(lock); //上锁
-    cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
+    cout << "Pid :" << tid << "获取锁 " << "pWorkList=" << pWorkList << "  lock=" << lock << endl;
     while (true)
     {
         stringMsg.clear();
-        if (pTaskList->size() < 1)
+        if (pWorkList->size() < 1)
         {
-            cout<<"先解锁并等待条件唤醒（等待争抢互斥锁并上锁）"<<endl;
-            pthread_cond_wait(cond, lock);
+            if(pMessList->size() < 1)
+            { 
+                cout << "work任务容器与mess容器均为空,先解锁休眠并等待任务到来时候被唤醒" << endl;
+                pthread_cond_wait(cond, lock);
+            }
+            else if(pMessList->size() >= 1)
+            {
+                cout << "work任务容器为空，但mess任务容器不为空,直接交换容器执行任务" << endl;
+                pTaskList->SwapTaskList();
+            }
+            
         }
-        if (pTaskList->size() >= 1)
+        if (pWorkList->size() >= 1)
         {
-            stringMsg = *(pTaskList->begin());
-            pTaskList->erase(pTaskList->begin()); //取出任务后删除（避免多次取出执行）
+            stringMsg = *(pWorkList->begin());
+            pWorkList->erase(pWorkList->begin()); //取出任务后删除（避免多次取出执行）
 
             cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
-            cout << "取完后任务列表数量为" << pTaskList->size() << endl;
+            cout << "取完后任务列表数量为" << pWorkList->size() << endl;
         }
 
         //执行任务
