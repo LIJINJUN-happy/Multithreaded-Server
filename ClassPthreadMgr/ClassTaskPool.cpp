@@ -19,8 +19,9 @@ ClassTaskList::~ClassTaskList()
 
 int ClassTaskList::GetListSize()
 {
-    int size = this->pMessTaskList->size();
-    return size;
+    int messSize = this->pMessTaskList->size();
+    int workSize = this->pWorkTaskList->size();
+    return workSize + messSize;
 }
 
 void ClassTaskList::SwapTaskList()

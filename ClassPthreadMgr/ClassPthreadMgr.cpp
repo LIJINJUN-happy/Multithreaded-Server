@@ -105,7 +105,7 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
     int resTryLock = pthread_mutex_trylock(&(pTaskList->lock));
     if (resTryLock == 0)
     {
-        cout << "尝试获取线程人物列表锁成功,列表："<< (pTaskList->pWorkTaskList) << endl;
+        cout << "尝试获取线程任务列表锁成功,列表："<< (pTaskList->pWorkTaskList) << endl;
         pTaskList->SwapTaskList();
         pthread_mutex_unlock(&(pTaskList->lock)); //唤醒前先解锁，否则work线程被阻塞
         pthread_cond_signal(&(pTaskList->cond));
