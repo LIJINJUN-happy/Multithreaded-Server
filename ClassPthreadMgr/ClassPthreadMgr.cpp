@@ -82,13 +82,41 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 //把信息传进任务列表容器
 void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
 {
+    //判断哪个人物列表最少任务并添加任务
     map<int, ClassTaskList*> *p = this->pTaskPool->GetClassTaskMap();
-    // cout << "msg:" << msg << "已存放进入任务列表" << endl;
+    const int totalNum = Config::pollingPthreadNum;
+    int minNum = this->pTaskPool->GetTaskListByID(0)->GetListSize();
+    int minIndex = 0;
+    for (int index = 0; index < totalNum; index++)
+    {
+        int listTaskNum = this->pTaskPool->GetTaskListByID(index)->GetListSize();
+        if (minNum > listTaskNum)
+        {
+            minNum = listTaskNum;
+            minIndex = index;
+        }
+    }
+    cout << "应该放入index为："<< index << "的任务列表" << endl;
+    ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
+    pTaskList->pMessTaskList->push_back(msg);
+    cout << "msg:" << msg << "已存放进入任务列表:"<< (pTaskList->pMessTaskList) << endl;
+
+    //try_lock尝试判断pWorkTaskList是否已经空了
+    int resTryLock = pthread_mutex_trylock(&(pTaskList->lock));
+    if (resTryLock == 0)
+    {
+        cout << "尝试获取线程人物列表锁成功,列表："<< (pTaskList->pWorkTaskList << endl;
+        pTaskList->SwapTaskList();
+        pthread_mutex_unlock(((Task*)args)->lock); //唤醒前先解锁，否则work线程被阻塞
+        pthread_cond_signal(&(pTaskList->cond));
+    }
+    return;
 }
 
 //检测任务列表循环（用锁来获取资源防止线程争抢）
 void *CheckTaskList(void *args)
 {
+    usleep(1000000);
     list<string> *pTaskList = *(((Task *)args)->pTaskList);
     pthread_mutex_t *lock = ((Task *)args)->lock;
     pthread_cond_t *cond = ((Task *)args)->cond;
@@ -96,13 +124,13 @@ void *CheckTaskList(void *args)
     string stringMsg = "";
 
     pthread_mutex_lock(lock); //上锁
-    // cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
+    cout << "Pid :" << tid << "获取锁 " << "pTaskList=" << pTaskList << "  lock=" << lock << endl;
     while (true)
     {
         stringMsg.clear();
         if (pTaskList->size() < 1)
         {
-            // cout<<"先解锁并等待条件唤醒（等待争抢互斥锁并上锁）"<<endl;
+            cout<<"先解锁并等待条件唤醒（等待争抢互斥锁并上锁）"<<endl;
             pthread_cond_wait(cond, lock);
         }
         if (pTaskList->size() >= 1)
@@ -110,13 +138,15 @@ void *CheckTaskList(void *args)
             stringMsg = *(pTaskList->begin());
             pTaskList->erase(pTaskList->begin()); //取出任务后删除（避免多次取出执行）
 
-            // cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
-            // cout << "取完后任务列表数量为" << pTaskList->size() << endl;
+            cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
+            cout << "取完后任务列表数量为" << pTaskList->size() << endl;
         }
 
         //执行任务
         if (stringMsg.size() >= 1)
         {
+            cout << "DO任务: " << stringMsg << endl;
+            usleep(1000000);
         }
     }
     //pthread_mutex_unlock(((Task*)args)->lock); //解锁,其实这一步解锁还是不解锁已经无所谓了,可以屏蔽掉

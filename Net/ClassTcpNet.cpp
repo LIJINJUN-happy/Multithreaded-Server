@@ -214,7 +214,7 @@ void ClassTcpNet::StartEpoll()
                                     /*
                                     解析：待补充
                                     */
-                                    //this->pthreadObj->AddMsgIntoTaskPool(completeStr);
+                                    this->pthreadObj->AddMsgIntoTaskPool(completeStr);
 
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
                                     continue;
