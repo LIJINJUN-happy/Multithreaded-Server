@@ -98,6 +98,8 @@ void ClassTcpNet::Init()
 //开始进入epoll循环监视
 void ClassTcpNet::StartEpoll()
 {
+    char dataBuff[Config::maxReadDataSize] = "";
+    list<string> stringDataList;
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
     eventServer.data.fd = this->serverSock;
@@ -106,7 +108,6 @@ void ClassTcpNet::StartEpoll()
     epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);
 
     //利用epoll_wait搭配while循环来获取监听结果
-    char data[Config::maxReadDataSize] = "";
     while (true)
     {
         struct epoll_event events[eventsSize];
@@ -123,6 +124,7 @@ void ClassTcpNet::StartEpoll()
         }
         else
         {
+            stringDataList.clear();
             //接收到信息，开始循环读取文件描述符
             for (int index = 0; index < resEpollwait; index++)
             {
@@ -172,8 +174,8 @@ void ClassTcpNet::StartEpoll()
 
                     //需要一次性读取完,因为是边沿触发,所以用while来清空socket缓存
                     do{
-                        memset(data, 0, 0);
-                        int resRead = recv(events[index].data.fd, data, sizeof(data), MSG_DONTWAIT);          
+                        memset(dataBuff, 0, 0);
+                        int resRead = recv(events[index].data.fd, dataBuff, sizeof(dataBuff), MSG_DONTWAIT);
                         //客户多关闭了
                         if (resRead == 0)
                         {
@@ -199,7 +201,7 @@ void ClassTcpNet::StartEpoll()
                         //数据正确
                         else if (resRead >= 1)
                         {
-                            messageResidue += data;
+                            messageResidue += dataBuff;
                             while (true)
                             {
                                 int findIndex = messageResidue.find('|');
@@ -214,8 +216,7 @@ void ClassTcpNet::StartEpoll()
                                     /*
                                     解析：待补充
                                     */
-                                    this->pthreadObj->AddMsgIntoTaskPool(completeStr);
-
+                                    stringDataList.push_back(completeStr);
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
                                     continue;
                                 }
@@ -226,6 +227,7 @@ void ClassTcpNet::StartEpoll()
                 }
             }
         }
+        this->pthreadObj->AddMsgIntoTaskPool(stringDataList);
     }
     return;
 }

@@ -75,7 +75,7 @@ void ClassTimer::CheckoutOnceEventList()
         }
         if ((*index).tarHour == nowHour)
         {
-            this->pthreadObj->AddMsgIntoTaskPool((*index).event);
+            //this->pthreadObj->AddMsgIntoTaskPool((*index).event);
             onceList->pop_front();
             continue;
         }
@@ -97,7 +97,7 @@ void ClassTimer::CheckoutLoopEventList()
         int nowt = (*index).nowTime;
         if (nowt + 1 >= (*index).tarTime)
         {
-            this->pthreadObj->AddMsgIntoTaskPool((*index).event);
+            //this->pthreadObj->AddMsgIntoTaskPool((*index).event);
             (*index).nowTime = 0;
         }
         else

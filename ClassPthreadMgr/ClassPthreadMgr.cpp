@@ -82,7 +82,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 }
 
 //把信息传进任务列表容器
-void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
+void ClassPthreadMgr::AddMsgIntoTaskPool(list<string>& msgList)
 {
     //判断哪个人物列表最少任务并添加任务
     map<int, ClassTaskList*> *p = this->pTaskPool->GetClassTaskMap();
@@ -100,8 +100,8 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(string msg)
     }
     cout << "应该放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
-    pTaskList->pMessTaskList->push_back(msg);
-    cout << "msg:" << msg << "已存放进入任务列表:"<< (pTaskList->pMessTaskList) << endl;
+    std::copy(msgList.begin(), msgList.end(), std::back_inserter(*(pTaskList->pMessTaskList)));
+    cout << "任务个数:" << msgList.size() << "已存放进入任务列表:"<< (pTaskList->pMessTaskList) << endl;
 
     //try_lock尝试判断pWorkTaskList是否已经空了
     int resTryLock = pthread_mutex_trylock(&(pTaskList->lock));
