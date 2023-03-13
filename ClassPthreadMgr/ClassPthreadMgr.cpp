@@ -84,8 +84,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 //把信息传进任务列表容器
 void ClassPthreadMgr::AddMsgIntoTaskPool(list<string>& msgList)
 {
-    //判断哪个人物列表最少任务并添加任务
-    map<int, ClassTaskList*> *p = this->pTaskPool->GetClassTaskMap();
+    //判断哪个任务列表最少任务并添加任务
     const int totalNum = Config::pollingPthreadNum;
     int minNum = this->pTaskPool->GetTaskListByID(0)->GetListSize();
     int minIndex = 0;

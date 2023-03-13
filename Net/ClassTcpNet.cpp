@@ -124,7 +124,6 @@ void ClassTcpNet::StartEpoll()
         }
         else
         {
-            stringDataList.clear();
             //接收到信息，开始循环读取文件描述符
             for (int index = 0; index < resEpollwait; index++)
             {
@@ -228,6 +227,7 @@ void ClassTcpNet::StartEpoll()
             }
         }
         this->pthreadObj->AddMsgIntoTaskPool(stringDataList);
+        stringDataList.clear();
     }
     return;
 }
