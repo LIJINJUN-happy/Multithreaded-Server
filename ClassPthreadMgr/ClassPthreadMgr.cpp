@@ -114,6 +114,24 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(list<string>& msgList)
     return;
 }
 
+int ClassPthreadMgr::CheckMinTaskList()
+{
+    //判断哪个任务列表最少任务并添加任务
+    const int totalNum = Config::pollingPthreadNum;
+    int minNum = this->pTaskPool->GetTaskListByID(0)->GetListSize();
+    int minIndex = 0;
+    for (int index = 0; index < totalNum; index++)
+    {
+        int listTaskNum = this->pTaskPool->GetTaskListByID(index)->GetListSize();
+        if (minNum > listTaskNum)
+        {
+            minNum = listTaskNum;
+            minIndex = index;
+        }
+    }
+    return minIndex;
+}
+
 //检测任务列表循环（用锁来获取资源防止线程争抢）
 void *CheckTaskList(void *args)
 {
