@@ -82,22 +82,9 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 }
 
 //把信息传进任务列表容器
-void ClassPthreadMgr::AddMsgIntoTaskPool(list<string>& msgList)
+void ClassPthreadMgr::AddMsgIntoTaskPool(list<string>& msgList,int minIndex)
 {
-    //判断哪个任务列表最少任务并添加任务
-    const int totalNum = Config::pollingPthreadNum;
-    int minNum = this->pTaskPool->GetTaskListByID(0)->GetListSize();
-    int minIndex = 0;
-    for (int index = 0; index < totalNum; index++)
-    {
-        int listTaskNum = this->pTaskPool->GetTaskListByID(index)->GetListSize();
-        if (minNum > listTaskNum)
-        {
-            minNum = listTaskNum;
-            minIndex = index;
-        }
-    }
-    cout << "应该放入index为："<< minIndex << "的任务列表" << endl;
+    cout << "放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
     std::copy(msgList.begin(), msgList.end(), std::back_inserter(*(pTaskList->pMessTaskList)));
     cout << "任务个数:" << msgList.size() << "已存放进入任务列表:"<< (pTaskList->pMessTaskList) << endl;
@@ -177,6 +164,7 @@ void *CheckTaskList(void *args)
         {
             cout << "DO任务: " << stringMsg << endl;
             usleep(1000000);
+
         }
     }
     //pthread_mutex_unlock(((Task*)args)->lock); //解锁,其实这一步解锁还是不解锁已经无所谓了,可以屏蔽掉

@@ -99,7 +99,8 @@ void ClassTcpNet::Init()
 void ClassTcpNet::StartEpoll()
 {
     char dataBuff[Config::maxReadDataSize] = "";
-    list<string> stringDataList;
+    list<string> noLimitDataList;
+    list<string> limitDataList;
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
     eventServer.data.fd = this->serverSock;
@@ -110,6 +111,7 @@ void ClassTcpNet::StartEpoll()
     //利用epoll_wait搭配while循环来获取监听结果
     while (true)
     {
+        int minTaskListIndex = pthreadObj->CheckMinTaskList();
         struct epoll_event events[eventsSize];
         int resEpollwait = epoll_wait(this->epollfd, events, eventsSize, -1); //阻塞（timeout参数为-1）
         if (resEpollwait < 0)
@@ -215,7 +217,7 @@ void ClassTcpNet::StartEpoll()
                                     /*
                                     解析：待补充
                                     */
-                                    stringDataList.push_back(completeStr);
+                                    limitDataList.push_back(completeStr);
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
                                     continue;
                                 }
@@ -223,11 +225,32 @@ void ClassTcpNet::StartEpoll()
                         }
                     } while (true);
                     pClient->UpdateMessageResidue(messageResidue);
+
+                    //判断是否有任务在某个线程中执行
+                    atomic_int& workPthreadIndex = pClient->GetWorkPthreadIndex();
+                    atomic_int& taskNum = pClient->GetClientTaskNum();
+                    if (taskNum <= 0)
+                    {
+                        int addSize = limitDataList.size();
+                        pClient->UpdateClientTaskNum(addSize);
+                        pClient->UpdateWorkPthreadIndex(minTaskListIndex);
+                        std::copy(limitDataList.begin(), limitDataList.end(), std::back_inserter(noLimitDataList));
+                    }
+                    else
+                    {
+                        int addSize = limitDataList.size();
+                        pClient->UpdateClientTaskNum(addSize);
+                        this->pthreadObj->AddMsgIntoTaskPool(limitDataList, workPthreadIndex);
+                    }
+                    limitDataList.clear();
                 }
             }
+            if (noLimitDataList.size > 0)
+            {
+                this->pthreadObj->AddMsgIntoTaskPool(noLimitDataList, minTaskListIndex);
+                noLimitDataList.clear();
+            }
         }
-        this->pthreadObj->AddMsgIntoTaskPool(stringDataList);
-        stringDataList.clear();
     }
     return;
 }

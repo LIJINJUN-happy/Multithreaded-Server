@@ -37,9 +37,9 @@ public:
     string GetMessageResidue();
 
     void UpdateWorkPthreadIndex(int newIndex);
-    atomic_int GetWorkPthreadIndex();
+    atomic_int& GetWorkPthreadIndex();
     void UpdateClientTaskNum(int cmdTaskNum);
-    atomic_int GetClientTaskNum();
+    atomic_int& GetClientTaskNum();
 };
 
 #endif

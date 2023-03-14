@@ -35,10 +35,10 @@ public:
     void AddPthread(pthread_t*);            //添加线程地址入线程容器
 
     //任务容器操作
-    ClassTaskPool* GetTaskPool();           //获取任务列表容器地址
-    Task* GetTaskArgs(int);                 //获取任务池中某index索引任务链表参数
-    void AddMsgIntoTaskPool(list<string>&); //把信息传进任务列表容器
-    int CheckMinTaskList();                 //返回最少任务的任务链表索引
+    ClassTaskPool* GetTaskPool();                 //获取任务列表容器地址
+    Task* GetTaskArgs(int);                       //获取任务池中某index索引任务链表参数
+    void AddMsgIntoTaskPool(list<string>&,int);   //把信息传进任务列表容器
+    int CheckMinTaskList();                       //返回最少任务的任务链表索引
 };
 
 #endif

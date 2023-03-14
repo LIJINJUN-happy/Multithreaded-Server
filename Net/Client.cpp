@@ -68,7 +68,7 @@ void Client::UpdateWorkPthreadIndex(int newIndex)
     this->workPthreadIndex = newIndex;
 }
 
-atomic_int Client::GetWorkPthreadIndex()
+atomic_int& Client::GetWorkPthreadIndex()
 {
     return this->workPthreadIndex;
 }
@@ -79,7 +79,7 @@ void Client::UpdateClientTaskNum(int cmdTaskNum)
     return;
 }
 
-atomic_int Client::GetClientTaskNum()
+atomic_int& Client::GetClientTaskNum()
 {
     return this->workPthreadSameClientTaskNum;;
 }
