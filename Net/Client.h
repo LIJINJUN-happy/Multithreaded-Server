@@ -17,8 +17,8 @@ private:
     //int intervalTime;     //允许距离上次心跳最大时间
 
     //用于防止同一玩家被不同的线程操作,消息派发的时候可以根据这个变量派发相应任务链表
-    int workPthreadIndex;            //被操作的线程index,-1的时候就是没有被操作,大于等于0则是在被操作中
-    int workPthreadSameClientTaskNum;//表示该线程下此玩家有待处理的消息数量
+    atomic<int> workPthreadIndex;            //被操作的线程index,-1的时候就是没有被操作,大于等于0则是在被操作中
+    atomic<int> workPthreadSameClientTaskNum;//表示该线程下此玩家有待处理的消息数量
     
     /*由于NetSocket是基于Epoll的，而且是边沿触发，一次性必须全部读完，但是可能存在粘包的情况
     也就是说，epoll_wait处理的时候可能有一部分数据未能读取完，所以先把前段部分数据保存下来*/
@@ -37,7 +37,9 @@ public:
     string GetMessageResidue();
 
     void UpdateWorkPthreadIndex(int newIndex);
-    int GetWorkPthreadIndex();
+    atomic_int GetWorkPthreadIndex();
+    void UpdateClientTaskNum(int cmdTaskNum);
+    atomic_int GetClientTaskNum();
 };
 
 #endif

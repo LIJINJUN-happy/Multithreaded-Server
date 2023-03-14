@@ -2,6 +2,7 @@
 #define _CONFIG_H_
 
 #include <string>
+#include <atomic>
 
 namespace Config
 {
