@@ -177,7 +177,7 @@ void ClassTcpNet::StartEpoll()
                     do{
                         memset(dataBuff, 0, 0);
                         int resRead = recv(events[index].data.fd, dataBuff, sizeof(dataBuff), MSG_DONTWAIT);
-                        //客户多关闭了
+                        //客户端关闭了
                         if (resRead == 0)
                         {
                             cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
