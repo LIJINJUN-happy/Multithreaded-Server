@@ -245,7 +245,7 @@ void ClassTcpNet::StartEpoll()
                     limitDataList.clear();
                 }
             }
-            if (noLimitDataList.size > 0)
+            if (noLimitDataList.size() > 0)
             {
                 this->pthreadObj->AddMsgIntoTaskPool(noLimitDataList, minTaskListIndex);
                 noLimitDataList.clear();
