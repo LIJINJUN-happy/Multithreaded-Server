@@ -137,7 +137,7 @@ void ClassTcpNet::StartEpoll()
                     int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize); 
                     if (clientSock == -1)
                     {
-                        cout << "accept函数接受客户端失败!" << endl;
+                        //cout << "accept函数接受客户端失败!" << endl;
                     }
                     else
                     {
@@ -162,8 +162,8 @@ void ClassTcpNet::StartEpoll()
                         string key = to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
-                        cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
-                        cout << "当前连接人数为：" << pSockfdMap.size() << endl;
+                        //cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
+                        //cout << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
                 }
                 //否则是客户端的sockfd有信息
@@ -229,17 +229,21 @@ void ClassTcpNet::StartEpoll()
                     //判断是否有任务在某个线程中执行
                     atomic_int& workPthreadIndex = pClient->GetWorkPthreadIndex();
                     atomic_int& taskNum = pClient->GetClientTaskNum();
+                    cout << "workPthreadIndex = " << workPthreadIndex << endl;
+                    cout << "taskNum = " << taskNum << endl;
                     if (taskNum <= 0)
                     {
                         int addSize = limitDataList.size();
                         pClient->UpdateClientTaskNum(addSize);
                         pClient->UpdateWorkPthreadIndex(minTaskListIndex);
+                        cout << "copy 进大容器" << endl;
                         std::copy(limitDataList.begin(), limitDataList.end(), std::back_inserter(noLimitDataList));
                     }
                     else
                     {
                         int addSize = limitDataList.size();
                         pClient->UpdateClientTaskNum(addSize);
+                        cout << "直接执行，workPthreadIndex = "<< workPthreadIndex << endl;
                         this->pthreadObj->AddMsgIntoTaskPool(limitDataList, workPthreadIndex);
                     }
                     limitDataList.clear();
@@ -247,6 +251,7 @@ void ClassTcpNet::StartEpoll()
             }
             if (noLimitDataList.size() > 0)
             {
+                cout << "直接执行 noLimitDataList " << minTaskListIndex << endl;
                 this->pthreadObj->AddMsgIntoTaskPool(noLimitDataList, minTaskListIndex);
                 noLimitDataList.clear();
             }
@@ -270,7 +275,7 @@ void ClassTcpNet::CloseClientByFd(string fd)
     Client * pClient = pSockfdMap[fd]->GetMyself();
     delete pClient;
     this->pSockfdMap.erase(fd);
-    cout << "当前连接人数为：" << pSockfdMap.size() << endl;
+    //cout << "当前连接人数为：" << pSockfdMap.size() << endl;
 }
 
 //开始执行Epoll监听线程，把数据存进去Tasklist里面
