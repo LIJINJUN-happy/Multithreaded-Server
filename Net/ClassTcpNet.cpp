@@ -190,6 +190,26 @@ void ClassTcpNet::StartEpoll()
                             if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
                             {
                                 //这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
+                                //判断是否有任务在某个线程中执行
+                                atomic_int& workPthreadIndex = pClient->GetWorkPthreadIndex();
+                                atomic_int& taskNum = pClient->GetClientTaskNum();
+                                cout << "workPthreadIndex = " << workPthreadIndex << endl;
+                                cout << "taskNum = " << taskNum << endl;
+                                if (taskNum <= 0)
+                                {
+                                    int addSize = limitDataList.size();
+                                    pClient->UpdateClientTaskNum(addSize);
+                                    pClient->UpdateWorkPthreadIndex(minTaskListIndex);
+                                    cout << "copy 进大容器" << endl;
+                                    std::copy(limitDataList.begin(), limitDataList.end(), std::back_inserter(noLimitDataList));
+                                }
+                                else
+                                {
+                                    int addSize = limitDataList.size();
+                                    pClient->UpdateClientTaskNum(addSize);
+                                    cout << "直接执行，workPthreadIndex = " << workPthreadIndex << endl;
+                                    this->pthreadObj->AddMsgIntoTaskPool(limitDataList, workPthreadIndex);
+                                }
                                 break;
                             }
                             else
@@ -225,27 +245,6 @@ void ClassTcpNet::StartEpoll()
                         }
                     } while (true);
                     pClient->UpdateMessageResidue(messageResidue);
-
-                    //判断是否有任务在某个线程中执行
-                    atomic_int& workPthreadIndex = pClient->GetWorkPthreadIndex();
-                    atomic_int& taskNum = pClient->GetClientTaskNum();
-                    cout << "workPthreadIndex = " << workPthreadIndex << endl;
-                    cout << "taskNum = " << taskNum << endl;
-                    if (taskNum <= 0)
-                    {
-                        int addSize = limitDataList.size();
-                        pClient->UpdateClientTaskNum(addSize);
-                        pClient->UpdateWorkPthreadIndex(minTaskListIndex);
-                        cout << "copy 进大容器" << endl;
-                        std::copy(limitDataList.begin(), limitDataList.end(), std::back_inserter(noLimitDataList));
-                    }
-                    else
-                    {
-                        int addSize = limitDataList.size();
-                        pClient->UpdateClientTaskNum(addSize);
-                        cout << "直接执行，workPthreadIndex = "<< workPthreadIndex << endl;
-                        this->pthreadObj->AddMsgIntoTaskPool(limitDataList, workPthreadIndex);
-                    }
                     limitDataList.clear();
                 }
             }
