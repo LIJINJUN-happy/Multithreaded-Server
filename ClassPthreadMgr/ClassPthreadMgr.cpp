@@ -87,13 +87,11 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(list<string>& msgList,int minIndex)
     cout << "放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
     std::copy(msgList.begin(), msgList.end(), std::back_inserter(*(pTaskList->pMessTaskList)));
-    cout << "任务个数:" << msgList.size() << "已存放进入任务列表:" << (pTaskList->pMessTaskList) << endl << endl;
 
     //try_lock尝试判断pWorkTaskList是否已经空了
     int resTryLock = pthread_mutex_trylock(&(pTaskList->lock));
     if (resTryLock == 0)
     {
-        //cout << "尝试获取线程任务列表锁成功,列表："<< (pTaskList->pWorkTaskList) << endl;
         pTaskList->SwapTaskList();
         pthread_mutex_unlock(&(pTaskList->lock)); //唤醒前先解锁，否则work线程被阻塞
         pthread_cond_signal(&(pTaskList->cond));
@@ -131,7 +129,6 @@ void *CheckTaskList(void *args)
     string stringMsg = "";
 
     pthread_mutex_lock(lock); //上锁
-    //cout << "Pid :" << tid << "获取锁 " << "pWorkList=" << pWorkList << "  lock=" << lock << endl;
     while (true)
     {
         stringMsg.clear();
@@ -139,12 +136,12 @@ void *CheckTaskList(void *args)
         {
             if(pMessList->size() < 1)
             { 
-                cout << "work任务容器与mess容器均为空,先解锁休眠并等待任务到来时候被唤醒" << endl;
+                //cout << "work任务容器与mess容器均为空,先解锁休眠并等待任务到来时候被唤醒" << endl;
                 pthread_cond_wait(cond, lock);
             }
             else if(pMessList->size() >= 1)
             {
-                cout << "work任务容器为空，但mess任务容器不为空,直接交换容器执行任务" << endl;
+                //cout << "work任务容器为空，但mess任务容器不为空,直接交换容器执行任务" << endl;
                 pTaskList->SwapTaskList();
             }
             pMessList = *(((Task*)args)->pMessList);
@@ -155,16 +152,12 @@ void *CheckTaskList(void *args)
         {
             stringMsg = *(pWorkList->begin());
             pWorkList->erase(pWorkList->begin()); //取出任务后删除（避免多次取出执行）
-
-            //cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
-            //cout << "取完后任务列表数量为" << pWorkList->size() << endl;
         }
 
         //执行任务
         if (stringMsg.size() >= 1)
         {
-            //cout << "DO任务: " << stringMsg << endl;
-            usleep(2000000);
+            usleep(170000);
 
         }
     }

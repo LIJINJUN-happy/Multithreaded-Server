@@ -250,7 +250,6 @@ void ClassTcpNet::StartEpoll()
             }
             if (noLimitDataList.size() > 0)
             {
-                cout << "本轮EPOLL共接到任务数量： " << noLimitDataList.size() << "   存放的任务链表Index：" << minTaskListIndex << endl;
                 this->pthreadObj->AddMsgIntoTaskPool(noLimitDataList, minTaskListIndex);
                 noLimitDataList.clear();
             }
