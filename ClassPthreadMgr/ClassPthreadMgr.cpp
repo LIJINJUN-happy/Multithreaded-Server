@@ -87,13 +87,13 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(list<string>& msgList,int minIndex)
     cout << "放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
     std::copy(msgList.begin(), msgList.end(), std::back_inserter(*(pTaskList->pMessTaskList)));
-    cout << "任务个数:" << msgList.size() << "已存放进入任务列表:"<< (pTaskList->pMessTaskList) << endl;
+    cout << "任务个数:" << msgList.size() << "已存放进入任务列表:" << (pTaskList->pMessTaskList) << endl << endl;
 
     //try_lock尝试判断pWorkTaskList是否已经空了
     int resTryLock = pthread_mutex_trylock(&(pTaskList->lock));
     if (resTryLock == 0)
     {
-        cout << "尝试获取线程任务列表锁成功,列表："<< (pTaskList->pWorkTaskList) << endl;
+        //cout << "尝试获取线程任务列表锁成功,列表："<< (pTaskList->pWorkTaskList) << endl;
         pTaskList->SwapTaskList();
         pthread_mutex_unlock(&(pTaskList->lock)); //唤醒前先解锁，否则work线程被阻塞
         pthread_cond_signal(&(pTaskList->cond));
@@ -122,7 +122,6 @@ int ClassPthreadMgr::CheckMinTaskList()
 //检测任务列表循环（用锁来获取资源防止线程争抢）
 void *CheckTaskList(void *args)
 {
-    usleep(1000000);
     ClassTaskList* pTaskList = ((Task*)args)->pTaskList;
     list<string> * pMessList = *(((Task *)args)->pMessList);
     list<string> * pWorkList = *(((Task*)args)->pWorkList);
@@ -132,7 +131,7 @@ void *CheckTaskList(void *args)
     string stringMsg = "";
 
     pthread_mutex_lock(lock); //上锁
-    cout << "Pid :" << tid << "获取锁 " << "pWorkList=" << pWorkList << "  lock=" << lock << endl;
+    //cout << "Pid :" << tid << "获取锁 " << "pWorkList=" << pWorkList << "  lock=" << lock << endl;
     while (true)
     {
         stringMsg.clear();
@@ -157,15 +156,15 @@ void *CheckTaskList(void *args)
             stringMsg = *(pWorkList->begin());
             pWorkList->erase(pWorkList->begin()); //取出任务后删除（避免多次取出执行）
 
-            cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
-            cout << "取完后任务列表数量为" << pWorkList->size() << endl;
+            //cout << "Pid :" << tid << "  取任务:" << stringMsg << endl;
+            //cout << "取完后任务列表数量为" << pWorkList->size() << endl;
         }
 
         //执行任务
         if (stringMsg.size() >= 1)
         {
-            cout << "DO任务: " << stringMsg << endl;
-            usleep(1000000);
+            //cout << "DO任务: " << stringMsg << endl;
+            usleep(2000000);
 
         }
     }
