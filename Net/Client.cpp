@@ -10,6 +10,7 @@ Client::Client()
     this->pMyself = this;
     this->messageResidue = "";
     this->workPthreadIndex = -1;
+    this->workPthreadSameClientTaskNum = 0;
 }
 
 //析构函数
@@ -81,7 +82,7 @@ void Client::UpdateClientTaskNum(int cmdTaskNum)
 
 atomic_int& Client::GetClientTaskNum()
 {
-    return this->workPthreadSameClientTaskNum;;
+    return this->workPthreadSameClientTaskNum;
 }
 
 Client* Client::GetMyself()

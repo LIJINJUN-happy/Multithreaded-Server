@@ -171,7 +171,6 @@ void ClassTcpNet::StartEpoll()
                 {
                     string fd = to_string(events[index].data.fd);
                     Client* pClient = pSockfdMap[fd]->GetMyself();
-                    string messageResidue = pClient->GetMessageResidue();
 
                     //需要一次性读取完,因为是边沿触发,所以用while来清空socket缓存
                     do{
@@ -187,10 +186,9 @@ void ClassTcpNet::StartEpoll()
                         //出错啦
                         else if (resRead < 0)
                         { 
-                            if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
+                            if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))//这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
                             {
-                                //这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
-                                //判断是否有任务在某个线程中执行
+                                /*判断是否有任务在某个线程中执行
                                 atomic_int& workPthreadIndex = pClient->GetWorkPthreadIndex();
                                 atomic_int& taskNum = pClient->GetClientTaskNum();
                                 cout << "workPthreadIndex = " << workPthreadIndex << endl;
@@ -209,7 +207,8 @@ void ClassTcpNet::StartEpoll()
                                     pClient->UpdateClientTaskNum(addSize);
                                     cout << "直接执行，workPthreadIndex = " << workPthreadIndex << endl;
                                     this->pthreadObj->AddMsgIntoTaskPool(limitDataList, workPthreadIndex);
-                                }
+                                }*/
+                                std::copy(limitDataList.begin(), limitDataList.end(), std::back_inserter(noLimitDataList));
                                 break;
                             }
                             else
@@ -222,6 +221,7 @@ void ClassTcpNet::StartEpoll()
                         //数据正确
                         else if (resRead >= 1)
                         {
+                            string messageResidue = pClient->GetMessageResidue();
                             messageResidue += dataBuff;
                             while (true)
                             {
@@ -242,9 +242,9 @@ void ClassTcpNet::StartEpoll()
                                     continue;
                                 }
                             }
+                            pClient->UpdateMessageResidue(messageResidue);
                         }
                     } while (true);
-                    pClient->UpdateMessageResidue(messageResidue);
                     limitDataList.clear();
                 }
             }
