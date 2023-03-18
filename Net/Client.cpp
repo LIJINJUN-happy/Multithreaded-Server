@@ -9,8 +9,8 @@ Client::Client()
     this->lastHeartBeatTime = Global::GetNowTime();
     this->pMyself = this;
     this->messageResidue = "";
-    atomic_init(&workPthreadIndex, -1);
-    atomic_init(&workPthreadSameClientTaskNum, 0);
+    this->workPthreadIndex = -1;
+    this->workPthreadSameClientTaskNum = 0;
 }
 
 //析构函数
