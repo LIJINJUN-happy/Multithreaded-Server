@@ -189,8 +189,8 @@ void ClassTcpNet::StartEpoll()
                             if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))//这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
                             {
                                 /*判断是否有任务在某个线程中执行
-                                atomic_int& workPthreadIndex = pClient->GetWorkPthreadIndex();
-                                atomic_int& taskNum = pClient->GetClientTaskNum();
+                                int workPthreadIndex = pClient->GetWorkPthreadIndex();
+                                int taskNum = pClient->GetClientTaskNum();
                                 cout << "workPthreadIndex = " << workPthreadIndex << endl;
                                 cout << "taskNum = " << taskNum << endl;
                                 if (taskNum <= 0)

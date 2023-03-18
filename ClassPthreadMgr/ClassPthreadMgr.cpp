@@ -158,7 +158,6 @@ void *CheckTaskList(void *args)
         if (stringMsg.size() >= 1)
         {
             usleep(170000);
-
         }
     }
     //pthread_mutex_unlock(((Task*)args)->lock); //解锁,其实这一步解锁还是不解锁已经无所谓了,可以屏蔽掉

@@ -9,8 +9,8 @@ Client::Client()
     this->lastHeartBeatTime = Global::GetNowTime();
     this->pMyself = this;
     this->messageResidue = "";
-    this->workPthreadIndex = -1;
-    this->workPthreadSameClientTaskNum = 0;
+    atomic_init(&workPthreadIndex, -1);
+    atomic_init(&workPthreadSameClientTaskNum, 0);
 }
 
 //析构函数
@@ -66,23 +66,24 @@ string Client::GetMessageResidue()
 
 void Client::UpdateWorkPthreadIndex(int newIndex)
 {
-    this->workPthreadIndex = newIndex;
+    this->workPthreadIndex.store(newIndex);
+    return;
 }
 
-atomic_int& Client::GetWorkPthreadIndex()
+int Client::GetWorkPthreadIndex()
 {
-    return this->workPthreadIndex;
+    return this->workPthreadIndex.load();
 }
 
 void Client::UpdateClientTaskNum(int cmdTaskNum)
 {
-    this->workPthreadSameClientTaskNum += cmdTaskNum;
+    this->workPthreadSameClientTaskNum.fetch_add(cmdTaskNum);
     return;
 }
 
-atomic_int& Client::GetClientTaskNum()
+int Client::GetClientTaskNum()
 {
-    return this->workPthreadSameClientTaskNum;
+    return this->workPthreadSameClientTaskNum.load();
 }
 
 Client* Client::GetMyself()
