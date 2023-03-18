@@ -28,6 +28,9 @@ Client::Client(int clientFd, string clientUid, string clientIp)
     this->pMyself = this;
     this->messageResidue = "";
     this->workPthreadIndex = -1;//默认一开始没有线程执行该用户的请求
+    this->workPthreadSameClientTaskNum = 0;
+    //workPthreadIndex.store(-1);
+    //workPthreadSameClientTaskNum.store(0);
 }
 
 //更新心跳时间
