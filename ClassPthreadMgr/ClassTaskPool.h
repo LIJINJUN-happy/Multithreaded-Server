@@ -10,6 +10,7 @@
 #include <iostream>
 #include <memory>
 #include <algorithm>
+#include "../Net/Client.h"
 
 using namespace std;
 

@@ -8,7 +8,6 @@
 #include <map>
 #include "Gate.h"
 #include "../ClassPthreadMgr/ClassPthreadMgr.h"
-#include "Client.h"
 #include <fcntl.h>
 
 using namespace std;
