@@ -222,7 +222,7 @@ void ClassTcpNet::StartEpoll()
                         else if (resRead >= 1)
                         {
                             string messageResidue = pClient->GetMessageResidue();
-                            messageResidue += dataBuff;
+                            messageResidue += string(dataBuff, 0, resRead);
                             while (true)
                             {
                                 int findIndex = messageResidue.find('|');
