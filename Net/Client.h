@@ -3,6 +3,7 @@
 
 #include "../etc/Config.h"
 #include "../GlobalVariable.h"
+#include "./Gate.h"
 
 class Client
 {
