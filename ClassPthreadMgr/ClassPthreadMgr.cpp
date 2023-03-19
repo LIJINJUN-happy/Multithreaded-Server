@@ -155,17 +155,23 @@ void *CheckTaskList(void *args)
 
         if (pWorkList->size() >= 1)
         {
+            //从消息列表取出消息包并读取消息包信息
             MsgPackage* msgPtr = *(pWorkList->begin());
-            stringMsg = msgPtr->GetCMD();
             pWorkList->erase(pWorkList->begin());
-            delete msgPtr;
-        }
+            stringMsg = msgPtr->GetCMD();
 
-        //执行任务
-        if (stringMsg.size() >= 1)
-        {
-            //cout << "处理消息：" << stringMsg << endl;
-            usleep(170000);
+            
+            //执行任务
+            if (stringMsg.size() >= 1)
+            {
+                usleep(170000);
+            }
+
+            //修改任务数量
+
+
+            //销毁
+            delete msgPtr;
         }
     }
     //pthread_mutex_unlock(((Task*)args)->lock); //解锁,其实这一步解锁还是不解锁已经无所谓了,可以屏蔽掉

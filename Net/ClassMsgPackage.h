@@ -8,13 +8,15 @@
 /*
 msgType :
 
-1.Net
+1.NetRecv
 
 2.System
 
 3.Call
 
 4.CallBack
+
+5.NetSend
 
 */
 
