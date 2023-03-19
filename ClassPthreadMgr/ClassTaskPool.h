@@ -21,13 +21,13 @@ public:
 	这里设置两个链表容器是为了一个用于接受socket来的信息, 一个给work线程执行, 等到work线程执行
 	的那个容器空了之后,就互换,把空的用去接受socket信息,而刚刚装满信息的就用于给work线程去处理
 	*/
-	std::list<std::string> taskList_;
-	std::list<std::string> taskList;
+	std::list<MsgPackage> taskList_;
+	std::list<MsgPackage> taskList;
     pthread_mutex_t lock;            //线程锁（防止一边存放消息一边取消息造成bug）
     pthread_cond_t cond;             //条件变量（用来控制任务列表线程睡眠和唤醒）
 
-	std::list<std::string>* pMessTaskList;	//指向接受socket信息的taskList
-	std::list<std::string>* pWorkTaskList;	//指向work线程处理的taskList
+	std::list<MsgPackage>* pMessTaskList;	//指向接受socket信息的taskList
+	std::list<MsgPackage>* pWorkTaskList;	//指向work线程处理的taskList
 
 public:
     int GetListSize();				 //获取用于接受socket信息的任务链表大小

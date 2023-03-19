@@ -105,8 +105,8 @@ void ClassTcpNet::Init()
 void ClassTcpNet::StartEpoll()
 {
     char dataBuff[Config::maxReadDataSize] = "";
-    list<string> noLimitDataList;
-    list<string> limitDataList;
+    list<MsgPackage> noLimitDataList;
+    list<MsgPackage> limitDataList;
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
     eventServer.data.fd = this->serverSock;
@@ -239,7 +239,8 @@ void ClassTcpNet::StartEpoll()
                                     /*
                                     解析：待补充
                                     */
-                                    limitDataList.push_back(completeStr);
+                                    MsgPackage msgPack = MsgPackage(completeStr,(void*)pClient,nullptr,"Net");
+                                    limitDataList.push_back(msgPack);
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
                                     continue;
                                 }

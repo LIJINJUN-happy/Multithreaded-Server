@@ -6,6 +6,7 @@
 #include <string.h>
 #include <vector>
 #include <unistd.h>
+#include "./ClassMsgPackage.h"
 
 //转换为char*然后send
 void TransformationAndSend(std::string msg);
