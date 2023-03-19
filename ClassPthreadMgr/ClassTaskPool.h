@@ -2,12 +2,9 @@
 #define _CLASSTASKPOOL_H_
 
 #include <map>
-#include "../etc/Config.h"
 #include <list>
 #include <sys/syscall.h>
 #include <pthread.h>
-#include <unistd.h>
-#include <iostream>
 #include <memory>
 #include <algorithm>
 #include "../Net/Client.h"

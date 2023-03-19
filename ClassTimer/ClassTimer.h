@@ -2,10 +2,6 @@
 #define _CLASSTIMER_H_
 
 #include <utility>
-#include <string>
-#include <map>
-#include <list>
-#include <iostream>
 #include <sys/time.h>
 #include <sys/select.h>
 #include <time.h>
