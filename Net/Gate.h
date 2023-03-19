@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <string.h>
 #include <vector>
 #include <unistd.h>
 #include "./ClassMsgPackage.h"

@@ -87,7 +87,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 }
 
 //把信息传进任务列表容器
-void ClassPthreadMgr::AddMsgIntoTaskPool(list<MsgPackage>& msgList,int minIndex)
+void ClassPthreadMgr::AddMsgIntoTaskPool(list<MsgPackage*>& msgList,int minIndex)
 {
     cout << "放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
@@ -126,8 +126,8 @@ int ClassPthreadMgr::CheckMinTaskList()
 void *CheckTaskList(void *args)
 {
     ClassTaskList* pTaskList = ((Task*)args)->pTaskList;
-    list<MsgPackage>* pMessList = *(((Task*)args)->pMessList);
-    list<MsgPackage>* pWorkList = *(((Task*)args)->pWorkList);
+    list<MsgPackage*>* pMessList = *(((Task*)args)->pMessList);
+    list<MsgPackage*>* pWorkList = *(((Task*)args)->pWorkList);
     pthread_mutex_t *lock = ((Task *)args)->lock;
     pthread_cond_t *cond = ((Task *)args)->cond;
     pthread_t tid = pthread_self();
@@ -155,8 +155,10 @@ void *CheckTaskList(void *args)
 
         if (pWorkList->size() >= 1)
         {
-            stringMsg = pWorkList->begin()->GetCMD();
-            pWorkList->erase(pWorkList->begin()); //取出任务后删除（避免多次取出执行）
+            MsgPackage* msgPtr = *(pWorkList->begin());
+            stringMsg = msgPtr->GetCMD();
+            pWorkList->erase(pWorkList->begin());
+            delete msgPtr;
         }
 
         //执行任务
