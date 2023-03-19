@@ -10,7 +10,7 @@ MsgPackage::MsgPackage(string cmdString, void *optr, void* mptr, const char* typ
 	this->operatePtr = optr;
 	this->sockfdMapPrt = mptr;
 	memset(msgType, 0, 0);
-	std::strcpy(msgType,type);
+	strcpy(msgType,type);
 }
 
 MsgPackage::~MsgPackage()
