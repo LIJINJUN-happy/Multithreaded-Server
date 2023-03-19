@@ -1,6 +1,7 @@
 #include "ClassTcpNet.h"
 
 using std::cout;
+using std::endl;
 using std::string;
 using std::map;
 using std::list;

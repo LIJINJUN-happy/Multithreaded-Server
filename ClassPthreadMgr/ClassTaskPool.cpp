@@ -4,6 +4,7 @@ using std::cout;
 using std::string;
 using std::map;
 using std::list;
+using std::endl;
 
 ClassTaskList::ClassTaskList()
 {

@@ -1,6 +1,7 @@
 #include "Client.h"
 
 using std::cout;
+using std::endl;
 using std::string;
 using std::atomic_int;
 

@@ -3,6 +3,7 @@
 using std::cout;
 using std::string;
 using std::list;
+using std::endl;
 
 //构造函数
 ClassPthreadMgr::ClassPthreadMgr()

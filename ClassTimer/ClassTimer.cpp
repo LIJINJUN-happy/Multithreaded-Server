@@ -3,6 +3,7 @@
 using std::cout;
 using std::string;
 using std::list;
+using std::endl;
 
 ClassTimer::ClassTimer()
 {

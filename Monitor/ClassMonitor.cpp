@@ -3,6 +3,7 @@
 using std::cout;
 using std::string;
 using std::map;
+using std::endl;
 
 ClassMonitor::ClassMonitor()
 {
