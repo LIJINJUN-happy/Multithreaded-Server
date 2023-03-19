@@ -1,5 +1,10 @@
 #include "ClassTaskPool.h"
 
+using std::cout;
+using std::string;
+using std::map;
+using std::list;
+
 ClassTaskList::ClassTaskList()
 {
     //初始化锁和变量

@@ -11,21 +11,20 @@
 #include <time.h>
 #include "../ClassPthreadMgr/ClassPthreadMgr.h"
 
-using namespace std;
 
 //(循环事件子元素)
 typedef struct LoopEvent
 {
-    int nowTime;  //当前累计second
-    int tarTime;  //目标second
-    string event; //事件容器
+    int nowTime;        //当前累计second
+    int tarTime;        //目标second
+    std::string event; //事件容器
 } LoopEvent;
 
 //（单次事件子元素）
 typedef struct OnceEvent
 {
-    int tarHour;  //触发事件的hour
-    string event; //事件容器
+    int tarHour;       //触发事件的hour
+    std::string event; //事件容器
 } OnceEvent;
 
 //定时器循环阻塞执行
@@ -37,22 +36,22 @@ bool CompareDiffEvent(OnceEvent, OnceEvent);
 class ClassTimer
 {
 private:
-    list<OnceEvent> onceEventList;  //单次事件容器
-    list<LoopEvent> loopEventList;  //循环事件列表
-    int intervalTime;               //时间间隔
-    ClassPthreadMgr *pthreadObj;       //线程对象的地址（指针）
+    std::list<OnceEvent> onceEventList;  //单次事件容器
+    std::list<LoopEvent> loopEventList;  //循环事件列表
+    int intervalTime;                    //时间间隔
+    ClassPthreadMgr *pthreadObj;         //线程对象的地址（指针）
 
 public:
     ClassTimer();
     ~ClassTimer();
     ClassTimer(int, ClassPthreadMgr *);
     int GetIntervalTime();
-    bool AddOnceEvent(int, string);
-    bool AddLoopEvent(int, string);
+    bool AddOnceEvent(int, std::string);
+    bool AddLoopEvent(int, std::string);
     void CheckoutOnceEventList();
     void CheckoutLoopEventList();
-    list<OnceEvent> *GetOnceEventListPtr();
-    list<LoopEvent> *GetLoopEventListPtr();
+    std::list<OnceEvent> *GetOnceEventListPtr();
+    std::list<LoopEvent> *GetLoopEventListPtr();
 };
 
 #endif

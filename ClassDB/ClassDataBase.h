@@ -5,7 +5,6 @@
 #include <iostream>
 #include <mysql/mysql.h>
 
-using namespace std;
 
 class ClassDataBase
 {
@@ -18,7 +17,7 @@ private:
 public:
     ClassDataBase();
     ~ClassDataBase();
-    bool DoCommand(string); //执行操作
+    bool DoCommand(std::string); //执行操作
 };
 
 #endif

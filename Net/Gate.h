@@ -7,12 +7,10 @@
 #include <vector>
 #include <unistd.h>
 
-using namespace std;
-
 //转换为char*然后send
-void TransformationAndSend(string msg);
+void TransformationAndSend(std::string msg);
 
 //接受recv的数据data然后分解里面有多少协议
-vector<string> GetAndTransformation(string msg);
+std::vector<std::string> GetAndTransformation(std::string msg);
 
 #endif

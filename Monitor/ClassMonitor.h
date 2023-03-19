@@ -3,8 +3,6 @@
 
 #include "../Net/ClassTcpNet.h"
 
-using namespace std;
-
 class ClassMonitor
 {
 private:

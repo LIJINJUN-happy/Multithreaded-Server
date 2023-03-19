@@ -1,5 +1,9 @@
 #include "ClassMonitor.h"
 
+using std::cout;
+using std::string;
+using std::map;
+
 ClassMonitor::ClassMonitor()
 {
 }

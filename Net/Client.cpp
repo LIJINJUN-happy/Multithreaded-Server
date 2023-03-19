@@ -1,5 +1,9 @@
 #include "Client.h"
 
+using std::cout;
+using std::string;
+using std::atomic_int;
+
 //默认构造函数
 Client::Client()
 {

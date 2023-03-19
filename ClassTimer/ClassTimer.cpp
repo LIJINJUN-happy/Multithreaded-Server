@@ -1,5 +1,9 @@
 #include "ClassTimer.h"
 
+using std::cout;
+using std::string;
+using std::list;
+
 ClassTimer::ClassTimer()
 {
     this->intervalTime = 1; //默认为1

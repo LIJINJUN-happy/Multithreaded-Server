@@ -1,5 +1,8 @@
 #include "ClassDataBase.h"
 
+using std::cout;
+using std::string;
+
 //构造函数
 ClassDataBase::ClassDataBase()
 {

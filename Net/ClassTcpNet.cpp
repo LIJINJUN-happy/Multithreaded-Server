@@ -1,5 +1,10 @@
 #include "ClassTcpNet.h"
 
+using std::cout;
+using std::string;
+using std::map;
+using std::list;
+
 //构造函数
 ClassTcpNet::ClassTcpNet(ClassPthreadMgr *p)
 {
@@ -159,7 +164,7 @@ void ClassTcpNet::StartEpoll()
                         eventClient.data.fd = clientSock;
                         eventClient.events = EPOLLIN | EPOLLET;
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
-                        string key = to_string(clientSock);
+                        string key = std::to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
                         //cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
@@ -169,7 +174,7 @@ void ClassTcpNet::StartEpoll()
                 //否则是客户端的sockfd有信息
                 else if (events[index].data.fd != this->serverSock && events[index].events == EPOLLIN)
                 {
-                    string fd = to_string(events[index].data.fd);
+                    string fd = std::to_string(events[index].data.fd);
                     Client* pClient = pSockfdMap[fd]->GetMyself();
 
                     //需要一次性读取完,因为是边沿触发,所以用while来清空socket缓存
@@ -180,7 +185,7 @@ void ClassTcpNet::StartEpoll()
                         if (resRead == 0)
                         {
                             cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
-                            this->CloseClientByFd(to_string(events[index].data.fd));
+                            this->CloseClientByFd(std::to_string(events[index].data.fd));
                             break;
                         }
                         //出错啦

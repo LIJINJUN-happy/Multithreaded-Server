@@ -1,5 +1,9 @@
 #include "ClassPthreadMgr.h"
 
+using std::cout;
+using std::string;
+using std::list;
+
 //构造函数
 ClassPthreadMgr::ClassPthreadMgr()
 {

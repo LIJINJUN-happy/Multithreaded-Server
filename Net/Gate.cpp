@@ -1,5 +1,9 @@
 #include "Gate.h"
 
+using std::cout;
+using std::string;
+using std::vector;
+
 //转换为char*然后send
 void TransformationAndSend(string msg)
 {
@@ -12,12 +16,12 @@ void TransformationAndSend(string msg)
     }
 
     //信息长度值的长度
-    string sizeLenString = to_string(msgSize);
+    string sizeLenString = std::to_string(msgSize);
     int sizeLen = sizeLenString.size();
     // cout << "大小值" << msgSize << "的长度为" << sizeLen << endl;
 
     //信息长度值的长度的位数（有几位数）
-    string strMgsTotalNum = to_string(sizeLen);
+    string strMgsTotalNum = std::to_string(sizeLen);
 
     //位数值 + 长度值 + 信息
     string finalStr = strMgsTotalNum + sizeLenString + msg;
@@ -51,13 +55,13 @@ vector<string> GetAndTransformation(string msg)
 
         //获取位数
         string firstSet(msg, 0, 1);
-        int strMgsTotalNum = stoi(firstSet);
+        int strMgsTotalNum = std::stoi(firstSet);
         deleteTotal += strMgsTotalNum;
         // cout << "获取字节的位数：" << strMgsTotalNum << endl;
 
         //获取信息的长度
         string sizeLenString(msg, 1, strMgsTotalNum);
-        int sizeLen = stoi(sizeLenString);
+        int sizeLen = std::stoi(sizeLenString);
         deleteTotal += sizeLen;
         // cout << "信息长度为：" << sizeLen << endl;
 

@@ -10,13 +10,13 @@ long Global::GetNowTime()
 }
 
 /*(ctrl + \ )*/
-void ServerQuit(int signum)
+void Global::ServerQuit(int signum)
 {
     exit(0);
 }
 
 //信号处理准备工作
-void SignalReady()
+void Global::SignalReady()
 {
     // signal(SIGINT, process_exit);
     // signal(SIGFPE, process_exit);
