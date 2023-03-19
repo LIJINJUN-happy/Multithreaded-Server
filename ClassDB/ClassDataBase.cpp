@@ -2,6 +2,7 @@
 
 using std::cout;
 using std::string;
+using std::endl;
 
 //构造函数
 ClassDataBase::ClassDataBase()
