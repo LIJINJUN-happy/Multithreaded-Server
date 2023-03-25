@@ -1,0 +1,36 @@
+C 
+jsonCmd unPack
+|--(fromMoudle 一default “”)
+|--(toMoudle )
+|--(interFace --pto or funName --if callBack just default "")
+|--(Clientuid)
+|--......args
+
+while(true){
+judge toMoudle
+
+if belong Person
+ get uid as index
+else if belong Public
+ keep mouName as index
+
+get VM by index 
+lock VM
+
+(pcall)do Main(with put the unPacked args into VM stack)
+
+lua
+find interface do with args
+
+
+C
+result ① just return 
+result ② sendPto --> call C++ in lua ,but we should Registe Before we Bulid VM
+result ③ back four args 
+						① if type of callBack interface can be “”
+						② if type of call ，just Fill with those four args
+
+
+judge the result is nil 
+break
+}
