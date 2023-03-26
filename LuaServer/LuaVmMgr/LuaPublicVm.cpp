@@ -1,6 +1,6 @@
 #include "LuaPublicVm.h"
 
-LuaPublicVm::Init()
+bool LuaPublicVm::Init()
 {
 }
 

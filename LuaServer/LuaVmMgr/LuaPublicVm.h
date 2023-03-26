@@ -7,7 +7,7 @@
 class LuaPublicVm:public LuaBaseVm
 {
 public:
-	virtual Init();
+	virtual bool Init();
 public:
 	LuaPublicVm(int, std::string);
 	~LuaPublicVm();

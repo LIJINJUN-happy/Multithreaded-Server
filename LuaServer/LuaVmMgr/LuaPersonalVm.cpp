@@ -1,6 +1,6 @@
 #include "LuaPersonalVm.h"
 
-LuaPersonalVm::Init()
+bool LuaPersonalVm::Init()
 {
 }
 

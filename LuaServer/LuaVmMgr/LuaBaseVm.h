@@ -24,7 +24,7 @@ public:
 
 public:
 	virtual ~LuaBaseVm();
-	virtual Init();
+	virtual bool Init();
 	lua_State* GetLuaStatePtr();
 	int GetLuaVmType();
 };
