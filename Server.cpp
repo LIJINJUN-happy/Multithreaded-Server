@@ -37,6 +37,16 @@ int main()
 
 	//创建Lua模块管理系统（所有lua模块存放处）
 	LuaVmMgr* luaVmMgrPtr = new LuaVmMgr(luaMoudleFilesInfoPtr);
+	bool resLoadMoudle = luaVmMgrPtr->InitPublicMoudle();
+	if (!resLoadMoudle)
+	{
+		cout << "\033[31m模块管理系统加载模块失败\033[0m" << endl;
+		return -1;
+	}
+	else
+	{
+		cout << "\033[32m模块管理系统加载模块完毕!\033[0m\n" << endl;
+	}
 
 
 	//启动多线程执行轮询任务列表

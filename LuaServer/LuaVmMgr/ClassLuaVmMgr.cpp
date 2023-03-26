@@ -72,9 +72,9 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
     return false;
 }
 
-void LuaVmMgr::InitPublicMoudle()
+bool LuaVmMgr::InitPublicMoudle()
 {
-
+    return true;
 }
 
 Global::LuaMoudleFilesInfo* LuaVmMgr::GetLuaMoudleFilesInfoPtr()
