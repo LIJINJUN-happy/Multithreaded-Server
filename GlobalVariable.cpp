@@ -27,7 +27,7 @@ void Global::SignalReady()
     signal(SIGQUIT, ServerQuit);
 }
 
-void Global::LoadLuaMoudleFiles()
+/*void Global::LoadLuaMoudleFiles()
 {
     Global::LuaMoudleFilesInfo.clear();
     Global::LuaMoudleFilesInfo = {
@@ -41,5 +41,5 @@ void Global::LoadLuaMoudleFiles()
         {"RANK",std::make_pair(LuaVmType::PUBLIC,"Rank.lua 路径")},       //排行榜模块
         {"ROOM",std::make_pair(LuaVmType::PUBLIC,"Room.lua 路径")}        //副本/房间模块
     };
-}
+}*/
 

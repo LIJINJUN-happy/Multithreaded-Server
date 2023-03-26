@@ -3,9 +3,9 @@
 
 //Lua_API 的三个主要文件以C程序方式编译
 extern "C" {
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
 };
 
 #include "../../GlobalVariable.h"
