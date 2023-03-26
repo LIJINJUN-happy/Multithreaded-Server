@@ -63,7 +63,7 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
         delete vmPtr;
         return true;
     }
-    cout << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl
+    cout << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl;
     return false;
 }
 
