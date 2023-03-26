@@ -5,8 +5,10 @@ echo "当前路径为:$dir"
 echo
 
 #所需链接
-needLink=" -lpthread -std=c++11 -L/usr/lib64/mysql -lmysqlclient -I/usr/local/include/ -L/usr/local/lib/ -lm /usr/local/lib/liblua.a -ldl "
+needLink=" -lpthread -std=c++11 -L/usr/lib64/mysql -lmysqlclient -I/usr/local/include/ -L/usr/local/lib/ -lm  "
+needLuaLink=" /usr/local/lib/liblua.a -ldl "
 echo "所需链接:$needLink"
+echo "所需Lua链接:$needLuaLink"
 echo
 
 #main文件
@@ -46,5 +48,5 @@ echo
 
 all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir"
 echo "g++执行$all_Dir"
-g++ $all_Dir -o ./cmd/Server.out
+g++ $all_Dir -o ./cmd/Server.out $needLuaLink
 echo
