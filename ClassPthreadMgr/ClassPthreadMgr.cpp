@@ -6,7 +6,7 @@ using std::list;
 using std::endl;
 
 //构造函数
-ClassPthreadMgr::ClassPthreadMgr()
+ClassPthreadMgr::ClassPthreadMgr(LuaVmMgr* luaVmMgrP)
 {
     //初始化变量
     if (Config::pollingPthreadNum < 1)
@@ -17,6 +17,9 @@ ClassPthreadMgr::ClassPthreadMgr()
 
     this->pollingPthreadNum = Config::pollingPthreadNum;
     this->pTaskPool = new ClassTaskPool();
+
+    //赋值Lua模块管理系统指针
+    this->luaVmMgrPtr = luaVmMgrP;
 }
 
 //析构函数
@@ -83,6 +86,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
     task->pWorkList = &(taskListPtr->pWorkTaskList);
     task->lock = &(taskListPtr->lock);
     task->cond = &(taskListPtr->cond);
+    task->luaVmMgrPtr = this->luaVmMgrPtr;
     return task;
 }
 

@@ -10,6 +10,11 @@ LuaVmMgr::LuaVmMgr()
     return;
 }
 
+LuaVmMgr::LuaVmMgr(Global::LuaMoudleFilesInfo* p)
+{
+    this->luaMoudleFilesInfoPtr = p;
+}
+
 LuaVmMgr::~LuaVmMgr()
 {
 }
@@ -70,6 +75,11 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
 void LuaVmMgr::InitPublicMoudle()
 {
 
+}
+
+Global::LuaMoudleFilesInfo* LuaVmMgr::GetLuaMoudleFilesInfoPtr()
+{
+    return this->luaMoudleFilesInfoPtr;
 }
 
 int LuaVmMgr::GetLuaVmTypeByIndex(std::string strIndex)

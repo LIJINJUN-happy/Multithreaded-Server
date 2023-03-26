@@ -29,8 +29,18 @@ int main()
 	chdir("/"); //改变当前工作目录
 	umask(0);	//防止限制文件权限引起混乱
 
+
+	//创建Lua文件模块类（用来索引以及判断模块类型）
+	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr = new Global::LuaMoudleFilesInfo();
+	luaMoudleFilesInfoPtr->LoadLuaMoudleFiles();
+
+
+	//创建Lua模块管理系统（所有lua模块存放处）
+	LuaVmMgr* luaVmMgrPtr = new LuaVmMgr(luaMoudleFilesInfoPtr);
+
+
 	//启动多线程执行轮询任务列表
-	ClassPthreadMgr *pthreadObj = new ClassPthreadMgr();
+	ClassPthreadMgr *pthreadObj = new ClassPthreadMgr(luaVmMgrPtr);
 	for (int i = 0; i < pthreadObj->GetPollingPthreadNum(); i++)
 	{
 		//每个工作线程对应一个任务链表,避免了多个工作线程争抢一个任务链表的情况
@@ -52,6 +62,7 @@ int main()
 	cout << "\033[35m任务列表轮询线程启动步骤成功\033[0m\n"
 		 << endl;
 
+
 	//创建计时器线程（精度是秒）
 	ClassTimer *timeObj = new ClassTimer(Config::timerIntervalTime, pthreadObj);
 	pthread_t timeTid = 0;
@@ -68,6 +79,7 @@ int main()
 		return -1;
 	}
 
+
 	//创建socketObj监听线程
 	ClassTcpNet *tcpNetObj = new ClassTcpNet(pthreadObj);
 	pthread_t netTid = 0;
@@ -81,6 +93,7 @@ int main()
 		cout << "\033[31m监听线程启动步骤失败\033[0m" << endl;
 		return -1;
 	}
+
 
 	//监视循环
 	ClassMonitor *monitorObj = new ClassMonitor(tcpNetObj, pthreadObj);

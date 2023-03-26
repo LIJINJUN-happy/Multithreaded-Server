@@ -11,8 +11,11 @@ private:
 	std::map<std::string, LuaBaseVm*> luaVmMap;
 	std::map<std::string, LuaBaseVm*>* luaVmMapPtr;
 
+	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr;
+
 public:
 	LuaVmMgr();
+	LuaVmMgr(Global::LuaMoudleFilesInfo*);
 	~LuaVmMgr();
 
 public:
@@ -26,7 +29,7 @@ public:
 
 public:
 	void InitPublicMoudle();	//初始化公共类模块
-	
+	Global::LuaMoudleFilesInfo* GetLuaMoudleFilesInfoPtr();
 };
 
 #endif

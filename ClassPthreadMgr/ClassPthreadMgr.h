@@ -10,6 +10,10 @@ typedef struct Task
     std::list<MsgPackage*>** pMessList;   //接受socket信息列表指针的地址
     pthread_mutex_t *lock;   //锁地址
     pthread_cond_t *cond;    //条件变量地址
+
+    //Lua管理器地址
+    LuaVmMgr* luaVmMgrPtr;
+
 } Task;
 
 //线程执行的程序
@@ -21,9 +25,10 @@ private:
     int pollingPthreadNum;                //线程数量（同时也是任务池容器内任务链表的数量）
     std::list<pthread_t *> pthreadList;   //线程容器，生成的线程都在这里
     ClassTaskPool *pTaskPool;             //任务池
+    LuaVmMgr* luaVmMgrPtr;                //Lua管理器地址
 
 public:
-    ClassPthreadMgr();                      //构造函数
+    ClassPthreadMgr(LuaVmMgr*);             //构造函数
     ~ClassPthreadMgr();                     //析构函数
 
     //线程容器操作
