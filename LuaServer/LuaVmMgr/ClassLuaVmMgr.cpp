@@ -1,5 +1,8 @@
 ﻿#include "ClassLuaVmMgr.h"
 
+using std::cout;
+using std::endl;
+
 LuaVmMgr::LuaVmMgr()
 {
     this->luaVmMap.clear();

@@ -1,5 +1,8 @@
 #include "LuaBaseVm.h"
 
+using std::cout;
+using std::endl;
+
 LuaBaseVm::LuaBaseVm()
 {
 	this->luaVmType = 0;//д╛хон╙0
@@ -27,7 +30,7 @@ LuaBaseVm::~LuaBaseVm()
 
 bool LuaBaseVm::Init()
 {
-	return;
+	return true;
 }
 
 lua_State* LuaBaseVm::GetLuaStatePtr()
