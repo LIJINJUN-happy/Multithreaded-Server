@@ -27,10 +27,15 @@ void Global::SignalReady()
     signal(SIGQUIT, ServerQuit);
 }
 
-/*void Global::LoadLuaMoudleFiles()
+Global::LuaMoudleFilesInfo::LuaMoudleFilesInfo()
 {
-    Global::LuaMoudleFilesInfo.clear();
-    Global::LuaMoudleFilesInfo = {
+    this->moudleInfo.clear();
+}
+
+void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
+{
+    this->moudleInfo.clear();
+    this->moudleInfo = {
 
         //个人模块（加载在PersonalVm上）
         {"ACTOR",std::make_pair(LuaVmType::PERSONAL,"Actor.lua 路径")},   //用户模块
@@ -41,5 +46,9 @@ void Global::SignalReady()
         {"RANK",std::make_pair(LuaVmType::PUBLIC,"Rank.lua 路径")},       //排行榜模块
         {"ROOM",std::make_pair(LuaVmType::PUBLIC,"Room.lua 路径")}        //副本/房间模块
     };
-}*/
+}
 
+std::map<std::string, std::pair<int, std::string>>* Global::LuaMoudleFilesInfo::GetMoudleInfo()
+{
+    return &(this->moudleInfo);
+}

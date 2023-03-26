@@ -30,8 +30,17 @@ namespace Global
     };
 
     //Lua模块信息
-    //std::map<std::string, std::pair<int, std::string>> LuaMoudleFilesInfo;
-    //void LoadLuaMoudleFiles();
+    struct LuaMoudleFilesInfo
+    {
+    public:
+        LuaMoudleFilesInfo();
+        ~LuaMoudleFilesInfo() {};
+    public:
+        std::map<std::string, std::pair<int, std::string>> moudleInfo;
+    public:
+        void LoadLuaMoudleFiles();
+        std::map<std::string, std::pair<int, std::string>>* GetMoudleInfo();
+    };
 }
 
 #endif
