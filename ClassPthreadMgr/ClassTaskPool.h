@@ -1,7 +1,6 @@
 #ifndef _CLASSTASKPOOL_H_
 #define _CLASSTASKPOOL_H_
 
-#include <map>
 #include <list>
 #include <sys/syscall.h>
 #include <pthread.h>

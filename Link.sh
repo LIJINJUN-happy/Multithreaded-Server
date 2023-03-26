@@ -5,7 +5,7 @@ echo "当前路径为:$dir"
 echo
 
 #所需链接
-needLink=" -lpthread -std=c++11 -L/usr/lib64/mysql -lmysqlclient"
+needLink=" -lpthread -std=c++11 -L/usr/lib64/mysql -lmysqlclient -I/usr/local/include/ -L/usr/local/lib/ -lm /usr/local/lib/liblua.a -ldl "
 echo "所需链接:$needLink"
 echo
 
@@ -39,7 +39,12 @@ Monitor_dir=" $dir/Monitor/*.cpp "
 echo "监视类文件文件:$Monitor_dir"
 echo
 
-all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir"
+#LuaVM类文件
+LuaServer_dir=" $dir/LuaServer/LuaVmMgr/*.cpp "
+echo "LuaVM类文件:$LuaServer_dir"
+echo
+
+all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir"
 echo "g++执行$all_Dir"
 g++ $all_Dir -o ./cmd/Server.out
 echo
