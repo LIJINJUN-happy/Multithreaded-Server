@@ -8,7 +8,6 @@ extern "C" {
 #include <lualib.h>
 };
 
-#include <map>
 #include "../../GlobalVariable.h"
 
 //LuaVM»ùÀà

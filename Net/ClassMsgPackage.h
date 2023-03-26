@@ -1,7 +1,7 @@
 #ifndef _CLASSMSGPACKAGE_H_
 #define _CLASSMSGPACKAGE_H_
 
-#include "../GlobalVariable.h"
+#include "../LuaServer/LuaVmMgr/ClassLuaVmMgr.h"
 
 //消息包类
 
