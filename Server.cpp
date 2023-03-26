@@ -40,12 +40,12 @@ int main()
 	bool resLoadMoudle = luaVmMgrPtr->InitPublicMoudle();
 	if (!resLoadMoudle)
 	{
-		cout << "\033[31mLua模块管理系统加载模块失败\033[0m" << endl;
+		cout << "\033[31mLua模块管理系统加载模块失败！\033[0m" << endl;
 		return -1;
 	}
 	else
 	{
-		cout << "\033[32mLua模块管理系统加载模块完毕!\033[0m\n" << endl;
+		cout << "\033[35mLua模块管理系统加载模块成功！\033[0m\n" << endl;
 	}
 
 
