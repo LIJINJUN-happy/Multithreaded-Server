@@ -13,7 +13,7 @@
 #include <iostream>
 #include <utility>
 #include <map>
-#include <jsoncpp/json/json.h >
+#include <jsoncpp/json/json.h>
 
 namespace Global
 {

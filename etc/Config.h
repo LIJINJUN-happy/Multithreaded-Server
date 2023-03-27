@@ -12,7 +12,7 @@ namespace Config
 	//监听以及epoll配置
 	const int maxConnect = 256;						//最大同时连接列表值（listen 第二参数）
 	const int listenPort = 8888;					//监听端口号
-	const std::string addrString = "192.168.0.18";	//地址
+	const std::string addrString = "192.168.0.107";	//地址
 	const int maxSocketfd = 1024;					//最大socket对象监听上限值
 	const int maxEpollEvent = 1024;					//最大epoll监视事件返回个数
 	const int maxReadDataSize = 256;				//读取sockfd数据大小上限值
