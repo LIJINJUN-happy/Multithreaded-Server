@@ -46,6 +46,16 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
         {"RANK",std::make_pair(LuaVmType::PUBLIC,"Rank.lua 路径")},       //排行榜模块
         {"ROOM",std::make_pair(LuaVmType::PUBLIC,"Room.lua 路径")}        //副本/房间模块
     };
+
+    using std::fstream;
+    std::fstream loader;
+    loader.open("./LuaServer/MoudleFilesLoad.txt");
+    assert(loader.is_open());
+    std::string loadString;
+    while (std::getline(loader,loadString))
+    {
+        std::cout << loadString << std::endl;
+    }
 }
 
 std::map<std::string, std::pair<int, std::string>>* Global::LuaMoudleFilesInfo::GetMoudleInfo()

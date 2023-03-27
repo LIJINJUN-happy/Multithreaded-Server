@@ -14,6 +14,8 @@
 #include <utility>
 #include <map>
 #include <jsoncpp/json/json.h>
+#include <fstream>
+#include <assert.h>
 
 namespace Global
 {
