@@ -16,6 +16,7 @@
 #include <jsoncpp/json/json.h>
 #include <fstream>
 #include <assert.h>
+#include "etc/Config.h"
 
 namespace Global
 {

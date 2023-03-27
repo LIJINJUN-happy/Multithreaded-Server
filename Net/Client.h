@@ -1,7 +1,6 @@
 #ifndef _CLIENT_H_
 #define _CLIENT_H_
 
-#include "../etc/Config.h"
 #include "../GlobalVariable.h"
 #include "./Gate.h"
 
