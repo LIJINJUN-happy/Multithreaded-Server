@@ -33,8 +33,8 @@ namespace Config
 	//定时器线程配置
 	const int timerIntervalTime = 1; //计时器精度秒数
 
-	//lua模块加载文件路径
-	const std::string luaMoudleString = "/home/lijinjun/公共/debug_env/LuaServer/MoudleFilesLoad.txt";
+	//项目代码目录（部署时必须修改对应正确项目路径）
+	const std::string LoadCodePathString = "/home/lijinjun/公共/debug_env/";
 }
 
 #endif

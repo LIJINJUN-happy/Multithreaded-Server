@@ -49,7 +49,8 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
 
     using std::fstream;
     std::fstream loader;
-    loader.open("/home/lijinjun/公共/debug_env/LuaServer/MoudleFilesLoad.txt");
+    std::string loadPath = Config::LoadCodePathString + "LuaServer/MoudleFilesLoad.txt";
+    loader.open(loadPath.c_str());
     assert(loader.is_open());
     std::string loadString;
     while (std::getline(loader,loadString))
