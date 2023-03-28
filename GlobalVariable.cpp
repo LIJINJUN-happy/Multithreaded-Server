@@ -53,14 +53,13 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
         {
             int index = loadString.find("}");
             loadString.assign(loadString, 1, index - 1);
+            int type = isPersonalFile == true ? Global::PERSONAL : Global::PUBLIC;
+            this->addOneLuaMoudle(loadString, type);
         }
-
-        int type = isPersonalFile == true ? Global::PERSONAL:Global::PUBLIC;
-        this->addOneLuaMoudle(loadString,type);
     }
 }
 
-bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string,int type)
+bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(&std::string loadString,int type)
 {
     std::cout << loadString << std::endl;
     std::cout << type << std::endl;
