@@ -61,8 +61,7 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
 
 bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int type)
 {
-    std::cout << loadString << std::endl;
-    std::cout << type << std::endl;
+    std::cout << "loadString" << loadString << "type" << type << std::endl;
     /*this->moudleInfo = {
 
         //个人模块（加载在PersonalVm上）
