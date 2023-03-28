@@ -43,6 +43,7 @@ namespace Global
         std::map<std::string, std::pair<int, std::string>> moudleInfo;
     public:
         void LoadLuaMoudleFiles();
+        bool addOneLuaMoudle(std::string,int type);
         std::map<std::string, std::pair<int, std::string>>* GetMoudleInfo();
     };
 }

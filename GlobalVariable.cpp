@@ -35,7 +35,36 @@ Global::LuaMoudleFilesInfo::LuaMoudleFilesInfo()
 void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
 {
     this->moudleInfo.clear();
-    this->moudleInfo = {
+    using std::fstream;
+    std::fstream loader;
+    std::string loadPath = Config::LoadCodePathString + "LuaServer/MoudleFilesLoad.txt";
+    loader.open(loadPath.c_str());
+    assert(loader.is_open());
+    std::string loadString;
+    bool isPersonalFile = true;
+    while (std::getline(loader,loadString))
+    {
+        if (loadString.find("Public Moudle") != std::string::npos)
+        {
+            isPersonalFile = false;
+        }
+
+        if (loadString.find("{") != std::string::npos)
+        {
+            int index = loadString.find("}");
+            loadString.assign(loadString, 1, index - 1);
+        }
+
+        int type = isPersonalFile == true ? Global::PERSONAL:Global::PUBLIC;
+        this->addOneLuaMoudle(loadString,type);
+    }
+}
+
+bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string,int type)
+{
+    std::cout << loadString << std::endl;
+    std::cout << type << std::endl;
+    /*this->moudleInfo = {
 
         //个人模块（加载在PersonalVm上）
         {"ACTOR",std::make_pair(LuaVmType::PERSONAL,"Actor.lua 路径")},   //用户模块
@@ -45,18 +74,8 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
         //公共模块（加载在PublicVm上）
         {"RANK",std::make_pair(LuaVmType::PUBLIC,"Rank.lua 路径")},       //排行榜模块
         {"ROOM",std::make_pair(LuaVmType::PUBLIC,"Room.lua 路径")}        //副本/房间模块
-    };
-
-    using std::fstream;
-    std::fstream loader;
-    std::string loadPath = Config::LoadCodePathString + "LuaServer/MoudleFilesLoad.txt";
-    loader.open(loadPath.c_str());
-    assert(loader.is_open());
-    std::string loadString;
-    while (std::getline(loader,loadString))
-    {
-        std::cout << loadString << std::endl;
-    }
+    };*/
+    return false;
 }
 
 std::map<std::string, std::pair<int, std::string>>* Global::LuaMoudleFilesInfo::GetMoudleInfo()
