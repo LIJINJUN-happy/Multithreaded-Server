@@ -59,7 +59,7 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
     }
 }
 
-bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(&std::string loadString,int type)
+bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int type)
 {
     std::cout << loadString << std::endl;
     std::cout << type << std::endl;
