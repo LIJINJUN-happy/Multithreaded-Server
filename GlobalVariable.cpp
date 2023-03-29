@@ -54,26 +54,28 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
             int index = loadString.find("}");
             loadString.assign(loadString, 1, index - 1);
             int type = isPersonalFile == true ? Global::PERSONAL : Global::PUBLIC;
-            this->addOneLuaMoudle(loadString, type);
+            bool resultLoad = this->addOneLuaMoudle(loadString, type);
+            assert(resultLoad);
+            //std::cout << "加载完之后 moudleInfo.size = " << moudleInfo.size() << std::endl;
         }
     }
 }
 
 bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int type)
 {
-    std::cout << "loadString" << loadString << "type" << type << std::endl;
-    /*this->moudleInfo = {
-
-        //个人模块（加载在PersonalVm上）
-        {"ACTOR",std::make_pair(LuaVmType::PERSONAL,"Actor.lua 路径")},   //用户模块
-        {"BAG",std::make_pair(LuaVmType::PERSONAL,"Bag.lua 路径")},       //背包模块
-        {"EMAIL",std::make_pair(LuaVmType::PERSONAL,"Email.lua 路径")},   //邮件模块
-
-        //公共模块（加载在PublicVm上）
-        {"RANK",std::make_pair(LuaVmType::PUBLIC,"Rank.lua 路径")},       //排行榜模块
-        {"ROOM",std::make_pair(LuaVmType::PUBLIC,"Room.lua 路径")}        //副本/房间模块
-    };*/
-    return false;
+    int commaCharIndex = loadString.find(",");
+    if (commaCharIndex == std::string::npos)
+    {
+        std::cout << "SomeThing Wrong With Function addOneLuaMoudle : Cant't Find Char ',' In loadString" << std::endl;
+        std::cout << "loadString" << loadString << "type" << type << std::endl;
+        return false;
+    }
+    std::string moudleName(loadString, 0, commaCharIndex - 1);
+    std::string loadPathString(loadString, commaCharIndex + 1, loadString.npos);
+    //std::cout << "moudleName = " << moudleName << "   loadPathString = " << loadPathString << std::endl;
+    this->moudleInfo.insert(std::make_pair(moudleName,std::make_pair(type,loadPathString)));
+    loadString.clear();
+    return true;
 }
 
 std::map<std::string, std::pair<int, std::string>>* Global::LuaMoudleFilesInfo::GetMoudleInfo()
