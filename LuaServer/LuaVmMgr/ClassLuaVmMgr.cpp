@@ -66,6 +66,7 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
         LuaBaseVm* vmPtr = ptr->second;
         this->luaVmMap.erase(strIndex);
         delete vmPtr;
+        vmPtr = nullptr;
         return true;
     }
     cout << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl;
@@ -74,6 +75,16 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
 
 bool LuaVmMgr::InitPublicMoudle()
 {
+    Global::LuaMoudleFilesInfo* p = this->luaMoudleFilesInfoPtr;
+    for (auto it=p->GetMoudleInfo()->begin();it!= p->GetMoudleInfo()->end();it++)
+    {
+        if (it->second.first == Global::PERSONAL)
+            continue;
+        else
+        {
+
+        }
+    }
     return true;
 }
 
