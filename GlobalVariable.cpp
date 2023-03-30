@@ -74,6 +74,11 @@ bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int typ
     std::string moudleName(loadString, 0, commaCharIndex - 1);
     std::string loadPathString(loadString, commaCharIndex + 1, loadString.npos);
     loadPathString.insert(0, Config::LoadCodePathString);
+    if (access(loadPathString.c_str(), F_OK) != 0)
+    {
+        std::cout<< "文件不存在："<< loadPathString << std::endl;
+        assert(false);
+    }
     //std::cout << "moudleName = " << moudleName << "   loadPathString = " << loadPathString << std::endl;
     this->moudleInfo.insert(std::make_pair(moudleName,std::make_pair(type,loadPathString)));
     loadString.clear();
