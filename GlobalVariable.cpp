@@ -59,6 +59,7 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
             //std::cout << "加载完之后 moudleInfo.size = " << moudleInfo.size() << std::endl;
         }
     }
+    loader.close();
 }
 
 bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int type)
