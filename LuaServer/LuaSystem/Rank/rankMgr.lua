@@ -1,14 +1,21 @@
 --每个Actor Uid对应一个coroutine对象
-local actorCoroutineMap = {}
+local actorCoroutineMap_ = {}
 
-local function Interface()
+--接口函数
+local function Interface_()
 end
 
-function Main()
-	if actorCoroutineMap[uid] and type(actorCoroutineMap[uid]) == "thread" and coroutine.status(actorCoroutineMap[uid]) ~= "dead" then
-		return coroutine.resume(actorCoroutineMap[uid],参数)
-	elseif not actorCoroutineMap[uid] or (type(actorCoroutineMap[uid]) == "thread" and coroutine.status(actorCoroutineMap[uid]) == "dead") then
-		actorCoroutineMap[uid] = coroutine.create(Interface)
-		return coroutine.resume(actorCoroutineMap[uid],参数)
+--交互函数（C++调用此函数进行通信）
+function Main_()
+	if actorCoroutineMap_[uid] and type(actorCoroutineMap_[uid]) == "thread" and coroutine.status(actorCoroutineMap_[uid]) ~= "dead" then
+		return coroutine.resume(actorCoroutineMap_[uid],参数)
+	elseif (not actorCoroutineMap_[uid]) or (type(actorCoroutineMap_[uid]) == "thread" and coroutine.status(actorCoroutineMap_[uid]) == "dead") then
+		actorCoroutineMap_[uid] = coroutine.create(Interface)
+		return coroutine.resume(actorCoroutineMap_[uid],参数)
 	end
+end
+
+--模块初始化函数
+function DoInit_()
+	return true
 end
