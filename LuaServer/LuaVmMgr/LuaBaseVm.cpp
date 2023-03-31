@@ -28,7 +28,7 @@ LuaBaseVm::~LuaBaseVm()
 	this->luaState = nullptr;
 }
 
-bool LuaBaseVm::Init()
+bool LuaBaseVm::Init(std::string path)
 {
 	return true;
 }

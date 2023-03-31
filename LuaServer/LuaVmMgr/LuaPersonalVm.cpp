@@ -3,7 +3,7 @@
 using std::cout;
 using std::endl;
 
-bool LuaPersonalVm::Init()
+bool LuaPersonalVm::Init(std::string path)
 {
 	return true;
 }
