@@ -1,4 +1,4 @@
---玩家的co变量，每次任务都是一次co的运行
+--用户的co变量，每次任务都是一次co的运行
 local actorCoroutine_ = nil
 
 --接口函数
@@ -20,4 +20,5 @@ function DoInit_()
 	return true
 end
 
+--用户模块
 ACTOR = {}
