@@ -28,10 +28,10 @@ LuaBaseVm::~LuaBaseVm()
 	this->luaState = nullptr;
 }
 
-bool LuaBaseVm::Init(std::string path)
+/*bool LuaBaseVm::Init(std::string path) //纯虚函数不需要定义
 {
 	return true;
-}
+}*/
 
 lua_State* LuaBaseVm::GetLuaStatePtr()
 {

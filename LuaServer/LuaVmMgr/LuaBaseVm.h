@@ -24,7 +24,7 @@ public:
 
 public:
 	virtual ~LuaBaseVm();
-	virtual bool Init(std::string path);
+	virtual bool Init(std::string path) = 0;//定义为纯虚函数,让子类去实现自己的初始化
 	lua_State* GetLuaStatePtr();
 	int GetLuaVmType();
 };
