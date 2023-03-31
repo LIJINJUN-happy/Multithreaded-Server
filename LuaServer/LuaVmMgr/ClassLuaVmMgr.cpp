@@ -87,10 +87,12 @@ bool LuaVmMgr::InitPublicMoudle()
             if (resInit == true)
             {
                 std::cout << "Public Moudle Init Success ：" << it->second.second << std::endl;
+                this->AddLuaBaseVm(it->first, L);
                 continue;
             }
             else
             {
+                delete L;
                 return false;
             }
         }
