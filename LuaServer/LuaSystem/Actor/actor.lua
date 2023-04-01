@@ -1,24 +1,36 @@
---ÓÃ»§µÄco±äÁ¿£¬Ã¿´ÎÈÎÎñ¶¼ÊÇÒ»´ÎcoµÄÔËĞĞ
+--ç”¨æˆ·çš„coå˜é‡ï¼Œæ¯æ¬¡ä»»åŠ¡éƒ½æ˜¯ä¸€æ¬¡coçš„è¿è¡Œ
 local actorCoroutine_ = nil
 
---½Ó¿Úº¯Êı
+--æ¥å£å‡½æ•°
 local function Interface_()
 end
 
---½»»¥º¯Êı£¨C++µ÷ÓÃ´Ëº¯Êı½øĞĞÍ¨ĞÅ£©
+--äº¤äº’å‡½æ•°ï¼ˆC++è°ƒç”¨æ­¤å‡½æ•°è¿›è¡Œé€šä¿¡ï¼‰
 function Main_()
 	if actorCoroutine_ and type(actorCoroutine_) == "thread" and coroutine.status(actorCoroutine_) ~= "dead" then
-		return coroutine.resume(actorCoroutine_,²ÎÊı)
+		return coroutine.resume(actorCoroutine_,å‚æ•°)
 	elseif (not actorCoroutine_) or (type(actorCoroutine_) == "thread" and coroutine.status(actorCoroutine_) == "dead") then
 		actorCoroutine_ = coroutine.create(Interface)
-		return coroutine.resume(actorCoroutine_,²ÎÊı)
+		return coroutine.resume(actorCoroutine_,å‚æ•°)
 	end
 end
 
---Ä£¿é³õÊ¼»¯º¯Êı
+--æ¨¡å—åˆå§‹åŒ–å‡½æ•°
 function DoInit_()
 	return true
 end
 
---ÓÃ»§Ä£¿é
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+--ç”¨æˆ·æ¨¡å—
 ACTOR = {}
+
+--è·å–ä¿¡æ¯
+function ACTOR:GetData()
+end
+
+--æ”¹å˜åå­—
+function ACTOR:ChangeName(newName)
+end
+
