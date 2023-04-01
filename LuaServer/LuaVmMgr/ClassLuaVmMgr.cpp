@@ -82,12 +82,12 @@ bool LuaVmMgr::InitPublicMoudle()
             continue;
         else
         {
-            LuaBaseVm* L = new LuaPublicVm(Global::PUBLIC,it->first);//基类指针指向派生类公共虚拟机对象（可多态调用）
+            LuaPublicVm* L = new LuaPublicVm(Global::PUBLIC,it->first);//基类指针指向派生类公共虚拟机对象（可多态调用）
             bool resInit = L->Init(it->second.second);               //初始化虚拟机(由于声明了virtual 这里调用LuaPublicVm的Init)
             if (resInit == true)
             {
                 std::cout << "Public Moudle Init Success ：" << it->second.second << std::endl;
-                this->AddLuaBaseVm(it->first, L);
+                this->AddLuaBaseVm(it->first, (LuaBaseVm*)L);
                 continue;
             }
             else
