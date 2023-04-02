@@ -1,3 +1,5 @@
+--------------RANK---------------------------------------------
+
 --每个Actor Uid对应一个coroutine对象
 local actorCoroutineMap_ = {}
 
@@ -10,8 +12,8 @@ local InterfaceFunMap_ = {
   
   }
 
---接口函数
 --[[
+接口函数:
 call      @传递方
 called    @接收方
 fun       @处理协议/调用接口
@@ -47,3 +49,7 @@ end
 function DoInit_()
 	return true
 end
+
+
+----------------------------------------------------Moudle-FUN-------------------------------------------------------
+RANK = {}
