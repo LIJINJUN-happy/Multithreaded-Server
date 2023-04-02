@@ -1,21 +1,49 @@
---Ã¿¸öActor Uid¶ÔÓ¦Ò»¸öcoroutine¶ÔÏó
+--æ¯ä¸ªActor Uidå¯¹åº”ä¸€ä¸ªcoroutineå¯¹è±¡
 local actorCoroutineMap_ = {}
 
---½Ó¿Úº¯Êı
-local function Interface_()
+--æ¥å£å®¹å™¨
+local InterfaceFunMap = {
+  -----------------------------pto-begin------------------------
+  
+  
+  -----------------------------pto-end--------------------------
+  
+  }
+
+--æ¥å£å‡½æ•°
+--[[
+call      @ä¼ é€’æ–¹
+called    @æ¥æ”¶æ–¹
+fun       @å¤„ç†åè®®/è°ƒç”¨æ¥å£
+arg       @å‚æ•°
+--]]
+local function Interface_(uid, call, called, fun, arg)
+  --åˆ¤æ–­æ¨¡å—å
+  if _G[called] == nil then
+    print("Called Erro "..tostring(called))
+    return
+  end
+  
+  --åˆ¤æ–­å¤„ç†æ¥å£
+  if InterfaceFunMap[fun] and type(InterfaceFunMap[fun]) == "function" then
+    return InterfaceFunMap[fun](uid, arg)
+  else
+    print("fun Erro "..tostring(fun))
+    return
+  end
 end
 
---½»»¥º¯Êı£¨C++µ÷ÓÃ´Ëº¯Êı½øĞĞÍ¨ĞÅ£©
-function Main_()
+--äº¤äº’å‡½æ•°ï¼ˆC++è°ƒç”¨æ­¤å‡½æ•°è¿›è¡Œé€šä¿¡ï¼‰
+function Main_(uid, call, called, fun, arg)
 	if actorCoroutineMap_[uid] and type(actorCoroutineMap_[uid]) == "thread" and coroutine.status(actorCoroutineMap_[uid]) ~= "dead" then
-		return coroutine.resume(actorCoroutineMap_[uid],Arg)
+		return coroutine.resume(actorCoroutineMap_[uid], uid, call, called, fun, arg)
 	elseif (not actorCoroutineMap_[uid]) or (type(actorCoroutineMap_[uid]) == "thread" and coroutine.status(actorCoroutineMap_[uid]) == "dead") then
 		actorCoroutineMap_[uid] = coroutine.create(Interface)
-		return coroutine.resume(actorCoroutineMap_[uid],Arg)
+		return coroutine.resume(actorCoroutineMap_[uid], uid, call, called, fun, arg)
 	end
 end
 
---Ä£¿é³õÊ¼»¯º¯Êı
+--æ¨¡å—åˆå§‹åŒ–å‡½æ•°
 function DoInit_()
 	return true
 end
