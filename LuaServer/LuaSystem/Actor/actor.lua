@@ -2,7 +2,7 @@
 local actorCoroutine_ = nil
 
 --接口容器
-local InterfaceFunMap = {
+local InterfaceFunMap_ = {
   -----------------------------pto-begin------------------------
   
   
@@ -25,8 +25,8 @@ local function Interface_(uid, call, called, fun, arg)
   end
   
   --判断处理接口
-  if InterfaceFunMap[fun] and type(InterfaceFunMap[fun]) == "function" then
-    return InterfaceFunMap[fun](uid, arg)
+  if InterfaceFunMap_[fun] and type(InterfaceFunMap_[fun]) == "function" then
+    return InterfaceFunMap_[fun](uid, arg)
   else
     print("fun Erro "..tostring(fun))
     return
