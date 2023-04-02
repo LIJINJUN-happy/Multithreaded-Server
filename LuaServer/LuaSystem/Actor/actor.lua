@@ -38,7 +38,7 @@ function Main_(uid, call, called, fun, arg)
 	if actorCoroutine_ and type(actorCoroutine_) == "thread" and coroutine.status(actorCoroutine_) ~= "dead" then
 		return coroutine.resume(actorCoroutine_,uid, call, called, fun, arg)
 	elseif (not actorCoroutine_) or (type(actorCoroutine_) == "thread" and coroutine.status(actorCoroutine_) == "dead") then
-		actorCoroutine_ = coroutine.create(Interface)
+		actorCoroutine_ = coroutine.create(Interface_)
 		return coroutine.resume(actorCoroutine_,uid, call, called, fun, arg)
 	end
 end
