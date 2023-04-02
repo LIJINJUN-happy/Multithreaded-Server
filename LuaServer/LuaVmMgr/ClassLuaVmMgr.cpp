@@ -86,7 +86,7 @@ bool LuaVmMgr::InitPublicMoudle()
             bool resInit = L->Init(it->second.second);               //初始化虚拟机(由于声明了virtual 这里调用LuaPublicVm的Init)
             if (resInit == true)
             {
-                std::cout << "Public Moudle Init Success ：" << it->second.second << std::endl;
+                std::cout << "Public Moudle Init Success : " << it->second.second << std::endl;
                 this->AddLuaBaseVm(it->first, (LuaBaseVm*)L);
                 continue;
             }

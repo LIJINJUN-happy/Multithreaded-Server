@@ -8,10 +8,10 @@ end
 --交互函数（C++调用此函数进行通信）
 function Main_()
 	if actorCoroutineMap_[uid] and type(actorCoroutineMap_[uid]) == "thread" and coroutine.status(actorCoroutineMap_[uid]) ~= "dead" then
-		return coroutine.resume(actorCoroutineMap_[uid],参数)
+		return coroutine.resume(actorCoroutineMap_[uid],Arg)
 	elseif (not actorCoroutineMap_[uid]) or (type(actorCoroutineMap_[uid]) == "thread" and coroutine.status(actorCoroutineMap_[uid]) == "dead") then
 		actorCoroutineMap_[uid] = coroutine.create(Interface)
-		return coroutine.resume(actorCoroutineMap_[uid],参数)
+		return coroutine.resume(actorCoroutineMap_[uid],Arg)
 	end
 end
 
