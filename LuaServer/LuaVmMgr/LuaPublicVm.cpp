@@ -18,17 +18,17 @@ bool LuaPublicVm::Init(std::string path)
 	lua_pcall(L, 1, 1, 0);
 	if (lua_isstring(L,-1))
 	{
-		std::cout << "Public Moudle Init Failed :" << path << std::endl;
+		std::cout << "Public Moudle Init Failed :" << std::endl;
 		std::cout << lua_tostring(L,-1) << std::endl;
 		return false;
 	}
 	else if(lua_isboolean(L,-1) && lua_toboolean(L, -1) == 1)
 	{
-		std::cout << "Lua Moudle DoInit_ Finish !" << path << std::endl;
+		std::cout << "Lua Moudle DoInit_ Finish !" << std::endl;
 	}
 	else
 	{
-		std::cout << "Init Waring With Other Erro :" << path << std::endl;
+		std::cout << "Init Waring With Other Erro :" << std::endl;
 		return false;
 	}
 	return true;
