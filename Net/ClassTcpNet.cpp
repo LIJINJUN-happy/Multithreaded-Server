@@ -176,7 +176,9 @@ void ClassTcpNet::StartEpoll()
                         LuaVmMgr* luaVmMgrPtr = this->pthreadObj->GetLuaVmMgrPtr();
                         std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
                         auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
-                        std::cout << "luaVmMapPtrIterator = " << luaVmMapPtrIterator << std::endl;
+                        std::cout << "uid = " << uid << std::endl;
+                        std::cout << "luaVmMgrPtr = " << luaVmMgrPtr << std::endl;
+                        std::cout << "luaVmMapPtr = " << luaVmMapPtr << std::endl;
                         if (luaVmMapPtrIterator == luaVmMapPtr->end())
                         {
                             //新建一个VM
