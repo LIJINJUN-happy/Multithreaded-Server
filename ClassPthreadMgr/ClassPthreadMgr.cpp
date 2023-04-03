@@ -126,6 +126,11 @@ int ClassPthreadMgr::CheckMinTaskList()
     return minIndex;
 }
 
+LuaVmMgr* ClassPthreadMgr::GetLuaVmMgrPtr()
+{
+    return this->luaVmMgrPtr;
+}
+
 //检测任务列表循环（用锁来获取资源防止线程争抢）
 void *CheckTaskList(void *args)
 {

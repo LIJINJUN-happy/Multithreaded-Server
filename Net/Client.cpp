@@ -98,3 +98,8 @@ Client* Client::GetMyself()
 {
     return this->pMyself;
 }
+
+string Client::GetClientUid()
+{
+    return this->uid;
+}

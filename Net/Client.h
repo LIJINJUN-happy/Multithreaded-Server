@@ -27,6 +27,7 @@ public:
     ~Client();
     Client(int clientFd, std::string clientUid, std::string clientIp);
     Client* GetMyself();
+    std::string GetClientUid();
 
     void UpdateHeartBeatTime();
     bool CheckoutIfOnLine();

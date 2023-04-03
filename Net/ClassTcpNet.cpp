@@ -170,6 +170,21 @@ void ClassTcpNet::StartEpoll()
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
                         //cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
                         //cout << "当前连接人数为：" << pSockfdMap.size() << endl;
+
+                        //Create Client LuaVm
+                        std::string uid = pSockfdMap[key]->GetClientUid();
+                        LuaVmMgr* luaVmMgrPtr = this->pthreadObj->GetLuaVmMgrPtr();
+                        std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
+                        if (luaVmMapPtr->find(uid) == luaVmMapPtr->end())
+                        {
+                            //新建一个VM
+
+                        }
+                        else
+                        {
+                            //vm还存在
+                            ;
+                        }
                     }
                 }
                 //否则是客户端的sockfd有信息
