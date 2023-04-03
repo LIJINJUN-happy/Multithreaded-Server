@@ -92,6 +92,7 @@ bool LuaVmMgr::InitPublicMoudle()
             }
             else
             {
+                std::cout << "Public Moudle Init Fail : " << it->second.second << std::endl;
                 delete L;
                 return false;
             }
