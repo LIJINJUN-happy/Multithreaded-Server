@@ -46,7 +46,13 @@ function Main_(uid, call, called, fun, arg)
 end
 
 --模块初始化函数
-function DoInit_(path)
+function DoInit_(serPath)
+	--Bag
+	dofile(serPath .. "LuaServer/LuaSystem/Bag/bagMgr.lua")
+
+	--Email
+	dofile(serPath .. "LuaServer/LuaSystem/Email/email.lua")
+
 	return true
 end
 

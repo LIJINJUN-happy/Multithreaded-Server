@@ -46,7 +46,10 @@ function Main_(uid, call, called, fun, arg)
 end
 
 --模块初始化函数
-function DoInit_(path)
+function DoInit_(serPath)
+	--Bag
+	dofile(serPath .. "LuaServer/LuaSystem/Rank/ScoreRank/scoreRank.lua")
+	
 	return true
 end
 

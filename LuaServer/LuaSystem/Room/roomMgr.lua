@@ -46,7 +46,7 @@ function Main_(uid, call, called, fun, arg)
 end
 
 --模块初始化函数
-function DoInit_(path)
+function DoInit_(serPath)
 	return true
 end
 

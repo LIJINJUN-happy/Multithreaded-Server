@@ -1,3 +1,4 @@
 --ÓÊ¼þÏµÍ³
 EMAIL = {}
+print("OK EMAIL")
 return EMAIL
