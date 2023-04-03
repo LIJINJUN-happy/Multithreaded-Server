@@ -14,8 +14,8 @@ bool LuaPublicVm::Init(std::string path)
 		return false;
 	}
 	lua_getglobal(L, "DoInit_");
-	lua_pushstring(L, Config::LoadCodePathString);
-	lua_pcall(L, 1, 1, 0)
+	lua_pushstring(L, Config::LoadCodePathString.c_str());
+	lua_pcall(L, 1, 1, 0);
 	if (lua_isstring(L,-1))
 	{
 		std::cout << "Public Moudle Init Failed :" << path << std::endl;
