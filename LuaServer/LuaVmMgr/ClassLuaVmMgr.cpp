@@ -50,6 +50,7 @@ bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
     if (ptr == luaVmMap.end())
     {
         this->luaVmMap[strIndex] = vmPtr;
+        std::cout << "luaVmMap size = " << luaVmMap.size() << std::endl;
         return true;
     }
     cout << "Vm " << strIndex << " Add Fail Already Exsit!" << endl;
