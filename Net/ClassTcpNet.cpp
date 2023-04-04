@@ -182,9 +182,7 @@ void ClassTcpNet::StartEpoll()
                         {
                             //新建一个VM
                             Global::LuaMoudleFilesInfo* filePtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr();
-                            std::cout << "00000000000 " << std::endl;
                             auto fileIterator = filePtr->GetMoudleInfo()->find("ACTOR");
-                            std::cout << "22222222222 " << std::endl;
                             LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
                             bool resLoad = L->Init(fileIterator->second.second);
                             if (resLoad == true)
