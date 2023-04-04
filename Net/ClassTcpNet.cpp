@@ -175,14 +175,10 @@ void ClassTcpNet::StartEpoll()
                         std::string uid = pSockfdMap[key]->GetClientUid();
                         LuaVmMgr* luaVmMgrPtr = this->pthreadObj->GetLuaVmMgrPtr();
                         std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
-                        std::cout << "uid = " << uid << std::endl;
-                        std::cout << "luaVmMgrPtr = " << luaVmMgrPtr << std::endl;
-                        std::cout << "luaVmMapPtr = " << luaVmMapPtr << std::endl;
                         auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
                         if (luaVmMapPtrIterator == luaVmMapPtr->end())
                         {
                             //新建一个VM
-                            std::cout << "新建一个VM  " << std::endl;
                             Global::LuaMoudleFilesInfo* filePtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr();
                             auto fileIterator = filePtr->GetMoudleInfo()->find("ACTOR");
                             LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
@@ -194,7 +190,6 @@ void ClassTcpNet::StartEpoll()
                             }
                             else
                             {
-                                std::cout << "已存在VM  " << std::endl;
                                 delete L;
                                 continue;
                             }

@@ -12,7 +12,10 @@ LuaVmMgr::LuaVmMgr()
 
 LuaVmMgr::LuaVmMgr(Global::LuaMoudleFilesInfo* p)
 {
+    this->luaVmMap.clear();
+    this->luaVmMapPtr = &(this->luaVmMap);
     this->luaMoudleFilesInfoPtr = p;
+    return;
 }
 
 LuaVmMgr::~LuaVmMgr()
@@ -50,7 +53,6 @@ bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
     if (ptr == luaVmMap.end())
     {
         this->luaVmMap[strIndex] = vmPtr;
-        std::cout << "luaVmMap size = " << luaVmMap.size() << std::endl;
         return true;
     }
     cout << "Vm " << strIndex << " Add Fail Already Exsit!" << endl;

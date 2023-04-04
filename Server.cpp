@@ -38,8 +38,6 @@ int main()
 	//创建Lua模块管理系统（所有lua模块存放处）
 	LuaVmMgr* luaVmMgrPtr = new LuaVmMgr(luaMoudleFilesInfoPtr);
 	bool resLoadMoudle = luaVmMgrPtr->InitPublicMoudle();
-	std::cout << "In Server.cpp luaVmMapPtr = " << luaVmMgrPtr->GetLuaVmMapPtr() << std::endl;
-	std::cout << "In Server.cpp luaVmMapPtr.size = " << luaVmMgrPtr->GetLuaVmMapPtr()->size() << std::endl;
 	if (!resLoadMoudle)
 	{
 		cout << "\033[31mLua模块管理系统加载模块失败！\033[0m" << endl;
