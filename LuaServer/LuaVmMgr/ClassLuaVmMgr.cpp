@@ -49,6 +49,7 @@ std::map<std::string, LuaBaseVm*>* LuaVmMgr::GetLuaVmMapPtr()
 bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
 {
     std::map<std::string, LuaBaseVm*>::iterator ptr;
+    std::cout << "In AddLuaBaseVm luaVmMap = " << &luaVmMap << std::endl;
     ptr = luaVmMap.find(strIndex);
     if (ptr == luaVmMap.end())
     {
