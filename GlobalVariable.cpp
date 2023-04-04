@@ -71,7 +71,7 @@ bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int typ
         std::cout << "loadString" << loadString << "type" << type << std::endl;
         return false;
     }
-    std::string moudleName(loadString, 0, commaCharIndex - 1);
+    std::string moudleName(loadString, 0, commaCharIndex);
     std::string loadPathString(loadString, commaCharIndex + 1, loadString.npos);
     loadPathString.insert(0, Config::LoadCodePathString);
     if (access(loadPathString.c_str(), F_OK) != 0)
