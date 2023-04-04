@@ -188,7 +188,7 @@ void ClassTcpNet::StartEpoll()
                                 bool resLoad = L->Init(path);
                                 if (resLoad == true)
                                 {
-                                    std::cout << "Personal Moudle Init Success : " << std::endl;
+                                    std::cout << "Personal Moudle Init Success fd : "<< uid << std::endl;
                                     luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
                                 }
                                 else
