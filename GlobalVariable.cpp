@@ -87,5 +87,6 @@ bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int typ
 
 std::map<std::string, std::pair<int, std::string>>* Global::LuaMoudleFilesInfo::GetMoudleInfo()
 {
+    std::cout << "111111111111111 " << std::endl;
     return &(this->moudleInfo);
 }

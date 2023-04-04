@@ -19,6 +19,7 @@ public:
 	~LuaVmMgr();
 
 public:
+	bool CheckLuaVmIsExistByIndex(std::string strIndex);
 	LuaBaseVm* GetLuaVmByIndex(std::string strIndex);
 	LuaBaseVm* GetLuaVmByIndex(long long uid);
 	int GetLuaVmTypeByIndex(std::string strIndex);

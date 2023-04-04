@@ -22,6 +22,15 @@ LuaVmMgr::~LuaVmMgr()
 {
 }
 
+bool LuaVmMgr::CheckLuaVmIsExistByIndex(std::string strIndex)
+{
+    if (this->luaVmMap.find(strIndex) != this->luaVmMap.end())
+    {
+        return true;
+    }
+    return false;
+}
+
 LuaBaseVm* LuaVmMgr::GetLuaVmByIndex(std::string strIndex)
 {
     std::map<std::string, LuaBaseVm*>::iterator ptr;   
@@ -49,7 +58,6 @@ std::map<std::string, LuaBaseVm*>* LuaVmMgr::GetLuaVmMapPtr()
 bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
 {
     std::map<std::string, LuaBaseVm*>::iterator ptr;
-    std::cout << "In AddLuaBaseVm luaVmMap = " << &luaVmMap << std::endl;
     ptr = luaVmMap.find(strIndex);
     if (ptr == luaVmMap.end())
     {

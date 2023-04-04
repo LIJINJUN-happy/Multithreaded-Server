@@ -174,16 +174,17 @@ void ClassTcpNet::StartEpoll()
                         //Create Client LuaVm
                         std::string uid = pSockfdMap[key]->GetClientUid();
                         LuaVmMgr* luaVmMgrPtr = this->pthreadObj->GetLuaVmMgrPtr();
-                        std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
-                        std::cout << "uid = " << uid << std::endl;
-                        std::cout << "luaVmMgrPtr = " << luaVmMgrPtr << std::endl;
-                        std::cout << "luaVmMapPtr = " << luaVmMapPtr << std::endl;
-                        auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
-                        if (luaVmMapPtrIterator == luaVmMapPtr->end())
+                        //std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
+                        //auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
+                        bool isExist = luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid);
+                        std::cout << "isExist = " << isExist << std::endl;
+                        if (isExist == false)
                         {
                             //新建一个VM
                             Global::LuaMoudleFilesInfo* filePtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr();
+                            std::cout << "00000000000 " << std::endl;
                             auto fileIterator = filePtr->GetMoudleInfo()->find("ACTOR");
+                            std::cout << "22222222222 " << std::endl;
                             LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
                             bool resLoad = L->Init(fileIterator->second.second);
                             if (resLoad == true)
