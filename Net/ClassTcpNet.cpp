@@ -177,23 +177,25 @@ void ClassTcpNet::StartEpoll()
                         //std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
                         //auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
                         bool isExist = luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid);
-                        std::cout << "isExist = " << isExist << std::endl;
                         if (isExist == false)
                         {
                             //新建一个VM
-                            Global::LuaMoudleFilesInfo* filePtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr();
-                            auto fileIterator = filePtr->GetMoudleInfo()->find("ACTOR");
-                            LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
-                            bool resLoad = L->Init(fileIterator->second.second);
-                            if (resLoad == true)
+                            std::string path = luaVmMgrPtr->GetPathByStringFromFilesInfo("ACTOR");
+                            std; :cout << "Actor Path = " << path << std::endl;
+                            if (path.size() >= 1)
                             {
-                                std::cout << "Personal Moudle Init Success : " << std::endl;
-                                luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
-                            }
-                            else
-                            {
-                                delete L;
-                                continue;
+                                LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
+                                bool resLoad = L->Init(path);
+                                if (resLoad == true)
+                                {
+                                    std::cout << "Personal Moudle Init Success : " << std::endl;
+                                    luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
+                                }
+                                else
+                                {
+                                    delete L;
+                                    //continue;
+                                }
                             }
                         }
                         else

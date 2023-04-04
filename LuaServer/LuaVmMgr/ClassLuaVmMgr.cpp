@@ -118,6 +118,16 @@ Global::LuaMoudleFilesInfo* LuaVmMgr::GetLuaMoudleFilesInfoPtr()
     return this->luaMoudleFilesInfoPtr;
 }
 
+std::string LuaVmMgr::GetPathByStringFromFilesInfo(std::string str)
+{
+    auto it = this->luaMoudleFilesInfoPtr->moudleInfo.find(str);
+    if (it == this->luaMoudleFilesInfoPtr->moudleInfo.end())
+    {
+        return "";
+    }
+    return std::string(it->second.second);
+}
+
 int LuaVmMgr::GetLuaVmTypeByIndex(std::string strIndex)
 {
     LuaBaseVm* p = this->luaVmMap[strIndex];

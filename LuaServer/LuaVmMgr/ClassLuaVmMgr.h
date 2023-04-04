@@ -31,6 +31,7 @@ public:
 public:
 	bool InitPublicMoudle();	//初始化公共类模块
 	Global::LuaMoudleFilesInfo* GetLuaMoudleFilesInfoPtr();
+	std::string GetPathByStringFromFilesInfo(std::string str);
 };
 
 #endif
