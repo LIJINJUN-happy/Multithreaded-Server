@@ -175,6 +175,9 @@ void ClassTcpNet::StartEpoll()
                         std::string uid = pSockfdMap[key]->GetClientUid();
                         LuaVmMgr* luaVmMgrPtr = this->pthreadObj->GetLuaVmMgrPtr();
                         std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
+                        std::cout << "uid = " << uid << std::endl;
+                        std::cout << "luaVmMgrPtr = " << luaVmMgrPtr << std::endl;
+                        std::cout << "luaVmMapPtr = " << luaVmMapPtr << std::endl;
                         auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
                         if (luaVmMapPtrIterator == luaVmMapPtr->end())
                         {
