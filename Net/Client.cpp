@@ -85,7 +85,17 @@ int Client::GetWorkPthreadIndex()
 
 void Client::UpdateClientTaskNum(int cmdTaskNum)
 {
-    this->workPthreadSameClientTaskNum.fetch_add(cmdTaskNum);
+    if (cmdTaskNum >= 0)
+    {
+        this->workPthreadSameClientTaskNum.fetch_add(cmdTaskNum);
+        return;
+    }
+    if (cmdTaskNum < 0)
+    {
+        cmdTaskNum = abs(cmdTaskNum);
+        this->workPthreadSameClientTaskNum.fetch_sub(cmdTaskNum);
+    }
+    
     return;
 }
 

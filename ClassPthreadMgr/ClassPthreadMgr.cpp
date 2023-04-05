@@ -157,7 +157,6 @@ void *CheckTaskList(void *args)
     pthread_mutex_lock(lock); //上锁
     while (true)
     {
-        userOperator = false;
         stringMsg.clear();
         if (pWorkList->size() < 1)
         {
@@ -180,12 +179,19 @@ void *CheckTaskList(void *args)
             //从消息列表取出消息包并读取消息包信息
             MsgPackage* msgPtr = *(pWorkList->begin());
             pWorkList->erase(pWorkList->begin());
+            bool resCheck = msgPtr->CheckMsgType("Actor");
+            if (resCheck == true)
+            {
+                //判断是否来自用户的socketMsg
+                userOperator = true;
+            }
             stringMsg = msgPtr->GetCMD();
             std::cout << "stringMsg = " << stringMsg << std::endl;
             
             //执行任务
             if (stringMsg.size() >= 1)
             {
+
                 Json::Reader reader(Json::Features::strictMode());
                 Json::Value parseData;
                 if (reader.parse(stringMsg.c_str(), parseData))
@@ -271,7 +277,19 @@ void *CheckTaskList(void *args)
             }
 
             //修改任务数量
-
+            if (userOperator == true)
+            {
+                Client * clientPtr = (Client*)(msgPtr->GetOperatePtr());
+                clientPtr->UpdateClientTaskNum(-1);
+                int taskNum = clientPtr->GetClientTaskNum();
+                std::cout << "玩家 " << uid << " 任务数量剩余: " << taskNum << std::endl;
+                if (taskNum <= 0)
+                {
+                    //恢复被操作的线程索引
+                    clientPtr->UpdateWorkPthreadIndex(-1);
+                }
+                userOperator = false;
+            }
 
             //销毁
             delete msgPtr;
