@@ -25,6 +25,7 @@ bool LuaPersonalVm::Init(std::string path)
 	else if (lua_isboolean(L, -1) && lua_toboolean(L, -1) == 1)
 	{
 		//std::cout << "Lua Personal Moudle DoInit_ Finish !" << std::endl;
+		lua_settop(L, 0);//clear
 	}
 	else
 	{
