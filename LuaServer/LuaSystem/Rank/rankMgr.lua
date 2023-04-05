@@ -24,7 +24,7 @@ local function Interface_(uid, call, called, fun, arg)
   
   --判断处理接口
   if InterfaceFunMap_[fun] and type(InterfaceFunMap_[fun]) == "function" then
-    return InterfaceFunMap_[fun](self, uid, arg)
+    return InterfaceFunMap_[fun](_G[called], uid, arg)
   else
     print("fun Erro "..tostring(fun))
     return
