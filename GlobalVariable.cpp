@@ -89,3 +89,13 @@ std::map<std::string, std::pair<int, std::string>>* Global::LuaMoudleFilesInfo::
 {
     return &(this->moudleInfo);
 }
+
+int Global::LuaMoudleFilesInfo::judgeMoudleType(std::string moudle)
+{
+    auto p = this->moudleInfo.find(moudle);
+    if (p->second.first == Global::PERSONAL)
+    {
+        return Global::PERSONAL;
+    }
+    return Global::PUBLIC;
+}

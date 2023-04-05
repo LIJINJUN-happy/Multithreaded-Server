@@ -45,6 +45,7 @@ namespace Global
         void LoadLuaMoudleFiles();
         bool addOneLuaMoudle(std::string& loadString,int type);
         std::map<std::string, std::pair<int, std::string>>* GetMoudleInfo();
+        int judgeMoudleType(std::string);
     };
 }
 

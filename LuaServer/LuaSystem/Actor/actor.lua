@@ -60,7 +60,9 @@ end
 ----------------------------------------------------Moudle-FUN-------------------------------------------------------
 
 --用户模块
-ACTOR = {}
+ACTOR = {
+["score"] = 0
+}
 
 --获取信息
 function ACTOR:GetData()
@@ -68,5 +70,18 @@ end
 
 --改变名字
 function ACTOR:ChangeName(newName)
+end
+
+--添加积分
+function ACTOR:AddScore(num)
+	self.score = self.score + 1
+	print("添加后当前积分为:",self.score)
+	return self.score
+end
+
+--show score
+function ACTOR:GetScore()
+	print("The CurScore is ",self.score)
+	return self.score
 end
 
