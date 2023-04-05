@@ -202,7 +202,7 @@ void *CheckTaskList(void *args)
                         auto it = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->find(called);
                         if (it != luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->end())
                         {
-                            if (luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->judgeMoudleType() == 1)//个人模块
+                            if (luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->judgeMoudleType(called) == 1)//个人模块
                             {
                                 if (luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid) == true)
                                 {
@@ -232,11 +232,11 @@ void *CheckTaskList(void *args)
                                 }
                                 else
                                 {
-                                    std::cout << "Personal Lua VM IS Not Build :" << uid << end;
+                                    std::cout << "Personal Lua VM IS Not Build :" << uid << endl;
                                     break;
                                 }
                             }
-                            else if(luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->judgeMoudleType() == 2)//公共模块
+                            else if(luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->judgeMoudleType(called) == 2)//公共模块
                             {
                                 if (luaVmMgrPtr->CheckLuaVmIsExistByIndex(called) == true)
                                 {
@@ -265,19 +265,19 @@ void *CheckTaskList(void *args)
                                 }
                                 else
                                 {
-                                    std::cout << "Public Lua VM IS Not Build :" << called << end;
+                                    std::cout << "Public Lua VM IS Not Build :" << called << endl;
                                     break;
                                 }
                             }
                             else
                             {
-                                std::cout << "Moudle Not Belong To Personal And Public" << called << end;
+                                std::cout << "Moudle Not Belong To Personal And Public" << called << endl;
                                 break;
                             }
                         }
                         else
                         {
-                            std::cout << "called Moudle Wrong With Finding " << called << end;
+                            std::cout << "called Moudle Wrong With Finding " << called << endl;
                             break;
                         }
                     }
