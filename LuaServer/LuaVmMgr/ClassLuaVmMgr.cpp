@@ -120,14 +120,14 @@ Global::LuaMoudleFilesInfo* LuaVmMgr::GetLuaMoudleFilesInfoPtr()
 
 std::string LuaVmMgr::GetPathByStringFromFilesInfo(std::string str)
 {
-    int size = this->luaMoudleFilesInfoPtr->moudleInfo.size();
+    /*int size = this->luaMoudleFilesInfoPtr->moudleInfo.size();
     std::cout << "moudleInfo size = " << size << std::endl;
     for (auto iit : this->luaMoudleFilesInfoPtr->moudleInfo)
     {
         std::cout << iit.first << std::endl;
         std::cout << iit.second.first << std::endl;
         std::cout << iit.second.second << std::endl << endl;
-    }
+    }*/
     auto it = this->luaMoudleFilesInfoPtr->moudleInfo.find(str);
     if (it == this->luaMoudleFilesInfoPtr->moudleInfo.end())
     {

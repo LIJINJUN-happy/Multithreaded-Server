@@ -181,14 +181,14 @@ void ClassTcpNet::StartEpoll()
                         {
                             //新建一个VM
                             std::string path = luaVmMgrPtr->GetPathByStringFromFilesInfo("ACTOR");
-                            std::cout << "Actor Path = " << path << std::endl;
+                            //std::cout << "Actor Path = " << path << std::endl;
                             if (path.size() >= 1)
                             {
                                 LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
                                 bool resLoad = L->Init(path);
                                 if (resLoad == true)
                                 {
-                                    std::cout << "Personal Moudle Init Success fd : "<< uid << std::endl;
+                                    //std::cout << "Personal Moudle Init Success fd : "<< uid << std::endl;
                                     luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
                                 }
                                 else
