@@ -4,13 +4,12 @@
 local actorCoroutine_ = nil
 
 --接口容器
-local InterfaceFunMap_ = {
-  -----------------------------pto-begin------------------------
-  ["AddScore"] = function(uid, arg) print("打印一下:") print(uid,"\n")  print(arg,"\n") return end
+local InterfaceFunMap_ = {}
+local function loadInterFace()
+	InterfaceFunMap_["AddScore"] = ACTOR.AddScore
+	InterfaceFunMap_["GetScore"] = ACTOR.GetScore
+end
 
-
-  -----------------------------pto-end--------------------------
-  }
 
 --[[
 接口函数:
@@ -28,7 +27,7 @@ local function Interface_(uid, call, called, fun, arg)
   
   --判断处理接口
   if InterfaceFunMap_[fun] and type(InterfaceFunMap_[fun]) == "function" then
-    return InterfaceFunMap_[fun](uid, arg)
+    return InterfaceFunMap_[fun](self, uid, arg)
   else
     print("fun Erro "..tostring(fun))
     return
@@ -47,12 +46,16 @@ end
 
 --模块初始化函数
 function DoInit_(serPath)
+	--JSON
+	JSON = dofile(serPath .. "LuaServer/luaLib/json.lua")
+
 	--Bag
 	dofile(serPath .. "LuaServer/LuaSystem/Bag/bagMgr.lua")
 
 	--Email
 	dofile(serPath .. "LuaServer/LuaSystem/Email/email.lua")
 
+	loadInterFace()
 	return true
 end
 
@@ -73,14 +76,16 @@ function ACTOR:ChangeName(newName)
 end
 
 --添加积分
-function ACTOR:AddScore(num)
-	self.score = self.score + 1
+function ACTOR:AddScore(uid, arg)
+	local info = JSON:decode(arg)
+	local num = info.score or 0
+	self.score = self.score + num
 	print("添加后当前积分为:",self.score)
 	return self.score
 end
 
 --show score
-function ACTOR:GetScore()
+function ACTOR:GetScore(uid, arg)
 	print("The CurScore is ",self.score)
 	return self.score
 end

@@ -4,13 +4,9 @@
 local actorCoroutineMap_ = {}
 
 --接口容器
-local InterfaceFunMap_ = {
-  -----------------------------pto-begin------------------------
-  
-  
-  -----------------------------pto-end--------------------------
-  
-  }
+local InterfaceFunMap_ = {}
+local function loadInterFace()
+end
 
 --[[
 接口函数:
@@ -28,7 +24,7 @@ local function Interface_(uid, call, called, fun, arg)
   
   --判断处理接口
   if InterfaceFunMap_[fun] and type(InterfaceFunMap_[fun]) == "function" then
-    return InterfaceFunMap_[fun](uid, arg)
+    return InterfaceFunMap_[fun](self, uid, arg)
   else
     print("fun Erro "..tostring(fun))
     return
@@ -47,6 +43,10 @@ end
 
 --模块初始化函数
 function DoInit_(serPath)
+	--JSON
+	JSON = dofile(serPath .. "LuaServer/luaLib/json.lua")
+
+	loadInterFace()
 	return true
 end
 
