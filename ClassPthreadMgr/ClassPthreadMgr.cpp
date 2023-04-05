@@ -151,9 +151,13 @@ void *CheckTaskList(void *args)
     std::string fun = "";   //调用函数/协议
     std::string arg = "";   //参数
 
+    //是否用户操作
+    bool userOperator = false;//默认为否,若用户类型协议则为true,用作任务数量减少依据
+
     pthread_mutex_lock(lock); //上锁
     while (true)
     {
+        userOperator = false;
         stringMsg.clear();
         if (pWorkList->size() < 1)
         {
@@ -202,33 +206,14 @@ void *CheckTaskList(void *args)
                         auto it = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->find(called);
                         if (it != luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->end())
                         {
+                            lua_State* L = nullptr;
                             if (luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->judgeMoudleType(called) == 1)//个人模块
                             {
                                 if (luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid) == true)
                                 {
                                     LuaBaseVm* vmPtr = luaVmMgrPtr->GetLuaVmByIndex(uid);
-                                    lua_State* L = vmPtr->GetLuaStatePtr();
-                                    std::cout << "调用个人模块虚拟机" << std::endl;
-                                    
-                                    //开始操作C++ Lua 交互栈
-                                    lua_settop(L, 0);
-                                    lua_getglobal(L, "Main_");
-                                    lua_pushstring(L, uid.c_str());
-                                    lua_pushstring(L, caller.c_str());
-                                    lua_pushstring(L, called.c_str());
-                                    lua_pushstring(L, fun.c_str());
-                                    lua_pushstring(L, arg.c_str());
-                                    lua_pcall(L, 5, 5, 0);
-
-                                    if (lua_isnil(L, -1))
-                                    {
-                                        
-                                        break;
-                                    }
-                                    else //需要传递到不同虚拟机
-                                    {
-
-                                    }
+                                    L = vmPtr->GetLuaStatePtr();
+                                    std::cout << "调用个人模块虚拟机" << std::endl; 
                                 }
                                 else
                                 {
@@ -241,27 +226,8 @@ void *CheckTaskList(void *args)
                                 if (luaVmMgrPtr->CheckLuaVmIsExistByIndex(called) == true)
                                 {
                                     LuaBaseVm* vmPtr = luaVmMgrPtr->GetLuaVmByIndex(called);
-                                    lua_State* L = vmPtr->GetLuaStatePtr();
+                                    L = vmPtr->GetLuaStatePtr();
                                     std::cout << "调用公共模块虚拟机" << std::endl;
-
-                                    //开始操作C++ Lua 交互栈
-                                    lua_settop(L, 0);
-                                    lua_getglobal(L, "Main_");
-                                    lua_pushstring(L, uid.c_str());
-                                    lua_pushstring(L, caller.c_str());
-                                    lua_pushstring(L, called.c_str());
-                                    lua_pushstring(L, fun.c_str());
-                                    lua_pushstring(L, arg.c_str());
-                                    lua_pcall(L, 5, 5, 0);
-
-                                    if (lua_isnil(L, -1))
-                                    {
-                                        break;
-                                    }
-                                    else //需要传递到不同虚拟机
-                                    {
-
-                                    }
                                 }
                                 else
                                 {
@@ -273,6 +239,26 @@ void *CheckTaskList(void *args)
                             {
                                 std::cout << "Moudle Not Belong To Personal And Public" << called << endl;
                                 break;
+                            }
+
+                            //开始操作C++ Lua 交互栈
+                            lua_settop(L, 0);
+                            lua_getglobal(L, "Main_");
+                            lua_pushstring(L, uid.c_str());
+                            lua_pushstring(L, caller.c_str());
+                            lua_pushstring(L, called.c_str());
+                            lua_pushstring(L, fun.c_str());
+                            lua_pushstring(L, arg.c_str());
+                            lua_pcall(L, 5, 5, 0);
+
+                            if (lua_isnil(L, -1))
+                            {
+
+                                break;
+                            }
+                            else //需要传递到不同虚拟机
+                            {
+
                             }
                         }
                         else
