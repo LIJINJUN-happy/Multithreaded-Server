@@ -24,11 +24,11 @@ bool LuaPersonalVm::Init(std::string path)
 	}
 	else if (lua_isboolean(L, -1) && lua_toboolean(L, -1) == 1)
 	{
-		std::cout << "Lua Moudle DoInit_ Finish !" << std::endl;
+		//std::cout << "Lua Personal Moudle DoInit_ Finish !" << std::endl;
 	}
 	else
 	{
-		std::cout << "Init Waring With Other Erro :" << std::endl;
+		std::cout << "Personal Moudle Init Waring With Other Erro :" << std::endl;
 		return false;
 	}
 	return true;
