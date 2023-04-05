@@ -6,10 +6,10 @@ local actorCoroutine_ = nil
 --接口容器
 local InterfaceFunMap_ = {
   -----------------------------pto-begin------------------------
-  
-  
+  ["AddScore"] = function(uid, arg) print("打印一下:") print(uid,"\n")  print(arg,"\n")  end
+
+
   -----------------------------pto-end--------------------------
-  
   }
 
 --[[
