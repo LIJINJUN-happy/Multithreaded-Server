@@ -280,13 +280,20 @@ void *CheckTaskList(void *args)
             if (userOperator == true)
             {
                 Client * clientPtr = (Client*)(msgPtr->GetOperatePtr());
-                clientPtr->UpdateClientTaskNum(-1);
-                int taskNum = clientPtr->GetClientTaskNum();
-                std::cout << "玩家 " << uid << " 任务数量剩余: " << taskNum << std::endl;
-                if (taskNum <= 0)
+                if (clientPtr)//防止掉线了,clientPtr变为nullptr
                 {
-                    //恢复被操作的线程索引
-                    clientPtr->UpdateWorkPthreadIndex(-1);
+                    clientPtr->UpdateClientTaskNum(-1);
+                    int taskNum = clientPtr->GetClientTaskNum();
+                    std::cout << "用户 " << uid << " 任务数量剩余: " << taskNum << std::endl;
+                    if (taskNum <= 0)
+                    {
+                        //恢复被操作的线程索引
+                        clientPtr->UpdateWorkPthreadIndex(-1);
+                    }
+                }
+                else
+                {
+                    //std::cout << "用户 " << "不在线" << std::endl;
                 }
                 userOperator = false;
             }
