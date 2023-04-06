@@ -78,7 +78,7 @@ vector<string> GetAndTransformation(string msg)
 
 void GetRegisteredToken(int fd, void* netptr)
 {
-    return false;
+    return ;
 }
 
 //注册请求
