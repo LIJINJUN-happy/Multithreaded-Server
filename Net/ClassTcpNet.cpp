@@ -300,6 +300,11 @@ map<string, Client*> *ClassTcpNet::GetSockfdMap()
     return &(this->pSockfdMap);
 }
 
+std::map<std::string, Client*>* ClassTcpNet::GetSockidMap()
+{
+    return &(this->pSockidMap);
+}
+
 //关闭与某客户端套接字相关的任何信息
 void ClassTcpNet::CloseClientByFd(string fd)
 {
