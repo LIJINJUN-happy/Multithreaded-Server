@@ -75,3 +75,19 @@ vector<string> GetAndTransformation(string msg)
     }
     return msgTable;
 }
+
+void GetRegisteredToken(int fd, void* netptr)
+{
+    return false;
+}
+
+//注册请求
+bool Registered(int fd, void* netptr, std::string account, std::string pw, std::string token)
+{
+    return false;
+}
+
+bool Login(int fd, void* netptr, std::string account, std::string pw)
+{
+    return false;
+}

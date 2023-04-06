@@ -198,10 +198,31 @@ void *CheckTaskList(void *args)
                 {
                     called = parseData.get("Moudle", 0).asString();
                     fun = parseData.get("Protocol", 0).asString();
+
+                    //判断是不是登录或者注册协议（需要注册过以及登录成功的用户才可以生成 ActorLua虚拟机）
+                    bool ifSkip = false;//是否跳过LuaVm的交互操作
+                    if (called == "LOGIN")
+                    {
+                        if (fun == "c_login_request")//登录请求
+                        {
+
+                        }
+                        else if (fun == "c_registered_request")//注册请求
+                        {
+                            //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
+                            ifSkip = true;
+                        }
+                        else if (fun == "c_registered_token_request")//注册码请求
+                        {
+                            //注册码请求也需要跳过
+                            ifSkip = true;
+                        }
+                    }
+
                     caller = "";
                     arg = stringMsg;
                     uid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
-                    while (true)
+                    while (ifSkip == false)
                     {
                         std::cout << "caller " << caller << std::endl;
                         std::cout << "called " << called << std::endl;
