@@ -92,7 +92,7 @@ void GetRegisteredToken(void* cliptr)
 //注册请求
 bool Registered(void* cliptr, std::string account, std::string pw, std::string code)
 {
-    bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(token);
+    bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(code);
     if (resRegister == false)
     {
         return false;
