@@ -1,11 +1,7 @@
 #ifndef _GATE_H_
 #define _GATE_H_
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <unistd.h>
-#include "./ClassMsgPackage.h"
+#include "./Client.h"
 
 //预声明
 class Client;

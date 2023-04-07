@@ -1,8 +1,7 @@
 #ifndef _CLIENT_H_
 #define _CLIENT_H_
 
-#include "../GlobalVariable.h"
-#include "./Gate.h"
+#include "./ClassMsgPackage.h"
 
 class Client
 {

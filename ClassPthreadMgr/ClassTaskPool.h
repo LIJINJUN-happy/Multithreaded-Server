@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <memory>
 #include <algorithm>
-#include "../Net/Client.h"
+#include "../Net/Gate.h"
 
 //一个任务链表(一个链表对应一个工作线程)
 class ClassTaskList
