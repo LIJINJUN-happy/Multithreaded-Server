@@ -20,6 +20,8 @@
 #include <sys/select.h>
 #include <time.h>
 #include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 namespace Global
 {

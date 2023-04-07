@@ -8,7 +8,7 @@ extern "C" {
 #include <lualib.h>
 };
 
-#include "../../GlobalVariable.h"
+#include "../../Email/Mail.h"
 
 //LuaVM»ùÀà
 class LuaBaseVm

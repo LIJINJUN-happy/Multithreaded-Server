@@ -46,7 +46,12 @@ LuaServer_dir=" $dir/LuaServer/LuaVmMgr/*.cpp "
 echo "LuaVM类文件:$LuaServer_dir"
 echo
 
-all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir"
+#Mail类文件
+Mail_dir=" $dir/Email/*.cpp "
+echo "LuaVM类文件:$Mail_dir"
+echo
+
+all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir$Mail_dir"
 echo "g++执行$all_Dir"
 g++ $all_Dir -o ./cmd/Server.out $needLuaLink
 echo

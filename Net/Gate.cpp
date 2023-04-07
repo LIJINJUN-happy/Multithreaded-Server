@@ -93,17 +93,37 @@ int GetRandByTimes(int from, int to, int times)
 }
 
 //验证码请求
-void GetRegisteredToken(void* cliptr)
+void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 {
     //生产随机的数字组合
     int code = GetRandByTimes(1, 9, Config::registerCodeSize);
     long nTime = Global::GetNowTime();
+    std::string codeString = "The Register Code Is : ";
+    codeString += std::to_string(code);
+    //const char* cstring = codeString.c_str();
 
-    /*发送到邮箱
-    if ()
+    //发送到邮箱
+    int ret = SendEmail(
+        "smtp.qq.com",
+        25,
+        "2849533742@qq.com",
+        "uzuvsixtwjpxdffa",
+        //"2231173990@qq.com",
+        tarEmailAddress,
+        codeString.c_str(),
+        "LIJINJUN_SERVER",
+        "Actor",
+        "Register Code");
+    if (ret == 0)
     {
+        printf("SendEmail success\n");
+    } 
+    else
+    {
+        printf("SendEmail failed,errno= %d\n", ret);
         return;
-    }*/
+    }
+       
 
     //发送成功设置验证码信息
     ((Client*)cliptr)->SetRegisterCode(code);

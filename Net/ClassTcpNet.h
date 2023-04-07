@@ -2,9 +2,6 @@
 #define _CLASSTCPNET_H_
 
 #include <sys/epoll.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include "../ClassPthreadMgr/ClassPthreadMgr.h"
 
 void *epollListening(void *); //开始执行Epoll监听线程，把数据存进去Tasklist里面

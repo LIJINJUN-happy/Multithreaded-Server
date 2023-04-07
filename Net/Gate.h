@@ -17,7 +17,7 @@ std::vector<std::string> GetAndTransformation(std::string msg);
 int GetRandByTimes(int from, int to, int times);
 
 //注册码请求处理
-void GetRegisteredToken(void* cliptr);
+void GetRegisteredToken(void* cliptr, const char* tarEmailAddress);
 
 //注册请求处理
 bool Registered(void* cliptr, std::string account, std::string pw, int code);

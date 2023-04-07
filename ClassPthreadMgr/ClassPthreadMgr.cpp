@@ -215,6 +215,7 @@ void *CheckTaskList(void *args)
                         else if (fun == "c_registered_token_request")//注册码请求
                         {
                             //注册码请求也需要跳过
+                            GetRegisteredToken(msgPtr->GetOperatePtr(), "2231173990@qq.com");
                             ifSkip = true;
                         }
                     }
