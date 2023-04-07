@@ -92,9 +92,23 @@ int GetRandByTimes(int from, int to, int times)
     return res;
 }
 
+//是否为未注册的邮箱
+bool JudegeEmailBrandNew(const char* tarEmailAddress)
+{
+    return false;
+}
+
 //验证码请求
 void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 {
+    /*判断邮箱是否未注册过*/
+    bool resJudege = JudegeEmailBrandNew(tarEmailAddress);
+    if (resJudege == false)
+    {
+        printf("该邮箱已经注册过了\n");
+        return;
+    }
+
     //生产随机的数字组合
     int code = GetRandByTimes(1, 9, Config::registerCodeSize);
     long nTime = Global::GetNowTime();
@@ -128,6 +142,7 @@ void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
     //发送成功设置验证码信息
     ((Client*)cliptr)->SetRegisterCode(code);
     ((Client*)cliptr)->SetRegisterCodeTime(nTime);
+    ((Client*)cliptr)->SetEmailAddress(std::string(tarEmailAddress));
     return ;
 }
 
@@ -145,6 +160,7 @@ bool Registered(void* cliptr, std::string account, std::string pw, int code)
     */
     ((Client*)cliptr)->SetRegisterCode(0);
     ((Client*)cliptr)->SetRegisterCodeTime(0);
+    ((Client*)cliptr)->SetEmailAddress("");
     return true;
 }
 

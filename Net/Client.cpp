@@ -16,6 +16,9 @@ Client::Client()
     this->messageResidue = "";
     this->workPthreadIndex = -1;
     this->workPthreadSameClientTaskNum = 0;
+    this->registerCode = 0;
+    this->registerCodeTime = 0;
+    this->emailAddress = "";
 }
 
 //析构函数
@@ -36,6 +39,9 @@ Client::Client(int clientFd, string clientUid, string clientIp)
     this->workPthreadSameClientTaskNum = 0;
     //workPthreadIndex.store(-1);
     //workPthreadSameClientTaskNum.store(0);
+    this->registerCode = 0;
+    this->registerCodeTime = 0;
+    this->emailAddress = "";
 }
 
 //更新心跳时间
@@ -127,6 +133,7 @@ bool Client::JudgeRegisterCode(int compareCode)
         if (this->registerCode == compareCode)
         {
             cout << "验证成功" << endl;
+            this->SetRegisterCodeTime(0);//验证成功把验证码设为过期,避免多次使用
             return true;
         }
         cout << "验证码不匹配" << endl;
@@ -135,7 +142,13 @@ bool Client::JudgeRegisterCode(int compareCode)
     cout << "验证码有效时间已过,请重新申请" << endl;
     this->SetRegisterCode(0);
     this->SetRegisterCodeTime(0);
+    this->SetEmailAddress("");
     return false;
+}
+
+void Client::SetEmailAddress(std::string address)
+{
+    this->emailAddress = address;
 }
 
 Client* Client::GetMyself()

@@ -22,8 +22,9 @@ private:
     std::string messageResidue;   //socket缓存中未接收完的前段信息
 
     //注册信息
-    int registerCode = 0;        //验证码
-    long registerCodeTime = 0;   //验证码获取的时间戳
+    int registerCode;        //验证码
+    long registerCodeTime;   //验证码获取的时间戳
+    std::string emailAddress;//用于注册账号的邮箱
 
 public:
     Client();
@@ -46,6 +47,7 @@ public:
     void SetRegisterCode(int code);
     void SetRegisterCodeTime(long time);
     bool JudgeRegisterCode(int compareCode);
+    void SetEmailAddress(std::string address);
 
 };
 

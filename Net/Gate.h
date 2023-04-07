@@ -16,6 +16,9 @@ std::vector<std::string> GetAndTransformation(std::string msg);
 //随机生成一个几位数(从from到to中生成times次随机数字并组合)
 int GetRandByTimes(int from, int to, int times);
 
+//判断邮箱是否无注册过账号
+bool JudegeEmailBrandNew(const char* tarEmailAddress);
+
 //注册码请求处理
 void GetRegisteredToken(void* cliptr, const char* tarEmailAddress);
 
