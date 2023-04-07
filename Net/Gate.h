@@ -17,7 +17,7 @@ std::vector<std::string> GetAndTransformation(std::string msg);
 void GetRegisteredToken(void* cliptr);
 
 //注册请求处理
-bool Registered(void* cliptr, std::string account, std::string pw, std::string code);
+bool Registered(void* cliptr, std::string account, std::string pw, int code);
 
 //登录请求处理
 bool Login(int fd, void* netptr, std::string account, std::string pw);
