@@ -132,11 +132,10 @@ void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 }
 
 //注册请求
+//验证成功以及验证码过期会重置验证码和验证时间,但是验证码不匹配则不重置,给用户保留多次重输机会
 bool Registered(void* cliptr, std::string account, std::string pw, int code)
 {
     bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(code);
-    ((Client*)cliptr)->SetRegisterCode(0);
-    ((Client*)cliptr)->SetRegisterCodeTime(0);
     if (resRegister == false)
     {
         return false;
@@ -144,6 +143,8 @@ bool Registered(void* cliptr, std::string account, std::string pw, int code)
     /*
     注册成功则保存信息,用来验证登录
     */
+    ((Client*)cliptr)->SetRegisterCode(0);
+    ((Client*)cliptr)->SetRegisterCodeTime(0);
     return true;
 }
 

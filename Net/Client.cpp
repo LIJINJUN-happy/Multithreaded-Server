@@ -133,6 +133,8 @@ bool Client::JudgeRegisterCode(int compareCode)
         return false;
     }
     cout << "验证码有效时间已过,请重新申请" << endl;
+    this->SetRegisterCode(0);
+    this->SetRegisterCodeTime(0);
     return false;
 }
 
