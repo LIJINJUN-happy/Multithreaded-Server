@@ -35,6 +35,11 @@ namespace Config
 
 	//项目代码目录（部署时必须修改对应正确项目路径）
 	const std::string LoadCodePathString = "/home/lijinjun/公共/debug_env/";
+
+	//验证码信息
+	const int registerCodeSize = 6;				//验证码长度
+	const long registerCodeOutTimeInterval = 60;//验证码有效秒数
+
 }
 
 #endif

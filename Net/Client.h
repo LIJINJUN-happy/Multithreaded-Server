@@ -22,6 +22,10 @@ private:
     也就是说，epoll_wait处理的时候可能有一部分数据未能读取完，所以先把前段部分数据保存下来*/
     std::string messageResidue;   //socket缓存中未接收完的前段信息
 
+    //注册信息
+    int registerCode = 0;        //验证码
+    long registerCodeTime = 0;   //验证码获取的时间戳
+
 public:
     Client();
     ~Client();
@@ -39,6 +43,11 @@ public:
     int GetWorkPthreadIndex();
     void UpdateClientTaskNum(int cmdTaskNum);
     int GetClientTaskNum();
+
+    void SetRegisterCode(int code);
+    void SetRegisterCodeTime(long time);
+    bool JudgeRegisterCode(int compareCode);
+
 };
 
 #endif

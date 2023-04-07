@@ -104,6 +104,35 @@ int Client::GetClientTaskNum()
     return this->workPthreadSameClientTaskNum.load();
 }
 
+void Client::SetRegisterCode(int code)
+{
+    this->registerCode = code;
+    return;
+}
+
+void Client::SetRegisterCodeTime(long time)
+{
+    this->registerCodeTime = time;
+    return;
+}
+
+bool Client::JudgeRegisterCode(int compareCode)
+{
+    long nt = Global::GetNowTime();
+    if ((registerCodeTime <= nt) && (nt - registerCodeTime <= Config::registerCodeOutTimeInterval) )
+    {
+        if (this->registerCode == compareCode)
+        {
+            cout << "验证成功" << endl;
+            return true;
+        }
+        cout << "验证码不匹配" << endl;
+        return false;
+    }
+    cout << "验证码有效时间已过,请重新申请" << endl;
+    return false;
+}
+
 Client* Client::GetMyself()
 {
     return this->pMyself;

@@ -1,10 +1,6 @@
 #ifndef _CLASSTIMER_H_
 #define _CLASSTIMER_H_
 
-#include <utility>
-#include <sys/time.h>
-#include <sys/select.h>
-#include <time.h>
 #include "../ClassPthreadMgr/ClassPthreadMgr.h"
 
 

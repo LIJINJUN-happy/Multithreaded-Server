@@ -18,10 +18,10 @@ void TransformationAndSend(std::string msg);
 std::vector<std::string> GetAndTransformation(std::string msg);
 
 //注册码请求处理
-void GetRegisteredToken(int fd, void* netptr);
+void GetRegisteredToken(void* cliptr);
 
 //注册请求处理
-bool Registered(int fd, void* netptr, std::string account, std::string pw, std::string token);
+bool Registered(void* cliptr, std::string account, std::string pw, std::string code);
 
 //登录请求处理
 bool Login(int fd, void* netptr, std::string account, std::string pw);

@@ -76,15 +76,31 @@ vector<string> GetAndTransformation(string msg)
     return msgTable;
 }
 
-void GetRegisteredToken(int fd, void* netptr)
+//验证码请求
+void GetRegisteredToken(void* cliptr)
 {
+    //生产随机的数字组合
+    int code = 0;
+    long nTime = Global::GetNowTime();
+
+    //设置验证码信息
+    ((Client*)cliptr)->SetRegisterCode(code);
+    ((Client*)cliptr)->SetRegisterCodeTime(nTime);
     return ;
 }
 
 //注册请求
-bool Registered(int fd, void* netptr, std::string account, std::string pw, std::string token)
+bool Registered(void* cliptr, std::string account, std::string pw, std::string code)
 {
-    return false;
+    bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(token);
+    if (resRegister == false)
+    {
+        return false;
+    }
+    /*
+    注册成功则保存信息,用来验证登录
+    */
+    return true;
 }
 
 bool Login(int fd, void* netptr, std::string account, std::string pw)
