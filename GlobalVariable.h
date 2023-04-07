@@ -19,6 +19,7 @@
 #include "etc/Config.h"
 #include <sys/select.h>
 #include <time.h>
+#include <math.h>
 
 namespace Global
 {

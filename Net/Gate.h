@@ -13,6 +13,9 @@ void TransformationAndSend(std::string msg);
 //接受recv的数据data然后分解里面有多少协议（弃用）
 std::vector<std::string> GetAndTransformation(std::string msg);
 
+//随机生成一个几位数(从from到to中生成times次随机数字并组合)
+int GetRandByTimes(int from, int to, int times);
+
 //注册码请求处理
 void GetRegisteredToken(void* cliptr);
 

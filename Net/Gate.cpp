@@ -76,11 +76,27 @@ vector<string> GetAndTransformation(string msg)
     return msgTable;
 }
 
+int GetRandByTimes(int from, int to, int times)
+{
+    //设置随机种子
+    int tm = (int)time(NULL);
+    srand(tm);
+
+    int res = 0;
+    for (int i = 0; i < times; i++)
+    {
+        int value = (rand() % (to - from + 1)) + from;
+        value *= (pow(10,i));
+        res += value;
+    }
+    return res;
+}
+
 //验证码请求
 void GetRegisteredToken(void* cliptr)
 {
     //生产随机的数字组合
-    int code = 0;
+    int code = GetRandByTimes(1, 9, Config::registerCodeSize);
     long nTime = Global::GetNowTime();
 
     //设置验证码信息
