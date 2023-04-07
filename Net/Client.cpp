@@ -118,6 +118,9 @@ void Client::SetRegisterCodeTime(long time)
 
 bool Client::JudgeRegisterCode(int compareCode)
 {
+    if (registerCode == 0 || registerCodeTime == 0)
+        return false;
+
     long nt = Global::GetNowTime();
     if ((registerCodeTime <= nt) && (nt - registerCodeTime <= Config::registerCodeOutTimeInterval) )
     {

@@ -135,6 +135,8 @@ void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 bool Registered(void* cliptr, std::string account, std::string pw, int code)
 {
     bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(code);
+    ((Client*)cliptr)->SetRegisterCode(0);
+    ((Client*)cliptr)->SetRegisterCodeTime(0);
     if (resRegister == false)
     {
         return false;
