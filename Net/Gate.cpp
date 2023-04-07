@@ -99,7 +99,13 @@ void GetRegisteredToken(void* cliptr)
     int code = GetRandByTimes(1, 9, Config::registerCodeSize);
     long nTime = Global::GetNowTime();
 
-    //设置验证码信息
+    /*发送到邮箱
+    if ()
+    {
+        return;
+    }*/
+
+    //发送成功设置验证码信息
     ((Client*)cliptr)->SetRegisterCode(code);
     ((Client*)cliptr)->SetRegisterCodeTime(nTime);
     return ;
