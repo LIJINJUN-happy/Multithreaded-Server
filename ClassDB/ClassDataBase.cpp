@@ -25,6 +25,10 @@ ClassDataBase::ClassDataBase()
         cout << "数据接入失败    " << mysql_error(&mysql) << endl;
         return;
     }
+    else
+    {
+        cout << "数据接入成功   " << Config::host.c_str() << "  " << Config::user.c_str() << "  " << Config::port << endl;
+    }
 }
 
 //析构函数
