@@ -30,6 +30,10 @@ int main()
 	umask(0);	//防止限制文件权限引起混乱
 
 
+	//数据库链接
+	ClassDataBase db = new ClassDataBase();
+
+
 	//创建Lua文件模块类（用来索引以及判断模块类型）
 	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr = new Global::LuaMoudleFilesInfo();
 	luaMoudleFilesInfoPtr->LoadLuaMoudleFiles();

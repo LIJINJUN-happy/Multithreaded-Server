@@ -1,8 +1,7 @@
 #ifndef _CLASSDATABASE_H_
 #define _CLASSDATABASE_H_
 
-#include "../etc/Config.h"
-#include <iostream>
+#include "../Net/ClassMsgPackage.h"
 #include <mysql/mysql.h>
 
 

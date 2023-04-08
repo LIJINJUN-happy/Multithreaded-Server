@@ -8,7 +8,7 @@ using std::endl;
 ClassDataBase::ClassDataBase()
 {
     resultRes = NULL;
-    row = 0;
+    //row = 0;
     field = NULL;
 
     //初始化数据库对象
