@@ -87,6 +87,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
     task->lock = &(taskListPtr->lock);
     task->cond = &(taskListPtr->cond);
     task->luaVmMgrPtr = this->luaVmMgrPtr;
+    task->dbPtr = nullptr;
     return task;
 }
 
@@ -141,6 +142,7 @@ void *CheckTaskList(void *args)
     pthread_mutex_t *lock = ((Task *)args)->lock;
     pthread_cond_t *cond = ((Task *)args)->cond;
     LuaVmMgr* luaVmMgrPtr = ((Task*)args)->luaVmMgrPtr;
+    ClassDataBase* dbPtr = ((Task*)args)->dbPtr;
     pthread_t tid = pthread_self();
 
     //MessagePackage信息参数

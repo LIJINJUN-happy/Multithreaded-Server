@@ -31,7 +31,8 @@ int main()
 
 
 	//数据库链接
-	ClassDataBase *db = new ClassDataBase();
+	DataBaseMgr* dbMgr = new DataBaseMgr();
+	dbMgr->Start();
 
 
 	//创建Lua文件模块类（用来索引以及判断模块类型）
@@ -59,6 +60,7 @@ int main()
 	{
 		//每个工作线程对应一个任务链表,避免了多个工作线程争抢一个任务链表的情况
 		Task* task = pthreadObj->GetTaskArgs(i);
+		task->dbPtr = dbMgr->GetDBByIndex(i);
 		pthread_t tid = 0;
 		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, task);
 		if (resulCreatePthread == 0)

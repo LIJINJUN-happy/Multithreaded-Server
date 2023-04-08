@@ -23,6 +23,7 @@ ClassDataBase::ClassDataBase()
                             Config::passwd.c_str(), Config::db.c_str(), Config::port, NULL, 0))
     {
         cout << "数据接入失败    " << mysql_error(&mysql) << endl;
+        assert(false);
         return;
     }
     else

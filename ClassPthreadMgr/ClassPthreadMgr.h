@@ -14,6 +14,9 @@ typedef struct Task
     //Lua管理器地址
     LuaVmMgr* luaVmMgrPtr;
 
+    //db对象地址
+    ClassDataBase* dbPtr;
+
 } Task;
 
 //线程执行的程序
