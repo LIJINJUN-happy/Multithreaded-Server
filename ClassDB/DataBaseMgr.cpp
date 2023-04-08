@@ -25,7 +25,7 @@ void DataBaseMgr::Start()
 	for (int i = 0; i < count; i++)
 	{
 		ClassDataBase* db = new ClassDataBase();
-		this->dbArry.at[i] = db;
+		this->dbArry.at(i) = db;
 	}
 	return;
 }
@@ -34,12 +34,12 @@ void DataBaseMgr::Close()
 {
 	for (int i = 0; i < count; i++)
 	{
-		ClassDataBase* db = dbArry.at[i];
+		ClassDataBase* db = dbArry.at(i);
 		if (db)
 		{
 			delete db;
 			db = nullptr;
-			this->dbArry.at[i] = nullptr;
+			this->dbArry.at(i) = nullptr;
 		}
 	}
 	return;
@@ -47,7 +47,7 @@ void DataBaseMgr::Close()
 
 ClassDataBase* DataBaseMgr::GetDBByIndex(int index)
 {
-	ClassDataBase* db = dbArry.at[index];
+	ClassDataBase* db = dbArry.at(index);
 	if (db)
 	{
 		return db;
