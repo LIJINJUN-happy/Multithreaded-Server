@@ -31,7 +31,7 @@ int main()
 
 
 	//数据库链接
-	ClassDataBase db = new ClassDataBase();
+	ClassDataBase *db = new ClassDataBase();
 
 
 	//创建Lua文件模块类（用来索引以及判断模块类型）
