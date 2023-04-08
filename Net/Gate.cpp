@@ -93,22 +93,14 @@ int Gate::GetRandByTimes(int from, int to, int times)
 }
 
 //是否为未注册的邮箱
-bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress)
+bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db)
 {
-    return false;
+    return true;
 }
 
 //验证码请求
 void Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 {
-    /*判断邮箱是否未注册过*/
-    bool resJudege = Gate::JudegeEmailBrandNew(tarEmailAddress);
-    if (resJudege == false)
-    {
-        printf("该邮箱已经注册过了\n");
-        return;
-    }
-
     //生产随机的数字组合
     int code = Gate::GetRandByTimes(1, 9, Config::registerCodeSize);
     long nTime = Global::GetNowTime();

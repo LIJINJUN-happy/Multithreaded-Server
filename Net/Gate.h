@@ -19,7 +19,7 @@ namespace Gate
 	int GetRandByTimes(int from, int to, int times);
 
 	//判断邮箱是否无注册过账号
-	bool JudegeEmailBrandNew(const char* tarEmailAddress);
+	bool JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db);
 
 	//注册码请求处理
 	void GetRegisteredToken(void* cliptr, const char* tarEmailAddress);
