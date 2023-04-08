@@ -3,7 +3,7 @@
 using std::cout;
 using std::endl;
 using std::string;
-using std::arry;
+using std::array;
 
 DataBaseMgr::DataBaseMgr()
 {
