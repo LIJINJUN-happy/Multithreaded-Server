@@ -13,6 +13,7 @@ DataBaseMgr::DataBaseMgr()
 
 DataBaseMgr::~DataBaseMgr()
 {
+	this->Close();
 }
 
 void DataBaseMgr::Start()
