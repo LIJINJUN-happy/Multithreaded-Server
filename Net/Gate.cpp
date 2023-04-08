@@ -6,7 +6,7 @@ using std::string;
 using std::vector;
 
 //转换为char*然后send
-void TransformationAndSend(string msg)
+void Gate::TransformationAndSend(string msg)
 {
     //信息长度
     int msgSize = msg.size();
@@ -42,7 +42,7 @@ void TransformationAndSend(string msg)
 }
 
 //接受recv的数据data然后分解里面有多少协议
-vector<string> GetAndTransformation(string msg)
+vector<string> Gate::GetAndTransformation(string msg)
 {
     // cout << "获取到了整体msg:  " << msg << "  总长度为：" << msg.size() << endl;
     vector<string> msgTable;
@@ -76,7 +76,7 @@ vector<string> GetAndTransformation(string msg)
     return msgTable;
 }
 
-int GetRandByTimes(int from, int to, int times)
+int Gate::GetRandByTimes(int from, int to, int times)
 {
     //设置随机种子
     int tm = (int)time(NULL);
@@ -93,16 +93,16 @@ int GetRandByTimes(int from, int to, int times)
 }
 
 //是否为未注册的邮箱
-bool JudegeEmailBrandNew(const char* tarEmailAddress)
+bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress)
 {
     return false;
 }
 
 //验证码请求
-void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
+void Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 {
     /*判断邮箱是否未注册过*/
-    bool resJudege = JudegeEmailBrandNew(tarEmailAddress);
+    bool resJudege = Gate::JudegeEmailBrandNew(tarEmailAddress);
     if (resJudege == false)
     {
         printf("该邮箱已经注册过了\n");
@@ -110,7 +110,7 @@ void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
     }
 
     //生产随机的数字组合
-    int code = GetRandByTimes(1, 9, Config::registerCodeSize);
+    int code = Gate::GetRandByTimes(1, 9, Config::registerCodeSize);
     long nTime = Global::GetNowTime();
     std::string codeString = "The Register Code Is : ";
     codeString += std::to_string(code);
@@ -148,7 +148,7 @@ void GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 
 //注册请求
 //验证成功以及验证码过期会重置验证码和验证时间,但是验证码不匹配则不重置,给用户保留多次重输机会
-bool Registered(void* cliptr, std::string account, std::string pw, int code)
+bool Gate::Registered(void* cliptr, std::string account, std::string pw, int code)
 {
     bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(code);
     if (resRegister == false)
@@ -164,7 +164,7 @@ bool Registered(void* cliptr, std::string account, std::string pw, int code)
     return true;
 }
 
-bool Login(int fd, void* netptr, std::string account, std::string pw)
+bool Gate::Login(int fd, void* netptr, std::string account, std::string pw)
 {
     return false;
 }
