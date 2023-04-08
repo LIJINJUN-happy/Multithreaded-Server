@@ -233,7 +233,9 @@ void *CheckTaskList(void *args)
                         else if (fun == "c_registered_token_request")//注册码请求
                         {
                             //注册码请求也需要跳过
-                            Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), "2231173990@qq.com");
+                            std::string em = parseData.get("EmailAddress", 0).asString();
+                            //std::string em = "2231173990@qq.com";
+                            Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str());
                             ifSkip = true;
                         }
                     }
