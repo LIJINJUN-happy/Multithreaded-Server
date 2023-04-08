@@ -31,6 +31,7 @@ public:
 	std::string GetCMD();
 	bool CheckMsgType(const char*);
 	void* GetOperatePtr();
+	void* GetsockfdMapPrt();
 
 private:
 	std::string cmd;	//处理的消息（json字符串格式）

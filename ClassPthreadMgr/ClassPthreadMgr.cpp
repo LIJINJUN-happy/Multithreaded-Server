@@ -207,10 +207,26 @@ void *CheckTaskList(void *args)
                     {
                         if (fun == "c_login_request")//登录请求
                         {
-
+                            int fd = ((Client*)(msgPtr->GetOperatePtr()))->GetClientFd();
+                            void* np = msgPtr->GetsockfdMapPrt();
+                            std::string account = parseData.get("Account", 0).asString();
+                            std::string password = parseData.get("Password", 0).asString();
+                            bool resLogin = Gate::Login(fd, np, account, password);
+                            if (resLogin == false)
+                            {
+                                ifSkip = true;//登录失败要调过虚拟机交互,成功则进入虚拟机
+                            }
+                            else
+                            {
+                                ifSkip = false;
+                            }
                         }
                         else if (fun == "c_registered_request")//注册请求
                         {
+                            std::string account = parseData.get("Account", 0).asString();
+                            std::string password = parseData.get("Password", 0).asString();
+                            int code = parseData.get("Code", 0).asInt();
+                            Gate::Registered(msgPtr->GetOperatePtr(), account, password, code);
                             //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
                             ifSkip = true;
                         }

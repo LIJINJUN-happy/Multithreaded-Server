@@ -272,7 +272,7 @@ void ClassTcpNet::StartEpoll()
                                     /*
                                     解析：待补充
                                     */
-                                    MsgPackage *msgPack = new MsgPackage(completeStr,(void*)pClient,nullptr,"Actor");
+                                    MsgPackage *msgPack = new MsgPackage(completeStr,(void*)pClient,this,"Actor");
                                     limitDataList.push_back(msgPack);
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
                                     continue;

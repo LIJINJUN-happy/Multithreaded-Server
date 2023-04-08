@@ -38,3 +38,8 @@ void* MsgPackage::GetOperatePtr()
 	p = this->operatePtr;
 	return p;
 }
+
+void* MsgPackage::GetsockfdMapPrt()
+{
+	return this->sockfdMapPrt;
+}

@@ -51,6 +51,11 @@ void Client::UpdateHeartBeatTime()
     this->lastHeartBeatTime = nowTime;
 }
 
+int Client::GetClientFd()
+{
+    return this->fd;
+}
+
 //查看距离上次的心跳时间差是否超出范围
 bool Client::CheckoutIfOnLine()
 {

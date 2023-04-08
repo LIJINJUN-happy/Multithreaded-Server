@@ -32,6 +32,7 @@ public:
     Client(int clientFd, std::string clientUid, std::string clientIp);
     Client* GetMyself();
     std::string GetClientUid();
+    int GetClientFd();
 
     void UpdateHeartBeatTime();
     bool CheckoutIfOnLine();
