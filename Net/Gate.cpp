@@ -166,13 +166,13 @@ bool Gate::Registered(void* cliptr, std::string account, std::string pw, int cod
 
 bool Gate::Login(int fd, void* fdMapPtr, std::string account, std::string pw)
 {
-    return true
+    return true;
 }
 
 //Create Client LuaVm
 bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
 {
-    std::string uid = ((Client*)cliptr)->GetClientUid;
+    std::string uid = ((Client*)cliptr)->GetClientUid();
     //std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
     //auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
     bool isExist = luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid);
