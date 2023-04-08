@@ -170,39 +170,6 @@ void ClassTcpNet::StartEpoll()
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
                         //cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
                         //cout << "当前连接人数为：" << pSockfdMap.size() << endl;
-
-                        //Create Client LuaVm
-                        std::string uid = pSockfdMap[key]->GetClientUid();
-                        LuaVmMgr* luaVmMgrPtr = this->pthreadObj->GetLuaVmMgrPtr();
-                        //std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
-                        //auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
-                        bool isExist = luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid);
-                        if (isExist == false)
-                        {
-                            //新建一个VM
-                            std::string path = luaVmMgrPtr->GetPathByStringFromFilesInfo("ACTOR");
-                            //std::cout << "Actor Path = " << path << std::endl;
-                            if (path.size() >= 1)
-                            {
-                                LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
-                                bool resLoad = L->Init(path);
-                                if (resLoad == true)
-                                {
-                                    //std::cout << "Personal Moudle Init Success fd : "<< uid << std::endl;
-                                    luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
-                                }
-                                else
-                                {
-                                    delete L;
-                                    //continue;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //vm还存在
-                            ;
-                        }
                     }
                 }
                 //否则是客户端的sockfd有信息
@@ -272,7 +239,7 @@ void ClassTcpNet::StartEpoll()
                                     /*
                                     解析：待补充
                                     */
-                                    MsgPackage *msgPack = new MsgPackage(completeStr,(void*)pClient,this,"Actor");
+                                    MsgPackage *msgPack = new MsgPackage(completeStr,(void*)pClient,this->GetSockfdMap(), "Actor");
                                     limitDataList.push_back(msgPack);
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
                                     continue;

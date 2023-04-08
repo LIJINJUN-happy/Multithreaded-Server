@@ -137,7 +137,7 @@ bool Client::JudgeRegisterCode(int compareCode)
     {
         if (this->registerCode == compareCode)
         {
-            cout << "验证成功" << endl;
+            cout << "注册码验证成功" << endl;
             this->SetRegisterCodeTime(0);//验证成功把验证码设为过期,避免多次使用
             return true;
         }

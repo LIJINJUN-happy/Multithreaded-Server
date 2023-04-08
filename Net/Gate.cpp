@@ -164,7 +164,44 @@ bool Gate::Registered(void* cliptr, std::string account, std::string pw, int cod
     return true;
 }
 
-bool Gate::Login(int fd, void* netptr, std::string account, std::string pw)
+bool Gate::Login(int fd, void* fdMapPtr, std::string account, std::string pw)
 {
-    return false;
+    return true
+}
+
+//Create Client LuaVm
+bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
+{
+    std::string uid = ((Client*)cliptr)->GetClientUid;
+    //std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
+    //auto luaVmMapPtrIterator = luaVmMapPtr->find(uid);
+    bool isExist = luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid);
+    if (isExist == false)
+    {
+        //新建一个VM
+        std::string path = luaVmMgrPtr->GetPathByStringFromFilesInfo("ACTOR");
+        //std::cout << "Actor Path = " << path << std::endl;
+        if (path.size() >= 1)
+        {
+            LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
+            bool resLoad = L->Init(path);
+            if (resLoad == true)
+            {
+                //std::cout << "Personal Moudle Init Success fd : "<< uid << std::endl;
+                luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
+            }
+            else
+            {
+                delete L;
+                return false;
+                //continue;
+            }
+        }
+    }
+    else
+    {
+        //vm已存在
+        return false;
+    }
+    return true;
 }

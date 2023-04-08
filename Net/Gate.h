@@ -28,7 +28,10 @@ namespace Gate
 	bool Registered(void* cliptr, std::string account, std::string pw, int code);
 
 	//登录请求处理
-	bool Login(int fd, void* netptr, std::string account, std::string pw);
+	bool Login(int fd, void* fdMapPtr, std::string account, std::string pw);
+
+	//登录成功后创建用户LuaVm
+	bool CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr);
 
 }
 

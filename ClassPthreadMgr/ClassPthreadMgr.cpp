@@ -218,7 +218,11 @@ void *CheckTaskList(void *args)
                             }
                             else
                             {
-                                ifSkip = false;
+                                //创建虚拟机
+                                void* clientPtr = msgPtr->GetOperatePtr();
+                                bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(clientPtr, luaVmMgrPtr);
+                                if(resCreateLuaVm != true)
+                                    ifSkip = true;//创建失败也要跳过
                             }
                         }
                         else if (fun == "c_registered_request")//注册请求
