@@ -58,7 +58,7 @@ int ClassDataBase::GetResultRow()
 
 int ClassDataBase::GetResultCount()
 {
-    return mysql_field_count(&(this->mysql);
+    return mysql_field_count(&(this->mysql));
 }
 
 std::pair<int, int> ClassDataBase::GetResultRowCount()
