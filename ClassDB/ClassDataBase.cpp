@@ -47,7 +47,7 @@ bool ClassDataBase::DoCommand(string command)
         cout << "数据库操作失败" << mysql_error(&mysql) << endl;
         return false;
     }
-    this->resultRes = mysql_store_result(&(this->mysql);
+    this->resultRes = mysql_store_result(&(this->mysql));
     return true;
 }
 
@@ -64,7 +64,7 @@ int ClassDataBase::GetResultCount()
 std::pair<int, int> ClassDataBase::GetResultRowCount()
 {
     int numRow = mysql_num_rows(this->resultRes);
-    int numCount = mysql_field_count(&(this->mysql);
+    int numCount = mysql_field_count(&(this->mysql));
     return std::make_pair(numRow, numCount);
 }
 
@@ -81,7 +81,7 @@ void ClassDataBase::PrintOutQuery()
 
     for (int i = 0; i < resRow; i++)
     {
-        this->row = mysql_fetch_row(this->resultRes)
+        this->row = mysql_fetch_row(this->resultRes);
         for (int j = 0; j < count; j++)
         {
             printf("row[%d]=%s  ", j, row[j]);
