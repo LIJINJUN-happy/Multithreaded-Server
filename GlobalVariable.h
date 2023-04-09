@@ -22,6 +22,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <initializer_list>
 
 namespace Global
 {
