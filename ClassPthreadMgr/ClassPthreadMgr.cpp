@@ -289,7 +289,7 @@ void *CheckTaskList(void *args)
                                 {
                                     //公共类Vm需要上锁
                                     LuaBaseVm* vmPtr = luaVmMgrPtr->GetLuaVmByIndex(called);
-                                    vMLock = vmPtr->GetPublickVmMutex();
+                                    vMLock = ((LuaPublicVm*)vmPtr)->GetPublickVmMutex();
                                     pthread_mutex_lock(vMLock);
                                     isCallPublicVm = true;
                                     L = vmPtr->GetLuaStatePtr();
