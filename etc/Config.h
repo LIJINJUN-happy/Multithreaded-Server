@@ -6,6 +6,10 @@
 
 namespace Config
 {
+	const std::string servName = "LIJINJUN_SER";//服务器名称
+	const int servID = 1997;					//服务器ID
+	const long serOpenTime = 0;					//开服时间
+
 	//线程配置
 	const int pollingPthreadNum = 3; //轮询任务列表线程数量
 
