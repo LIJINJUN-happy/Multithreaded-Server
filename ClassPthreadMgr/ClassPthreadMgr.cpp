@@ -266,6 +266,9 @@ void *CheckTaskList(void *args)
                         if (it != luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->end())
                         {
                             lua_State* L = nullptr;
+                            pthread_mutex_t* vMLock = nullptr;
+                            bool isCallPublicVm = false;
+
                             if (luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->judgeMoudleType(called) == 1)//个人模块
                             {
                                 if (luaVmMgrPtr->CheckLuaVmIsExistByIndex(uid) == true)
@@ -284,7 +287,11 @@ void *CheckTaskList(void *args)
                             {
                                 if (luaVmMgrPtr->CheckLuaVmIsExistByIndex(called) == true)
                                 {
+                                    //公共类Vm需要上锁
                                     LuaBaseVm* vmPtr = luaVmMgrPtr->GetLuaVmByIndex(called);
+                                    vMLock = vmPtr->GetPublickVmMutex();
+                                    pthread_mutex_lock(vMLock);
+                                    isCallPublicVm = true;
                                     L = vmPtr->GetLuaStatePtr();
                                     std::cout << "调用公共模块虚拟机" << std::endl;
                                 }
@@ -318,6 +325,10 @@ void *CheckTaskList(void *args)
                             else //需要传递到不同虚拟机
                             {
 
+                            }
+                            if (isCallPublicVm == true)
+                            {
+                                pthread_mutex_unlock(vMLock);
                             }
                         }
                         else

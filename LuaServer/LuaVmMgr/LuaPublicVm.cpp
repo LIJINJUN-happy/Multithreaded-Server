@@ -35,8 +35,15 @@ bool LuaPublicVm::Init(std::string path)
 	return true;
 }
 
+pthread_mutex_t* LuaPublicVm::GetPublickVmMutex()
+{
+	return this->lockPtr;
+}
+
 LuaPublicVm::LuaPublicVm(int type, std::string mName) :LuaBaseVm(type, mName)
 {
+	pthread_mutex_init(&(this->lock), NULL);//³õÊ¼»¯Ëø
+	this->lockPtr = &(this->lock);
 }
 
 LuaPublicVm::~LuaPublicVm()
