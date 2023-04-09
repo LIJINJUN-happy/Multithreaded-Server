@@ -20,7 +20,13 @@ public:
 public:
 
     bool DoCommand(std::string);            //执行操作
+    int GetResultRow();                     //返回结果行数（必须DoCommand返回true才可调用）
+    int GetResultCount();                   //返回结果列数（必须DoCommand返回true才可调用）
     std::pair<int,int> GetResultRowCount(); //返回结果行列数量（必须DoCommand返回true才可调用）
+    void release();
+
+public:
+    void PrintOutQuery();                   //打印数据出来（用于测试,但是需要在DoCommand返回true才可执行）
 };
 
 #endif
