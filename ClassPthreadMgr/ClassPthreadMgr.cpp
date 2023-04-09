@@ -238,7 +238,7 @@ void *CheckTaskList(void *args)
                         {
                             std::string em = parseData.get("EmailAddress", 0).asString();
                             //std::string em = "2231173990@qq.com";
-                            bool resJudege = Gate::JudegeEmailBrandNew(em, dbPtr);
+                            bool resJudege = Gate::JudegeEmailBrandNew(em.c_str(), dbPtr);
                             if (resJudege == false)
                             {
                                 printf("该邮箱已经注册过了\n");
