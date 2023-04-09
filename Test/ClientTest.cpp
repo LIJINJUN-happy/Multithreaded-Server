@@ -49,6 +49,8 @@ int main(int argc, char *argv[])
 				sq = "{\"Moudle\":\"LOGIN\",\"Protocol\":\"c_registered_token_request\",\"EmailAddress\":\"2231173990@qq.com\"}|";
 			if (c == 'r')//调用LuaVm的添加积分请求
 				sq = "{\"Moudle\":\"ACTOR\",\"Protocol\":\"AddScore\",\"score\":\"100\"}|";
+			if (c == 't')//quit
+				break;	
 
 			char buf[256] = {0};
 			memcpy(buf,sq.c_str(),sq.size());	
