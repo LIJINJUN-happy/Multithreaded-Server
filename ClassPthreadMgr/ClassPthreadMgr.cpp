@@ -326,6 +326,8 @@ void *CheckTaskList(void *args)
                             {
 
                             }
+
+                            //判断是否需要解锁（调用了共有Vm才需要解锁）
                             if (isCallPublicVm == true)
                             {
                                 pthread_mutex_unlock(vMLock);
