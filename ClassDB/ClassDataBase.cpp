@@ -49,3 +49,11 @@ bool ClassDataBase::DoCommand(string command)
     }
     return true;
 }
+
+std::pair<int, int> ClassDataBase::GetResultRowCount()
+{
+    this->resultRes = mysql_store_result(&(this->mysql);
+    int numRow = mysql_num_rows(this->resultRes);
+    int numCount = mysql_field_count(&(this->mysql);
+    return std::make_pair(numRow, numCount);
+}

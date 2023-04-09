@@ -16,7 +16,11 @@ private:
 public:
     ClassDataBase();
     ~ClassDataBase();
-    bool DoCommand(std::string); //执行操作
+
+public:
+
+    bool DoCommand(std::string);            //执行操作
+    std::pair<int,int> GetResultRowCount(); //返回结果行列数量（必须DoCommand返回true才可调用）
 };
 
 #endif
@@ -64,3 +68,6 @@ unsigned long client_flag)  暂时为0即可*/
 
 //函数释放结果内存,该结果标识符是从 mysql_query() 返回的结果
 // void mysql_free_result()
+
+//unsigned int mysql_errno(MYSQL* mysql); 返回错误码
+//const char* mysql_error(MYSQL* mysql); 返回错误信息描述
