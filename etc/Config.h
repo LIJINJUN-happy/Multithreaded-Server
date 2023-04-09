@@ -6,6 +6,7 @@
 
 namespace Config
 {
+	//服务器信息
 	const std::string servName = "LIJINJUN_SER";//服务器名称
 	const int servID = 1997;					//服务器ID
 	const long serOpenTime = 0;					//开服时间
