@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	}
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = inet_addr(Config::host.c_str());
+    serv_addr.sin_addr.s_addr = inet_addr(Config::addrString.c_str());
     serv_addr.sin_port = htons(Config::listenPort);
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1)
     {
