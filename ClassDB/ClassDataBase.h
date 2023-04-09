@@ -7,6 +7,15 @@
 
 class ClassDataBase
 {
+public:
+    enum commanType
+    {
+        AddCommand = 1,     //增
+        DeleteCommand = 2,  //删
+        UpdateCommand = 3,  //改
+        SelectCommand = 4   //查
+    };
+
 private:
     MYSQL mysql;          //数据库对象
     MYSQL_RES *resultRes; //获取最后一次查询语句字符串的SQL查询的结果集
