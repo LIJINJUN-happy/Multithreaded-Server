@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 			string sq = "";
 
 			if (c == 'q')//µÇÂ¼ÇëÇó
-				sq = "{\"Moudle\":\"LOGIN\",\"Protocol\":\"c_login_request\",\"score\":\"100\"}|";
+				sq = "{\"Moudle\":\"LOGIN\",\"Protocol\":\"c_login_request\",\"Account\":\"a\",\"Password\":\"b\"}|";
 			if (c == 'w')//×¢²áÇëÇó
 			{
 				int num = 0;
