@@ -363,29 +363,30 @@ void *CheckTaskList(void *args)
                     if (removeActorVmWithLogOut == true)
                     {
                         void* sockmapPtr = msgPtr->GetsockidMapPrt();
-                        std::string actorUid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
-                        auto it = ((map<string, Client*>*)sockmapPtr)->find(actorUid);
+                        auto it = ((map<string, Client*>*)sockmapPtr)->find(uid);
                         //先移除SocketMap中的Client*
                         if (it != ((map<string, Client*>*)sockmapPtr)->end())
                         {
-                            ((map<string, Client*>*)sockmapPtr)->erase(actorUid);
+                            ((map<string, Client*>*)sockmapPtr)->erase(uid);
                             Client* clientp = ((Client*)(msgPtr->GetOperatePtr()))->GetMyself();
                             delete clientp;//释放Client*内存
                             std::cout << "当前pSockidMap人数为：" << ((map<string, Client*>*)sockmapPtr)->size() << endl;
                         }
                         //再移除LuaVmMap中的Vm*
-                        luaVmMgrPtr->DeleteLuaBaseVm(actorUid);
+                        luaVmMgrPtr->DeleteLuaBaseVm(uid);
                     }
 
                 }
             }
 
             //修改任务数量
-            if (userOperator == true)
+            if (userOperator == true && uid.size() > 0)
             {
-                Client * clientPtr = (Client*)(msgPtr->GetOperatePtr());
-                if (clientPtr)//防止掉线了,clientPtr变为nullptr
+                void* sockmapPtr = msgPtr->GetsockidMapPrt();
+                auto it = ((map<string, Client*>*)sockmapPtr)->find(uid);
+                if (it != ((map<string, Client*>*)sockmapPtr)->end())//防止掉线了,clientPtr指向无效对象
                 {
+                    Client* clientPtr = (Client*)(msgPtr->GetOperatePtr());
                     clientPtr->UpdateClientTaskNum(-1);
                     int taskNum = clientPtr->GetClientTaskNum();
                     std::cout << "用户 " << uid << " 任务数量剩余: " << taskNum << std::endl;
