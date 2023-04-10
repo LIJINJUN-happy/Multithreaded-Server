@@ -10,7 +10,7 @@ class ClassTcpNet
 {
 private:
     std::map<std::string, Client*> pSockfdMap;  //套接字的容器（存放客户端套接字描述符）
-    std::map<std::string, Client*> sockmapPtr;  //用户UID的容器（存放客户端UID，注册登录完才可加载Client*进去）
+    std::map<std::string, Client*> pSockidMap;  //用户UID的容器（存放客户端UID，注册登录完才可加载Client*进去）
     ClassPthreadMgr *pthreadObj;                //自定义线程类对象的指针（用来传递任务进入任务列表）
     int serverSock;                             //服务端监听套接字描述符
     int port;                                   //监听端口
@@ -33,7 +33,7 @@ public:
     void AddClientIntoUidMap(std::string uid, Client* clientPtr);//添加用户进pSockidMap
     void RemoveClientByUid(std::string uid);                     //移除用户根据用户Uid
 
-    void AddMsgIntoTaskPool(Client* pClient, list<MsgPackage*>& limitDataList, list<MsgPackage*>& noLimitDataList, int minTaskListIndex);
+    void AddMsgIntoTaskPool(Client* pClient, std::list<MsgPackage*>& limitDataList, std::list<MsgPackage*>& noLimitDataList, int minTaskListIndex);
 
 };
 
