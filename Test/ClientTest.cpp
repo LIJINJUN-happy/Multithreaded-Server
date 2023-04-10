@@ -67,11 +67,14 @@ int main(int argc, char *argv[])
 				break;
 			}
 
-			char buf[256] = {0};
-			memcpy(buf,sq.c_str(),sq.size());	
-			int how = send(sock, buf, strlen(buf), 0);
-			cout << "send Size = " << how << endl;
-			cout << "Send Info = " << sq << endl;
+			if (sq.size() != 0)
+			{
+				char buf[256] = { 0 };
+				memcpy(buf, sq.c_str(), sq.size());
+				int how = send(sock, buf, strlen(buf), 0);
+				cout << "send Size = " << how << endl;
+				cout << "Send Info = " << sq << endl;
+			}
 		}
 	 //usleep(1000000000);		
 	 }
