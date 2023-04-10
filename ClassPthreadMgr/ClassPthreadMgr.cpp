@@ -4,6 +4,7 @@ using std::cout;
 using std::string;
 using std::list;
 using std::endl;
+using std::map;
 
 //构造函数
 ClassPthreadMgr::ClassPthreadMgr(LuaVmMgr* luaVmMgrP)
@@ -203,7 +204,8 @@ void *CheckTaskList(void *args)
 
                     //判断是不是登录或者注册协议（需要注册过以及登录成功的用户才可以生成 ActorLua虚拟机）
                     bool ifSkip = false;//是否跳过LuaVm的交互操作
-                    if (called == "LOGIN")
+                    bool removeActorVmWithLogOut = false;
+                    if (called == "GATE")
                     {
                         if (fun == "c_login_request")//登录请求
                         {
@@ -223,6 +225,19 @@ void *CheckTaskList(void *args)
                                 bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(clientPtr, luaVmMgrPtr);
                                 if(resCreateLuaVm != true)
                                     ifSkip = true;//创建失败也要跳过
+                                else
+                                {
+                                    //登录成功且创建Vm成功后,才可以加入socketIdMap中
+                                    void * sockmapPtr = msgPtr->GetsockidMapPrt();
+                                    std::string actorUid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
+                                    auto it = ((map<string, Client*>*)sockmapPtr)->find(actorUid);
+                                    if (it == ((map<string, Client*>*)sockmapPtr)->end())
+                                    {
+                                        ((map<string, Client*>*)sockmapPtr)->insert(std::make_pair(actorUid, (Client*)(msgPtr->GetOperatePtr())));
+                                        std::cout << "当前pSockidMap人数为：" << ((map<string, Client*>*)sockmapPtr)->size() << endl;
+                                    }
+                                    
+                                }
                             }
                         }
                         else if (fun == "c_registered_request")//注册请求
@@ -248,6 +263,10 @@ void *CheckTaskList(void *args)
                                 Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str());
                             }
                             ifSkip = true;//注册码请求也需要跳过
+                        }
+                        else if (fun == "c_logout")//下线
+                        {
+                            removeActorVmWithLogOut = true;
                         }
                     }
 
@@ -339,6 +358,24 @@ void *CheckTaskList(void *args)
                             break;
                         }
                     }
+
+                    //用户下线（放在这里判断是为了让用户在LuaVm处理完下线操作后才进行移除）
+                    if (removeActorVmWithLogOut == true)
+                    {
+                        void* sockmapPtr = msgPtr->GetsockidMapPrt();
+                        std::string actorUid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
+                        auto it = ((map<string, Client*>*)sockmapPtr)->find(actorUid);
+                        //先移除SocketMap中的Client*
+                        if (it != ((map<string, Client*>*)sockmapPtr)->end())
+                        {
+                            ((map<string, Client*>*)sockmapPtr)->erase(actorUid);
+                            delete ((Client*)(msgPtr->GetOperatePtr()));//释放Client*内存
+                            std::cout << "当前pSockidMap人数为：" << ((map<string, Client*>*)sockmapPtr)->size() << endl;
+                        }
+                        //再移除LuaVmMap中的Vm*
+                        luaVmMgrPtr->DeleteLuaBaseVm(actorUid);
+                    }
+
                 }
             }
 

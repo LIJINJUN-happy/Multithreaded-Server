@@ -4,11 +4,13 @@ using std::cout;
 using std::string;
 using std::endl;
 
-MsgPackage::MsgPackage(string cmdString, void *optr, void* mptr, const char* type)
+MsgPackage::MsgPackage(string cmdString, void *optr, void* mfdptr, void* midptr, const char* type)
 {
 	this->cmd = cmdString;
 	this->operatePtr = optr;
-	this->sockfdMapPrt = mptr;
+	this->sockfdMapPrt = mfdptr;
+	this->sockidMapPrt = midptr;
+	//this->netObjectPrt = netObj;
 	memset(msgType, 0, 0);
 	strcpy(msgType,type);
 }
@@ -43,3 +45,14 @@ void* MsgPackage::GetsockfdMapPrt()
 {
 	return this->sockfdMapPrt;
 }
+
+void* MsgPackage::GetsockidMapPrt()
+{
+	return this->sockidMapPrt;
+}
+
+/*
+void* MsgPackage::GetNetObjectPrt()
+{
+	return this->netObjectPrt;
+}*/

@@ -185,8 +185,12 @@ void ClassTcpNet::StartEpoll()
                         //客户端关闭了
                         if (resRead == 0)
                         {
-                            cout << "客户端:" << events[index].data.fd << "关闭连接" << endl;
+                            cout << "Client:" << events[index].data.fd << "Close" << endl;
                             this->CloseClientByFd(std::to_string(events[index].data.fd));
+                            std::string jsonMessage = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_logout\"}";
+                            MsgPackage* msgPack = new MsgPackage(jsonMessage, (void*)pClient, (void*)(this->GetSockfdMap()), (void*)(this->GetSockidMap()), "Actor");
+                            limitDataList.push_back(msgPack);
+                            this->AddMsgIntoTaskPool(pClient, limitDataList, noLimitDataList, minTaskListIndex);
                             break;
                         }
                         //出错啦
@@ -194,23 +198,7 @@ void ClassTcpNet::StartEpoll()
                         { 
                             if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))//这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
                             {
-                                int workPthreadIndex = pClient->GetWorkPthreadIndex();
-                                int taskNum = pClient->GetClientTaskNum();
-                                //cout << "workPthreadIndex = " << workPthreadIndex << endl;
-                                //cout << "taskNum = " << taskNum << endl;
-                                if (taskNum <= 0)
-                                {   //证明该用户没有请求尚未完成
-                                    int addSize = limitDataList.size();
-                                    pClient->UpdateClientTaskNum(addSize);
-                                    pClient->UpdateWorkPthreadIndex(minTaskListIndex);
-                                    std::copy(limitDataList.begin(), limitDataList.end(), std::back_inserter(noLimitDataList));
-                                }
-                                else
-                                {   //还有任务正在任务链表中未处理完
-                                    int addSize = limitDataList.size();
-                                    pClient->UpdateClientTaskNum(addSize);
-                                    this->pthreadObj->AddMsgIntoTaskPool(limitDataList, workPthreadIndex);
-                                }
+                                this->AddMsgIntoTaskPool(pClient, limitDataList, noLimitDataList, minTaskListIndex);
                                 break;
                             }
                             else
@@ -239,7 +227,7 @@ void ClassTcpNet::StartEpoll()
                                     /*
                                     解析：待补充
                                     */
-                                    MsgPackage *msgPack = new MsgPackage(completeStr,(void*)pClient,this->GetSockfdMap(), "Actor");
+                                    MsgPackage* msgPack = new MsgPackage(completeStr, (void*)pClient, (void*)(this->GetSockfdMap()), (void*)(this->GetSockidMap()), "Actor");
                                     limitDataList.push_back(msgPack);
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);
                                     continue;
@@ -278,10 +266,67 @@ void ClassTcpNet::CloseClientByFd(string fd)
     int clientFd = atoi(fd.c_str());
     close(clientFd);
     epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
-    Client * pClient = pSockfdMap[fd]->GetMyself();
-    delete pClient;
     this->pSockfdMap.erase(fd);
-    //cout << "当前连接人数为：" << pSockfdMap.size() << endl;
+    //cout << "当前SockfdMap人数为：" << pSockfdMap.size() << endl;
+}
+
+bool ClassTcpNet::CheckIsExistByUid(std::string uid)
+{
+    auto it = this->pSockidMap.find(uid);
+    if (it == pSockidMap.end())
+    {
+        return false;
+    }
+    return true;
+}
+
+void ClassTcpNet::AddClientIntoUidMap(std::string uid, Client* clientPtr)
+{
+    if (pSockidMap.find(uid) != pSockidMap.end())
+    {
+        std::cout << "Actor Has Existed,Need Not To Add " << std::endl;
+        return;
+    }
+        
+    this->pSockidMap[uid] = clientPtr;
+    return;
+}
+
+void ClassTcpNet::RemoveClientByUid(std::string uid)
+{
+    if (pSockidMap.find(uid) == pSockidMap.end())
+    {
+        std::cout << "Actor Has Not Existed,Need Not To Remove " << std::endl;
+        return;
+    }
+
+    Client* pClient = this->pSockidMap[uid]->GetMyself();
+    delete pClient;
+    pClient = nullptr;
+    this->pSockidMap.erase(uid);
+    //cout << "当前pSockidMap人数为：" << pSockidMap.size() << endl;
+    return;
+}
+
+void ClassTcpNet::AddMsgIntoTaskPool(Client* pClient, list<MsgPackage*>& limitDataList, list<MsgPackage*>& noLimitDataList, int minTaskListIndex)
+{
+    int workPthreadIndex = pClient->GetWorkPthreadIndex();
+    int taskNum = pClient->GetClientTaskNum();
+    //cout << "workPthreadIndex = " << workPthreadIndex << endl;
+    //cout << "taskNum = " << taskNum << endl;
+    if (taskNum <= 0)
+    {   //证明该用户没有请求尚未完成
+        int addSize = limitDataList.size();
+        pClient->UpdateClientTaskNum(addSize);
+        pClient->UpdateWorkPthreadIndex(minTaskListIndex);
+        std::copy(limitDataList.begin(), limitDataList.end(), std::back_inserter(noLimitDataList));
+    }
+    else
+    {   //还有任务正在任务链表中未处理完
+        int addSize = limitDataList.size();
+        pClient->UpdateClientTaskNum(addSize);
+        this->pthreadObj->AddMsgIntoTaskPool(limitDataList, workPthreadIndex);
+    }
 }
 
 //开始执行Epoll监听线程，把数据存进去Tasklist里面

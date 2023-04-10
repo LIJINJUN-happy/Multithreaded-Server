@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
 			if (c == 'w')//登录请求
 			{
-				sq = "{\"Moudle\":\"LOGIN\",\"Protocol\":\"c_login_request\",\"Account\":\"a\",\"Password\":\"b\"}|";
+				sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_login_request\",\"Account\":\"a\",\"Password\":\"b\"}|";
 			}
 
 			if (c == 'e')//注册请求
@@ -49,12 +49,12 @@ int main(int argc, char *argv[])
 				int num = 0;
 				cout << "please input code :" << endl;
 				cin >> num;
-				sq = "{\"Moudle\":\"LOGIN\",\"Protocol\":\"c_registered_request\",\"Account\":\"a\",\"Password\":\"b\",\"Code\":\"" + std::to_string(num) + "\"}|";
+				sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_registered_request\",\"Account\":\"a\",\"Password\":\"b\",\"Code\":\"" + std::to_string(num) + "\"}|";
 			}
 
 			if (c == 'r')//注册码请求
 			{
-				sq = "{\"Moudle\":\"LOGIN\",\"Protocol\":\"c_registered_token_request\",\"EmailAddress\":\"2231173990@qq.com\"}|";
+				sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_registered_token_request\",\"EmailAddress\":\"2231173990@qq.com\"}|";
 			}
 				
 			if (c == 'a')//调用LuaVm的添加积分请求
