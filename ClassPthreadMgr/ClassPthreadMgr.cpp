@@ -369,7 +369,8 @@ void *CheckTaskList(void *args)
                         if (it != ((map<string, Client*>*)sockmapPtr)->end())
                         {
                             ((map<string, Client*>*)sockmapPtr)->erase(actorUid);
-                            delete ((Client*)(msgPtr->GetOperatePtr()));//释放Client*内存
+                            Client* clientp = ((Client*)(msgPtr->GetOperatePtr()))->GetMyself();
+                            delete clientp;//释放Client*内存
                             std::cout << "当前pSockidMap人数为：" << ((map<string, Client*>*)sockmapPtr)->size() << endl;
                         }
                         //再移除LuaVmMap中的Vm*
@@ -396,7 +397,7 @@ void *CheckTaskList(void *args)
                 }
                 else
                 {
-                    //std::cout << "用户 " << "不在线" << std::endl;
+                    std::cout << "用户 " << "不在线" << std::endl;
                 }
                 userOperator = false;
             }

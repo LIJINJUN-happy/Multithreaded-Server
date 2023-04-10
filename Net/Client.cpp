@@ -24,6 +24,7 @@ Client::Client()
 //析构函数
 Client::~Client()
 {
+    cout << "调用了析构函数" << std::endl;
 }
 
 //自定义构造函数
