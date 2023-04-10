@@ -227,7 +227,7 @@ void *CheckTaskList(void *args)
                                     ifSkip = true;//创建失败也要跳过
                                 else
                                 {   //登录成功且创建Vm成功后,才可以加入socketIdMap中
-                                    Gate::AddIntoSockIdMap(msgPtr->GetOperatePtr(), msgPtr->GetsockidMapPrt());
+                                    Gate::AddIntoSockIdMap(clientPtr, msgPtr->GetsockidMapPrt());
                                 }
                             }
                         }
