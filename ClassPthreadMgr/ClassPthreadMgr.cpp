@@ -226,17 +226,8 @@ void *CheckTaskList(void *args)
                                 if(resCreateLuaVm != true)
                                     ifSkip = true;//创建失败也要跳过
                                 else
-                                {
-                                    //登录成功且创建Vm成功后,才可以加入socketIdMap中
-                                    void * sockmapPtr = msgPtr->GetsockidMapPrt();
-                                    std::string actorUid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
-                                    auto it = ((map<string, Client*>*)sockmapPtr)->find(actorUid);
-                                    if (it == ((map<string, Client*>*)sockmapPtr)->end())
-                                    {
-                                        ((map<string, Client*>*)sockmapPtr)->insert(std::make_pair(actorUid, (Client*)(msgPtr->GetOperatePtr())));
-                                        std::cout << "当前pSockidMap人数为：" << ((map<string, Client*>*)sockmapPtr)->size() << endl;
-                                    }
-                                    
+                                {   //登录成功且创建Vm成功后,才可以加入socketIdMap中
+                                    Gate::AddIntoSockIdMap(msgPtr->GetOperatePtr(), msgPtr->GetsockidMapPrt());
                                 }
                             }
                         }
@@ -362,18 +353,8 @@ void *CheckTaskList(void *args)
                     //用户下线（放在这里判断是为了让用户在LuaVm处理完下线操作后才进行移除）
                     if (removeActorVmWithLogOut == true)
                     {
-                        void* sockmapPtr = msgPtr->GetsockidMapPrt();
-                        auto it = ((map<string, Client*>*)sockmapPtr)->find(uid);
-                        //先移除SocketMap中的Client*
-                        if (it != ((map<string, Client*>*)sockmapPtr)->end())
-                        {
-                            ((map<string, Client*>*)sockmapPtr)->erase(uid);
-                            Client* clientp = ((Client*)(msgPtr->GetOperatePtr()))->GetMyself();
-                            delete clientp;//释放Client*内存
-                            std::cout << "当前pSockidMap人数为：" << ((map<string, Client*>*)sockmapPtr)->size() << endl;
-                        }
-                        //再移除LuaVmMap中的Vm*
-                        luaVmMgrPtr->DeleteLuaBaseVm(uid);
+                        Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
+                        luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
                     }
 
                 }

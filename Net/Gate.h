@@ -33,6 +33,12 @@ namespace Gate
 	//登录成功后创建用户LuaVm
 	bool CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr);
 
+	//登录成功后加入socketIdMap容器
+	void AddIntoSockIdMap(void* cliptr, void* sockmapPtr);
+
+	//下线后移出socketIdMap容器
+	void RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid);
+
 }
 
 #endif

@@ -197,3 +197,26 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
     }
     return true;
 }
+
+void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
+{
+    std::string actorUid = ((Client*)cliptr)->GetClientUid();
+    auto it = ((std::map<string, Client*>*)sockmapPtr)->find(actorUid);
+    if (it == ((std::map<string, Client*>*)sockmapPtr)->end())
+    {
+        ((std::map<string, Client*>*)sockmapPtr)->insert(std::make_pair(actorUid, (Client*)cliptr));
+        std::cout << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
+    }
+}
+
+void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
+{
+    auto it = ((std::map<string, Client*>*)sockmapPtr)->find(uid);
+    if (it != ((std::map<string, Client*>*)sockmapPtr)->end())
+    {
+        ((std::map<string, Client*>*)sockmapPtr)->erase(uid);
+        Client* clientp = ((Client*)cliptr)->GetMyself();
+        delete clientp;//释放Client*内存
+        std::cout << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
+    }
+}
