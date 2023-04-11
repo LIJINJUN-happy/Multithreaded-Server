@@ -15,10 +15,10 @@ function ServerSatrt()
     #判断文件是否存在
     if [ -e "$testFile" ]; then
         #echo "log.txt文件存在"
-        > ../log/log.txt
+        # > ../log/log.txt
     else
         #echo "log.txt文件不存在,创建一个"
-        touch ../log/log.txt
+        #touch ../log/log.txt
     fi
 
     local result=$(lsof -i:8888 | cat | tail -n 1)
