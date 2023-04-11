@@ -12,7 +12,7 @@ namespace Global
 {
     long GetNowTime(); //获取当前时间戳
 
-    struct std::tm* GetNowTimeWithFormat();
+    struct tm* GetNowTimeWithFormat();
 
     //信号处理
     void ServerQuit(int signum); /*(ctrl + \ )*/

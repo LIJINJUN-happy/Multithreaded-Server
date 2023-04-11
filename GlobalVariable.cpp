@@ -11,10 +11,10 @@ long Global::GetNowTime()
     return resTime;
 }
 
-std::tm* Global::GetNowTimeWithFormat()
+tm* Global::GetNowTimeWithFormat()
 {
     time_t timer = time(NULL);
-    struct std::tm* localtm = localtime(&timer);
+    struct tm* localtm = localtime(&timer);
     return localtm;
 }
 
