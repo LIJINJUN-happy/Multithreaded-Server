@@ -55,7 +55,7 @@ void ClassLogger::Init()
 	}
 	else
 	{
-		this->Log() << "\033[35mLogger Init Success! \033[0m" << std::endl;
+		this->Log() << "\033[35mLogger Init Success! \033[0m" << std::endl << std::endl;
 		//writer.flush;
 	}
 	return;

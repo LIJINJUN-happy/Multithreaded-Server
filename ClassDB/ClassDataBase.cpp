@@ -15,6 +15,7 @@ ClassDataBase::ClassDataBase()
     if (mysql_init(&(this->mysql)) == NULL)
     {
         LOG.Log() << "数据库初始化失败    " << mysql_error(&mysql) << endl;
+        assert(false);
         return;
     }
 
@@ -28,7 +29,7 @@ ClassDataBase::ClassDataBase()
     }
     else
     {
-        LOG.Log() << "数据接入成功   " << Config::host.c_str() << "  " << Config::user.c_str() << "  " << Config::port << endl;
+        //LOG.Log() << "数据接入成功   " << Config::host.c_str() << "  " << Config::user.c_str() << "  " << Config::port << endl;
     }
 }
 

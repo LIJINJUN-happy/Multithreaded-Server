@@ -37,6 +37,8 @@ int main()
 	//数据库链接
 	DataBaseMgr* dbMgr = new DataBaseMgr();
 	dbMgr->Start();
+	LOG.Log() << "\033[35mHost = "<< Config::host <<" Port = "<< Config::port << "\033[0m\n";
+	LOG.Log() << "\033[35mDB模块连接数据库成功！\033[0m\n" << endl;
 
 
 	//创建Lua文件模块类（用来索引以及判断模块类型）
@@ -45,6 +47,7 @@ int main()
 
 
 	//创建Lua模块管理系统（所有lua模块存放处）
+	LOG.Log() << "\033[35m预加载Lua公共模块\033[0m\n";
 	LuaVmMgr* luaVmMgrPtr = new LuaVmMgr(luaMoudleFilesInfoPtr);
 	bool resLoadMoudle = luaVmMgrPtr->InitPublicMoudle();
 	if (!resLoadMoudle)

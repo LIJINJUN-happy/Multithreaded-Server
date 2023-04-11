@@ -62,7 +62,7 @@ bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
     if (ptr == luaVmMap.end())
     {
         this->luaVmMap[strIndex] = vmPtr;
-        LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
+        //LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
     }
     LOG.Log() << "Vm " << strIndex << " Add Fail Already Exsit!" << endl;
@@ -80,7 +80,7 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
         this->luaVmMap.erase(strIndex);
         delete vmPtr;
         vmPtr = nullptr;
-        LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
+        //LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
     }
     LOG.Log() << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl;
