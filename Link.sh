@@ -51,7 +51,12 @@ Mail_dir=" $dir/Email/*.cpp "
 echo "LuaVM类文件:$Mail_dir"
 echo
 
-all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir$Mail_dir"
+#Log类文件
+Logger_dir=" $dir/Logger/ClassLogger/*.cpp "
+echo "Logger类文件:$Logger_dir"
+echo
+
+all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir$Mail_dir$Logger_dir"
 echo "g++执行$all_Dir"
 g++ $all_Dir -o ./cmd/Server.out $needLuaLink
 echo
