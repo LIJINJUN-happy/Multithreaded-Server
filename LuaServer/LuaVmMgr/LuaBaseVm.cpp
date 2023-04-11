@@ -14,7 +14,7 @@ LuaBaseVm::LuaBaseVm(int type, std::string mName)
 {
 	if (type != Global::PERSONAL && type != Global::PUBLIC)
 	{
-		cout << "Type 类型不正确" << endl;
+		LOG.Log() << "Type 类型不正确" << endl;
 		return;
 	}
 	this->luaVmType = type;

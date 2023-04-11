@@ -10,7 +10,7 @@ void Gate::TransformationAndSend(string msg)
 {
     //信息长度
     int msgSize = msg.size();
-    // cout << "打包的信息字符串长度为：" << msgSize << endl;
+    // LOG.Log() << "打包的信息字符串长度为：" << msgSize << endl;
     if (msgSize <= 0)
     {
         return;
@@ -19,7 +19,7 @@ void Gate::TransformationAndSend(string msg)
     //信息长度值的长度
     string sizeLenString = std::to_string(msgSize);
     int sizeLen = sizeLenString.size();
-    // cout << "大小值" << msgSize << "的长度为" << sizeLen << endl;
+    // LOG.Log() << "大小值" << msgSize << "的长度为" << sizeLen << endl;
 
     //信息长度值的长度的位数（有几位数）
     string strMgsTotalNum = std::to_string(sizeLen);
@@ -34,9 +34,9 @@ void Gate::TransformationAndSend(string msg)
     /*打印一下将要发送的buf内容
     for (size_t i = 0; i < totalSize; i++)
     {
-        cout << buf[i];
+        LOG.Log() << buf[i];
     }
-    cout << endl;
+    LOG.Log() << endl;
     */
     return;
 }
@@ -44,7 +44,7 @@ void Gate::TransformationAndSend(string msg)
 //接受recv的数据data然后分解里面有多少协议
 vector<string> Gate::GetAndTransformation(string msg)
 {
-    // cout << "获取到了整体msg:  " << msg << "  总长度为：" << msg.size() << endl;
+    // LOG.Log() << "获取到了整体msg:  " << msg << "  总长度为：" << msg.size() << endl;
     vector<string> msgTable;
     for (;;)
     {
@@ -58,13 +58,13 @@ vector<string> Gate::GetAndTransformation(string msg)
         string firstSet(msg, 0, 1);
         int strMgsTotalNum = std::stoi(firstSet);
         deleteTotal += strMgsTotalNum;
-        // cout << "获取字节的位数：" << strMgsTotalNum << endl;
+        // LOG.Log() << "获取字节的位数：" << strMgsTotalNum << endl;
 
         //获取信息的长度
         string sizeLenString(msg, 1, strMgsTotalNum);
         int sizeLen = std::stoi(sizeLenString);
         deleteTotal += sizeLen;
-        // cout << "信息长度为：" << sizeLen << endl;
+        // LOG.Log() << "信息长度为：" << sizeLen << endl;
 
         //获取信息并存入msgtable
         string realString(msg, strMgsTotalNum + 1, sizeLen);
@@ -172,14 +172,14 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
     {
         //新建一个VM
         std::string path = luaVmMgrPtr->GetPathByStringFromFilesInfo("ACTOR");
-        //std::cout << "Actor Path = " << path << std::endl;
+        //LOG.Log() << "Actor Path = " << path << std::endl;
         if (path.size() >= 1)
         {
             LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
             bool resLoad = L->Init(path);
             if (resLoad == true)
             {
-                //std::cout << "Personal Moudle Init Success fd : "<< uid << std::endl;
+                //LOG.Log() << "Personal Moudle Init Success fd : "<< uid << std::endl;
                 luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
             }
             else
@@ -205,7 +205,7 @@ void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
     if (it == ((std::map<string, Client*>*)sockmapPtr)->end())
     {
         ((std::map<string, Client*>*)sockmapPtr)->insert(std::make_pair(actorUid, (Client*)cliptr));
-        std::cout << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
+        LOG.Log() << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
     }
 }
 
@@ -217,6 +217,6 @@ void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
         ((std::map<string, Client*>*)sockmapPtr)->erase(uid);
         Client* clientp = ((Client*)cliptr)->GetMyself();
         delete clientp;//释放Client*内存
-        std::cout << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
+        LOG.Log() << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
     }
 }

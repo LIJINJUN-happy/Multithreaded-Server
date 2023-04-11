@@ -49,12 +49,12 @@ int main()
 	bool resLoadMoudle = luaVmMgrPtr->InitPublicMoudle();
 	if (!resLoadMoudle)
 	{
-		cout << "\033[31mLua模块管理系统加载模块失败！\033[0m" << endl;
+		LOG.Log() << "\033[31mLua模块管理系统加载模块失败！\033[0m" << endl;
 		return -1;
 	}
 	else
 	{
-		cout << "\033[35mLua模块管理系统加载模块成功！\033[0m\n" << endl;
+		LOG.Log() << "\033[35mLua模块管理系统加载模块成功！\033[0m\n" << endl;
 	}
 
 
@@ -69,17 +69,17 @@ int main()
 		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, task);
 		if (resulCreatePthread == 0)
 		{
-			cout << "\033[32m第" << i + 1 << "个轮询线程: " << tid << "启动成功!\033[0m" << endl;
+			LOG.Log() << "\033[32m第" << i + 1 << "个轮询线程: " << tid << "启动成功!\033[0m" << endl;
 			pthreadObj->AddPthread(&tid);
 		}
 		else
 		{
-			cout << "\033[31m第" << i + 1 << "个线程启动失败!\033[0m" << endl;
-			cout << "\033[31m线程启动步骤失败\033[0m" << endl;
+			LOG.Log() << "\033[31m第" << i + 1 << "个线程启动失败!\033[0m" << endl;
+			LOG.Log() << "\033[31m线程启动步骤失败\033[0m" << endl;
 			return -1;
 		}
 	}
-	cout << "\033[35m任务列表轮询线程启动步骤成功\033[0m\n"
+	LOG.Log() << "\033[35m任务列表轮询线程启动步骤成功\033[0m\n"
 		 << endl;
 
 
@@ -89,13 +89,13 @@ int main()
 	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
 	if (resTimerCreate == 0)
 	{
-		cout << "\033[32m计时器精度间隔为: " << timeObj->GetIntervalTime() << "秒\033[0m" << endl;
-		cout << "\033[35m计时器线程启动步骤成功\033[0m\n"
+		LOG.Log() << "\033[32m计时器精度间隔为: " << timeObj->GetIntervalTime() << "秒\033[0m" << endl;
+		LOG.Log() << "\033[35m计时器线程启动步骤成功\033[0m\n"
 			 << endl;
 	}
 	else
 	{
-		cout << "\033[31m计时器线程启动步骤失败\033[0m" << endl;
+		LOG.Log() << "\033[31m计时器线程启动步骤失败\033[0m" << endl;
 		return -1;
 	}
 
@@ -110,7 +110,7 @@ int main()
 	}
 	else
 	{
-		cout << "\033[31m监听线程启动步骤失败\033[0m" << endl;
+		LOG.Log() << "\033[31m监听线程启动步骤失败\033[0m" << endl;
 		return -1;
 	}
 

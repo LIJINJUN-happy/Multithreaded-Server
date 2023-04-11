@@ -20,7 +20,7 @@ void DataBaseMgr::Start()
 {
 	if (this->count < 1)
 	{
-		cout << "Wrong With DB Start" << std::endl;
+		LOG.Log() << "Wrong With DB Start" << std::endl;
 		return;
 	}
 	for (int i = 0; i < count; i++)

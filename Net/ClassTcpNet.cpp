@@ -32,19 +32,19 @@ void ClassTcpNet::Init()
     //检测参数
     if (this->addr.size() <= 0)
     {
-        cout << "服务器监听地址不正确,长度不可以小于1" << endl;
+        LOG.Log() << "服务器监听地址不正确,长度不可以小于1" << endl;
         return;
     }
 
     if (this->port <= 0)
     {
-        cout << "服务器监听端口不正确,大小不可以小于1" << endl;
+        LOG.Log() << "服务器监听端口不正确,大小不可以小于1" << endl;
         return;
     }
 
     if (this->maxConnect <= 0)
     {
-        cout << "服务器最大连接数不正确,大小不可以小于1" << endl;
+        LOG.Log() << "服务器最大连接数不正确,大小不可以小于1" << endl;
         return;
     }
 
@@ -52,12 +52,12 @@ void ClassTcpNet::Init()
     this->serverSock = socket(AF_INET, SOCK_STREAM, 0);
     if (this->serverSock == -1)
     {
-        cout << "\033[31msocket 函数创建套接字失败\033[0m" << endl;
+        LOG.Log() << "\033[31msocket 函数创建套接字失败\033[0m" << endl;
         return;
     }
     else
     {
-        cout << "\033[32msocket 函数创建套接字成功\033[0m" << endl;
+        LOG.Log() << "\033[32msocket 函数创建套接字成功\033[0m" << endl;
     }
 
     struct sockaddr_in serverAddr;
@@ -68,30 +68,30 @@ void ClassTcpNet::Init()
     int resultBind = bind(this->serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr));
     if (resultBind == -1)
     {
-        cout << "\033[31mbind   函数绑定套接字失败\033[0m" << endl;
+        LOG.Log() << "\033[31mbind   函数绑定套接字失败\033[0m" << endl;
         return;
     }
     else
     {
-        cout << "\033[32mbind   函数绑定套接字成功\033[0m" << endl;
+        LOG.Log() << "\033[32mbind   函数绑定套接字成功\033[0m" << endl;
     }
 
     int resultListen = listen(this->serverSock, Config::maxConnect);
     if (resultBind == -1)
     {
-        cout << "\033[31mlisten 函数监听失败\033[0m" << endl;
+        LOG.Log() << "\033[31mlisten 函数监听失败\033[0m" << endl;
         return;
     }
     else
     {
-        cout << "\033[32m正在监听端口: " << Config::listenPort << "\033[5m................\033[0m" << endl;
-        cout << "\033[35m监听线程启动步骤成功\033[0m\n"
+        LOG.Log() << "\033[32m正在监听端口: " << Config::listenPort << "\033[5m................\033[0m" << endl;
+        LOG.Log() << "\033[35m监听线程启动步骤成功\033[0m\n"
              << endl;
     }
 
     if (this->epollfd == -1)
     {
-        cout << "Epoll_create error ——————epoll创建失败" << endl;
+        LOG.Log() << "Epoll_create error ——————epoll创建失败" << endl;
         close(this->serverSock);
         return;
     }
@@ -122,12 +122,12 @@ void ClassTcpNet::StartEpoll()
         int resEpollwait = epoll_wait(this->epollfd, events, eventsSize, -1); //阻塞（timeout参数为-1）
         if (resEpollwait < 0)
         {
-            cout << "epoll_wait出现了意外的错误!" << endl;
+            LOG.Log() << "epoll_wait出现了意外的错误!" << endl;
             break;
         }
         else if (resEpollwait == 0)
         {
-            cout << "超时........." << endl;
+            LOG.Log() << "超时........." << endl;
             continue;
         }
         else
@@ -143,7 +143,7 @@ void ClassTcpNet::StartEpoll()
                     int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize); 
                     if (clientSock == -1)
                     {
-                        //cout << "accept函数接受客户端失败!" << endl;
+                        //LOG.Log() << "accept函数接受客户端失败!" << endl;
                     }
                     else
                     {
@@ -168,8 +168,8 @@ void ClassTcpNet::StartEpoll()
                         string key = std::to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
-                        //cout << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
-                        //cout << "当前连接人数为：" << pSockfdMap.size() << endl;
+                        //LOG.Log() << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
+                        //LOG.Log() << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
                 }
                 //否则是客户端的sockfd有信息
@@ -185,7 +185,7 @@ void ClassTcpNet::StartEpoll()
                         //客户端关闭了
                         if (resRead == 0)
                         {
-                            cout << "Client:" << events[index].data.fd << "Close" << endl;
+                            LOG.Log() << "Client:" << events[index].data.fd << "Close" << endl;
                             this->CloseClientByFd(std::to_string(events[index].data.fd));
                             std::string jsonMessage = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_logout\"}";
                             MsgPackage* msgPack = new MsgPackage(jsonMessage, (void*)pClient, (void*)(this->GetSockfdMap()), (void*)(this->GetSockidMap()), "Actor");
@@ -203,7 +203,7 @@ void ClassTcpNet::StartEpoll()
                             }
                             else
                             {
-                                cout << "客户端:" << events[index].data.fd << "出错了" << endl;
+                                LOG.Log() << "客户端:" << events[index].data.fd << "出错了" << endl;
                                 epoll_ctl(this->epollfd, EPOLL_CTL_DEL, events[index].data.fd, &(events[index]));
                                 break;
                             }
@@ -223,7 +223,7 @@ void ClassTcpNet::StartEpoll()
                                 else
                                 {
                                     string completeStr(messageResidue, 0, findIndex);
-                                    cout << "收到完整信息" << completeStr << endl;
+                                    LOG.Log() << "收到完整信息" << completeStr << endl;
                                     /*
                                     解析：待补充
                                     */
@@ -267,7 +267,7 @@ void ClassTcpNet::CloseClientByFd(string fd)
     close(clientFd);
     epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
     this->pSockfdMap.erase(fd);
-    //cout << "当前SockfdMap人数为：" << pSockfdMap.size() << endl;
+    //LOG.Log() << "当前SockfdMap人数为：" << pSockfdMap.size() << endl;
 }
 
 bool ClassTcpNet::CheckIsExistByUid(std::string uid)
@@ -284,7 +284,7 @@ void ClassTcpNet::AddClientIntoUidMap(std::string uid, Client* clientPtr)
 {
     if (pSockidMap.find(uid) != pSockidMap.end())
     {
-        std::cout << "Actor Has Existed,Need Not To Add " << std::endl;
+        LOG.Log() << "Actor Has Existed,Need Not To Add " << std::endl;
         return;
     }
         
@@ -296,7 +296,7 @@ void ClassTcpNet::RemoveClientByUid(std::string uid)
 {
     if (pSockidMap.find(uid) == pSockidMap.end())
     {
-        std::cout << "Actor Has Not Existed,Need Not To Remove " << std::endl;
+        LOG.Log() << "Actor Has Not Existed,Need Not To Remove " << std::endl;
         return;
     }
 
@@ -304,7 +304,7 @@ void ClassTcpNet::RemoveClientByUid(std::string uid)
     delete pClient;
     pClient = nullptr;
     this->pSockidMap.erase(uid);
-    //cout << "当前pSockidMap人数为：" << pSockidMap.size() << endl;
+    //LOG.Log() << "当前pSockidMap人数为：" << pSockidMap.size() << endl;
     return;
 }
 
@@ -312,8 +312,8 @@ void ClassTcpNet::AddMsgIntoTaskPool(Client* pClient, list<MsgPackage*>& limitDa
 {
     int workPthreadIndex = pClient->GetWorkPthreadIndex();
     int taskNum = pClient->GetClientTaskNum();
-    //cout << "workPthreadIndex = " << workPthreadIndex << endl;
-    //cout << "taskNum = " << taskNum << endl;
+    //LOG.Log() << "workPthreadIndex = " << workPthreadIndex << endl;
+    //LOG.Log() << "taskNum = " << taskNum << endl;
     if (taskNum <= 0)
     {   //证明该用户没有请求尚未完成
         int addSize = limitDataList.size();

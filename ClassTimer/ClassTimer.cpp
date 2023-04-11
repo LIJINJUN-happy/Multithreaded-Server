@@ -19,7 +19,7 @@ ClassTimer::ClassTimer(int time, ClassPthreadMgr *obj)
 {
     if (time <= 0)
     {
-        cout << "间隔不可小于1秒";
+        LOG.Log() << "间隔不可小于1秒";
         return;
     }
     this->intervalTime = time;
@@ -35,7 +35,7 @@ bool ClassTimer::AddLoopEvent(int ttime, string ev)
 {
     if (ttime <= 0 || ev.size() < 1)
     {
-        cout << "参数不正确" << endl;
+        LOG.Log() << "参数不正确" << endl;
         return false;
     }
     LoopEvent loopEvent;
@@ -50,7 +50,7 @@ bool ClassTimer::AddOnceEvent(int thour, string ev)
 {
     if (thour < 0 || thour >= 24 || ev.size() < 1)
     {
-        cout << "参数不正确" << endl;
+        LOG.Log() << "参数不正确" << endl;
         return false;
     }
     OnceEvent onceEvent;

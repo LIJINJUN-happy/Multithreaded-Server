@@ -24,7 +24,7 @@ Client::Client()
 //析构函数
 Client::~Client()
 {
-    cout << "调用了析构函数" << std::endl;
+    LOG.Log() << "调用了析构函数" << std::endl;
 }
 
 //自定义构造函数
@@ -66,7 +66,7 @@ bool Client::CheckoutIfOnLine()
     //假如间隔时间大于允许的最大心跳间隔时间
     if (diff > Config::HeartbeatIntervalTime)
     {
-        cout << "距离上次的心跳间隔为：" << diff << "  ,大于规定的" << Config::HeartbeatIntervalTime << endl;
+        LOG.Log() << "距离上次的心跳间隔为：" << diff << "  ,大于规定的" << Config::HeartbeatIntervalTime << endl;
         return false;
     }
 
@@ -138,14 +138,14 @@ bool Client::JudgeRegisterCode(int compareCode)
     {
         if (this->registerCode == compareCode)
         {
-            cout << "注册码验证成功" << endl;
+            LOG.Log() << "注册码验证成功" << endl;
             this->SetRegisterCodeTime(0);//验证成功把验证码设为过期,避免多次使用
             return true;
         }
-        cout << "验证码不匹配" << endl;
+        LOG.Log() << "验证码不匹配" << endl;
         return false;
     }
-    cout << "验证码有效时间已过,请重新申请" << endl;
+    LOG.Log() << "验证码有效时间已过,请重新申请" << endl;
     this->SetRegisterCode(0);
     this->SetRegisterCodeTime(0);
     this->SetEmailAddress("");

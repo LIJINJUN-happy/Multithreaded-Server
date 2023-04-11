@@ -31,7 +31,7 @@ void ClassMonitor::CheckoutClientIfOnline()
     {
         if (mapIter.second->CheckoutIfOnLine() == false)
         {
-            cout << "客户端 " << mapIter.first << " 心跳间隔过大，服务器主动与之断开连接" << endl;
+            LOG.Log() << "客户端 " << mapIter.first << " 心跳间隔过大，服务器主动与之断开连接" << endl;
             tcpNetObj->CloseClientByFd(mapIter.first);
             Client* pClient = mapIter.second->GetMyself();
             delete pClient;

@@ -12,7 +12,7 @@ ClassPthreadMgr::ClassPthreadMgr(LuaVmMgr* luaVmMgrP)
     //初始化变量
     if (Config::pollingPthreadNum < 1)
     {
-        cout << "线程数量不可以小于1" << endl;
+        LOG.Log() << "线程数量不可以小于1" << endl;
         return;
     }
 
@@ -42,7 +42,7 @@ pthread_t *ClassPthreadMgr::GetOnePthreadByNum(int num)
     pthread_t *pid = NULL;
     if (p->size() < num)
     {
-        cout << "Erro - 获取的线程数大于线程数！" << endl;
+        LOG.Log() << "Erro - 获取的线程数大于线程数！" << endl;
         return pid;
     }
 
@@ -95,7 +95,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 //把信息传进任务列表容器
 void ClassPthreadMgr::AddMsgIntoTaskPool(list<MsgPackage*>& msgList,int minIndex)
 {
-    cout << "放入index为："<< minIndex << "的任务列表" << endl;
+    LOG.Log() << "放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
     std::copy(msgList.begin(), msgList.end(), std::back_inserter(*(pTaskList->pMessTaskList)));
 
@@ -165,12 +165,12 @@ void *CheckTaskList(void *args)
         {
             if(pMessList->size() < 1)
             { 
-                //cout << "work任务容器与mess容器均为空,先解锁休眠并等待任务到来时候被唤醒" << endl;
+                //LOG.Log() << "work任务容器与mess容器均为空,先解锁休眠并等待任务到来时候被唤醒" << endl;
                 pthread_cond_wait(cond, lock);
             }
             else if(pMessList->size() >= 1)
             {
-                //cout << "work任务容器为空，但mess任务容器不为空,直接交换容器执行任务" << endl;
+                //LOG.Log() << "work任务容器为空，但mess任务容器不为空,直接交换容器执行任务" << endl;
                 pTaskList->SwapTaskList();
             }
             pMessList = *(((Task*)args)->pMessList);
@@ -189,7 +189,7 @@ void *CheckTaskList(void *args)
                 userOperator = true;
             }
             stringMsg = msgPtr->GetCMD();
-            std::cout << "stringMsg = " << stringMsg << std::endl;
+            LOG.Log() << "stringMsg = " << stringMsg << std::endl;
             
             //执行任务
             if (stringMsg.size() >= 1)
@@ -266,11 +266,11 @@ void *CheckTaskList(void *args)
                     uid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
                     while (ifSkip == false)
                     {
-                        std::cout << "caller " << caller << std::endl;
-                        std::cout << "called " << called << std::endl;
-                        std::cout << "fun " << fun << std::endl;
-                        std::cout << "uid " << uid << std::endl;
-                        std::cout << "arg " << arg << std::endl << endl;
+                        LOG.Log() << "caller " << caller << std::endl;
+                        LOG.Log() << "called " << called << std::endl;
+                        LOG.Log() << "fun " << fun << std::endl;
+                        LOG.Log() << "uid " << uid << std::endl;
+                        LOG.Log() << "arg " << arg << std::endl << endl;
                         //首先修正以下called的模块信息
                         auto it = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->find(called);
                         if (it != luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->end())
@@ -285,11 +285,11 @@ void *CheckTaskList(void *args)
                                 {
                                     LuaBaseVm* vmPtr = luaVmMgrPtr->GetLuaVmByIndex(uid);
                                     L = vmPtr->GetLuaStatePtr();
-                                    std::cout << "调用个人模块虚拟机" << std::endl; 
+                                    LOG.Log() << "调用个人模块虚拟机" << std::endl;
                                 }
                                 else
                                 {
-                                    std::cout << "Personal Lua VM IS Not Build :" << uid << endl;
+                                    LOG.Log() << "Personal Lua VM IS Not Build :" << uid << endl;
                                     break;
                                 }
                             }
@@ -303,17 +303,17 @@ void *CheckTaskList(void *args)
                                     pthread_mutex_lock(vMLock);
                                     isCallPublicVm = true;
                                     L = vmPtr->GetLuaStatePtr();
-                                    std::cout << "调用公共模块虚拟机" << std::endl;
+                                    LOG.Log() << "调用公共模块虚拟机" << std::endl;
                                 }
                                 else
                                 {
-                                    std::cout << "Public Lua VM IS Not Build :" << called << endl;
+                                    LOG.Log() << "Public Lua VM IS Not Build :" << called << endl;
                                     break;
                                 }
                             }
                             else
                             {
-                                std::cout << "Moudle Not Belong To Personal And Public" << called << endl;
+                                LOG.Log() << "Moudle Not Belong To Personal And Public" << called << endl;
                                 break;
                             }
 
@@ -345,7 +345,7 @@ void *CheckTaskList(void *args)
                         }
                         else
                         {
-                            std::cout << "called Moudle Wrong With Finding " << called << endl;
+                            LOG.Log() << "called Moudle Wrong With Finding " << called << endl;
                             break;
                         }
                     }
@@ -370,7 +370,7 @@ void *CheckTaskList(void *args)
                     Client* clientPtr = (Client*)(msgPtr->GetOperatePtr());
                     clientPtr->UpdateClientTaskNum(-1);
                     int taskNum = clientPtr->GetClientTaskNum();
-                    std::cout << "用户 " << uid << " 任务数量剩余: " << taskNum << std::endl;
+                    LOG.Log() << "用户 " << uid << " 任务数量剩余: " << taskNum << std::endl;
                     if (taskNum <= 0)
                     {
                         //恢复被操作的线程索引
@@ -379,7 +379,7 @@ void *CheckTaskList(void *args)
                 }
                 else
                 {
-                    std::cout << "用户 " << "不在线" << std::endl;
+                    LOG.Log() << "用户 " << "不在线" << std::endl;
                 }
                 userOperator = false;
             }

@@ -62,10 +62,10 @@ bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
     if (ptr == luaVmMap.end())
     {
         this->luaVmMap[strIndex] = vmPtr;
-        std::cout << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
+        LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
     }
-    cout << "Vm " << strIndex << " Add Fail Already Exsit!" << endl;
+    LOG.Log() << "Vm " << strIndex << " Add Fail Already Exsit!" << endl;
     return false;
 }
 
@@ -80,10 +80,10 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
         this->luaVmMap.erase(strIndex);
         delete vmPtr;
         vmPtr = nullptr;
-        std::cout << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
+        LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
     }
-    cout << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl;
+    LOG.Log() << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl;
     return false;
 }
 
@@ -100,13 +100,13 @@ bool LuaVmMgr::InitPublicMoudle()
             bool resInit = L->Init(it->second.second);               //初始化虚拟机(由于声明了virtual 这里调用LuaPublicVm的Init)
             if (resInit == true)
             {
-                std::cout << "Public Moudle Init Success : " << it->second.second << std::endl;
+                LOG.Log() << "Public Moudle Init Success : " << it->second.second << std::endl;
                 this->AddLuaBaseVm(it->first, (LuaBaseVm*)L);
                 continue;
             }
             else
             {
-                std::cout << "Public Moudle Init Fail : " << it->second.second << std::endl;
+                LOG.Log() << "Public Moudle Init Fail : " << it->second.second << std::endl;
                 delete L;
                 return false;
             }
@@ -123,12 +123,12 @@ Global::LuaMoudleFilesInfo* LuaVmMgr::GetLuaMoudleFilesInfoPtr()
 std::string LuaVmMgr::GetPathByStringFromFilesInfo(std::string str)
 {
     /*int size = this->luaMoudleFilesInfoPtr->moudleInfo.size();
-    std::cout << "moudleInfo size = " << size << std::endl;
+    LOG.Log() << "moudleInfo size = " << size << std::endl;
     for (auto iit : this->luaMoudleFilesInfoPtr->moudleInfo)
     {
-        std::cout << iit.first << std::endl;
-        std::cout << iit.second.first << std::endl;
-        std::cout << iit.second.second << std::endl << endl;
+        LOG.Log() << iit.first << std::endl;
+        LOG.Log() << iit.second.first << std::endl;
+        LOG.Log() << iit.second.second << std::endl << endl;
     }*/
     auto it = this->luaMoudleFilesInfoPtr->moudleInfo.find(str);
     if (it == this->luaMoudleFilesInfoPtr->moudleInfo.end())

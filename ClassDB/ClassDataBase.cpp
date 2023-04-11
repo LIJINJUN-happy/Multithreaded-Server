@@ -14,7 +14,7 @@ ClassDataBase::ClassDataBase()
     //初始化数据库对象
     if (mysql_init(&(this->mysql)) == NULL)
     {
-        cout << "数据库初始化失败    " << mysql_error(&mysql) << endl;
+        LOG.Log() << "数据库初始化失败    " << mysql_error(&mysql) << endl;
         return;
     }
 
@@ -22,13 +22,13 @@ ClassDataBase::ClassDataBase()
     if (!mysql_real_connect(&(this->mysql), Config::host.c_str(), Config::user.c_str(),
                             Config::passwd.c_str(), Config::db.c_str(), Config::port, NULL, 0))
     {
-        cout << "数据接入失败    " << mysql_error(&mysql) << endl;
+        LOG.Log() << "数据接入失败    " << mysql_error(&mysql) << endl;
         assert(false);
         return;
     }
     else
     {
-        cout << "数据接入成功   " << Config::host.c_str() << "  " << Config::user.c_str() << "  " << Config::port << endl;
+        LOG.Log() << "数据接入成功   " << Config::host.c_str() << "  " << Config::user.c_str() << "  " << Config::port << endl;
     }
 }
 
@@ -44,7 +44,7 @@ bool ClassDataBase::DoCommand(string command)
     int res = mysql_query(&(this->mysql), command.c_str());
     if (res != 0)
     {
-        cout << "数据库操作失败" << mysql_error(&mysql) << endl;
+        LOG.Log() << "数据库操作失败" << mysql_error(&mysql) << endl;
         return false;
     }
     this->resultRes = mysql_store_result(&(this->mysql));
