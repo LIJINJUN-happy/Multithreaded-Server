@@ -21,7 +21,7 @@ function ServerSatrt()
     if [ "$result" == "" ]; then
         $Purple && echo "开始启动服务器........." && $RESET
         echo " "
-        ./Server.out > ../Logger/LogInfo/main_Logger.txt
+        ./Server.out #> ../Logger/LogInfo/main_Logger.txt
     else
         $RED && echo "服务器已启动，请勿重复启动" && $RESET
         echo "  "
