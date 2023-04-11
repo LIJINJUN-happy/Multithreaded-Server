@@ -26,7 +26,7 @@ std::ofstream& ClassLogger::Log()
 	time_t timer = time(NULL);
 	struct tm* localtm = localtime(&timer);
 	this->logWriter << "[" << pthread_self() << "-"
-		<< localtm->tm_year + 1990 << "/"
+		<< localtm->tm_year + 1900 << "/"
 		<< localtm->tm_mon + 1 << "/"
 		<< localtm->tm_mday << " "
 		<< localtm->tm_hour << ":"
@@ -41,7 +41,7 @@ std::ofstream& ClassLogger::Error()
 	time_t timer = time(NULL);
 	struct tm* localtm = localtime(&timer);
 	this->ErrWriter << "[" << pthread_self() << "-"
-		<< localtm->tm_year + 1990 << "/"
+		<< localtm->tm_year + 1900 << "/"
 		<< localtm->tm_mon + 1 << "/"
 		<< localtm->tm_mday << " "
 		<< localtm->tm_hour << ":"
