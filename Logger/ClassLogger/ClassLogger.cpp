@@ -50,7 +50,7 @@ void ClassLogger::Init()
 	this->logWriter.open(path.c_str(),std::fstream::app|std::fstream::out);
 	if (!logWriter.is_open())
 	{
-		this->Error << "\033[31mLogger Files Open Fail\033[0m" << endl;
+		this->Error() << "\033[31mLogger Files Open Fail\033[0m" << endl;
 		assert(false);
 	}
 	else
