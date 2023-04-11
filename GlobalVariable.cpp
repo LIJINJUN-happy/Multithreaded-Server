@@ -11,6 +11,13 @@ long Global::GetNowTime()
     return resTime;
 }
 
+std::tm* Global::GetNowTimeWithFormat()
+{
+    time_t timer = time(NULL);
+    struct std::tm* localtm = localtime(&timer);
+    return localtm;
+}
+
 /*(ctrl + \ )*/
 void Global::ServerQuit(int signum)
 {

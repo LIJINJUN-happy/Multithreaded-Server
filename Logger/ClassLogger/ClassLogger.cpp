@@ -23,13 +23,31 @@ std::ofstream& ClassLogger::Log(std::string type)
 
 std::ofstream& ClassLogger::Log()
 {
-	this->logWriter << "[ " << pthread_self() << " ] : ";
+	time_t timer = time(NULL);
+	struct std::tm* localtm = localtime(&timer);
+	this->logWriter << "[" << pthread_self() << "--"
+		<< localtm->tm_year << "/"
+		<< localtm->tm_mon << "/"
+		<< localtm->tm_mday << " "
+		<< localtm->tm_hour << ":"
+		<< localtm->tm_min << ":"
+		<< localtm->tm_sec
+		<< "] : ";
 	return this->logWriter;
 }
 
 std::ofstream& ClassLogger::Error()
 {
-	this->ErrWriter << "[ " << pthread_self() << " ] : ";
+	time_t timer = time(NULL);
+	struct std::tm* localtm = localtime(&timer);
+	this->ErrWriter << "[" << pthread_self() << "--"
+		<< localtm->tm_year<<"/"
+		<< localtm->tm_mon << "/"
+		<< localtm->tm_mday << " "
+		<< localtm->tm_hour << ":"
+		<< localtm->tm_min << ":"
+		<< localtm->tm_sec
+		<< "] : ";
 	return this->ErrWriter;
 }
 
