@@ -8,12 +8,22 @@ function ServerSatrt()
         mkdir ../Logger/LogInfo
     fi
 
-    local testFile="../Logger/LogInfo/main_Logger.txt"
+    local LogFile="../Logger/LogInfo/main_Logger.txt"
     #判断文件是否存在
-    if [ -e "$testFile" ]; then
-        > ../Logger/LogInfo/main_Logger.txt
+    if [ -e "$LogFile" ]; then
+        echo " "
+        #> ../Logger/LogInfo/main_Logger.txt
     else
         touch ../Logger/LogInfo/main_Logger.txt
+    fi
+
+    local ErroFile="../Logger/LogInfo/main_Erro.txt"
+    #判断文件是否存在
+    if [ -e "$ErroFile" ]; then
+        echo " "
+        #> ../Logger/LogInfo/main_Erro.txt
+    else
+        touch ../Logger/LogInfo/main_Erro.txt
     fi
 
     local result=$(lsof -i:8888 | cat | tail -n 1)
@@ -21,7 +31,7 @@ function ServerSatrt()
     if [ "$result" == "" ]; then
         $Purple && echo "开始启动服务器........." && $RESET
         echo " "
-        ./Server.out #> ../Logger/LogInfo/main_Logger.txt
+        ./Server.out > ../Logger/LogInfo/main_Erro.txt
     else
         $RED && echo "服务器已启动，请勿重复启动" && $RESET
         echo "  "
