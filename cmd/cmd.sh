@@ -14,9 +14,11 @@ function ServerSatrt()
     local testFile="../log/log.txt"
     #判断文件是否存在
     if [ -e "$testFile" ]; then
+        echo " "
         #echo "log.txt文件存在"
         # > ../log/log.txt
     else
+        echo " "
         #echo "log.txt文件不存在,创建一个"
         #touch ../log/log.txt
     fi
