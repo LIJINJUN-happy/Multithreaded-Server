@@ -30,6 +30,10 @@ int main()
 	umask(0);	//防止限制文件权限引起混乱
 
 
+	//日志初始化
+	LOG.Init();
+
+
 	//数据库链接
 	DataBaseMgr* dbMgr = new DataBaseMgr();
 	dbMgr->Start();

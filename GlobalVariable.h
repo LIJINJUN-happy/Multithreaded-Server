@@ -4,6 +4,10 @@
 
 #include "Logger/ClassLogger/ClassLogger.h"
 
+//logger全局声明
+class ClassLogger;
+extern ClassLogger LOG;
+
 namespace Global
 {
     long GetNowTime(); //获取当前时间戳

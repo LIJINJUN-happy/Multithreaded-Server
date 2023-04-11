@@ -99,3 +99,6 @@ int Global::LuaMoudleFilesInfo::judgeMoudleType(std::string moudle)
     }
     return Global::PUBLIC;
 }
+
+
+ClassLogger LOG;
