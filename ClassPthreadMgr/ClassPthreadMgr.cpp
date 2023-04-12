@@ -333,11 +333,16 @@ void *CheckTaskList(void *args)
                             }
                             else //需要传递到不同虚拟机
                             {
-                                arg = lua_tostring(L, -1);
+                                /*arg = lua_tostring(L, -1);
                                 fun = lua_tostring(L, -2);
                                 called = lua_tostring(L, -3);
                                 caller = lua_tostring(L, -4);
-                                uid = lua_tostring(L, -5);
+                                uid = lua_tostring(L, -5);*/
+                                LOG.Log() << "type -1 :" << lua_typename(L, -1) << std::endl;
+                                LOG.Log() << "type -2 :" << lua_typename(L, -2) << std::endl;
+                                LOG.Log() << "type -3 :" << lua_typename(L, -3) << std::endl;
+                                LOG.Log() << "type -4 :" << lua_typename(L, -4) << std::endl;
+                                LOG.Log() << "type -5 :" << lua_typename(L, -5) << std::endl;
                             }
 
                             //判断是否需要解锁（调用了共有Vm才需要解锁）
