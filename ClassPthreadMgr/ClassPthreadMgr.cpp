@@ -335,11 +335,11 @@ void *CheckTaskList(void *args)
                                 }
                                 else //需要传递到不同虚拟机
                                 {
-                                    arg = lua_tostring(L, -1);
-                                    fun = lua_tostring(L, -2);
+                                    arg = lua_tostring(L, -5);
+                                    fun = lua_tostring(L, -4);
                                     called = lua_tostring(L, -3);
-                                    caller = lua_tostring(L, -4);
-                                    uid = lua_tostring(L, -5);
+                                    caller = lua_tostring(L, -2);
+                                    uid = lua_tostring(L, -1);
                                     LOG.Log() << "type -1 :" << lua_typename(L, lua_type(L, -1)) << std::endl;
                                     LOG.Log() << "type -2 :" << lua_typename(L, lua_type(L, -2)) << std::endl;
                                     LOG.Log() << "type -3 :" << lua_typename(L, lua_type(L, -3)) << std::endl;
