@@ -47,7 +47,7 @@ function DoInit_(serPath)
 	--JSON
 	JSON = dofile(serPath .. "LuaServer/luaLib/json.lua")
 
-	--Bag
+	--ScoreRank
 	dofile(serPath .. "LuaServer/LuaSystem/Rank/ScoreRank/scoreRank.lua")
 	
 	loadInterFace()
@@ -59,7 +59,7 @@ end
 RANK = {}
 
 --获取信息
-function ACTOR:ChangeScoreRankInfo(uid, arg)
+function RANK:ChangeScoreRankInfo(uid, arg)
 	print("-------------------i am in RANK")
 	return "","","ACTOR","RANK",uid
 end
