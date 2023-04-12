@@ -325,24 +325,27 @@ void *CheckTaskList(void *args)
                             lua_pushstring(L, called.c_str());
                             lua_pushstring(L, fun.c_str());
                             lua_pushstring(L, arg.c_str());
-                            lua_pcall(L, 5, 5, 0);
+                            lua_pcall(L, 5, 6, 0);
 
-                            if (lua_isnil(L, -1))
+                            if (lua_isboolean(L,-6) && lua_toboolean(L,-6) == true)
                             {
-                                ;
-                            }
-                            else //需要传递到不同虚拟机
-                            {
-                                /*arg = lua_tostring(L, -1);
-                                fun = lua_tostring(L, -2);
-                                called = lua_tostring(L, -3);
-                                caller = lua_tostring(L, -4);
-                                uid = lua_tostring(L, -5);*/
-                                LOG.Log() << "type -1 :" << lua_typename(L, -1) << std::endl;
-                                LOG.Log() << "type -2 :" << lua_typename(L, -2) << std::endl;
-                                LOG.Log() << "type -3 :" << lua_typename(L, -3) << std::endl;
-                                LOG.Log() << "type -4 :" << lua_typename(L, -4) << std::endl;
-                                LOG.Log() << "type -5 :" << lua_typename(L, -5) << std::endl;
+                                if (lua_isnil(L, -1))
+                                {
+                                    ;
+                                }
+                                else //需要传递到不同虚拟机
+                                {
+                                    arg = lua_tostring(L, -1);
+                                    fun = lua_tostring(L, -2);
+                                    called = lua_tostring(L, -3);
+                                    caller = lua_tostring(L, -4);
+                                    uid = lua_tostring(L, -5);
+                                    LOG.Log() << "type -1 :" << lua_typename(L, lua_type(L, -1)) << std::endl;
+                                    LOG.Log() << "type -2 :" << lua_typename(L, lua_type(L, -2)) << std::endl;
+                                    LOG.Log() << "type -3 :" << lua_typename(L, lua_type(L, -3)) << std::endl;
+                                    LOG.Log() << "type -4 :" << lua_typename(L, lua_type(L, -4)) << std::endl;
+                                    LOG.Log() << "type -5 :" << lua_typename(L, lua_type(L, -5)) << std::endl;
+                                }
                             }
 
                             //判断是否需要解锁（调用了共有Vm才需要解锁）
