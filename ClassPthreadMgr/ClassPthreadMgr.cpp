@@ -331,7 +331,7 @@ void *CheckTaskList(void *args)
                             {
                                 if (lua_isnil(L, -1))
                                 {
-                                    ;
+                                    ifSkip = true;
                                 }
                                 else //需要传递到不同虚拟机
                                 {
