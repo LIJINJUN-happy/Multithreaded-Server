@@ -329,12 +329,15 @@ void *CheckTaskList(void *args)
 
                             if (lua_isnil(L, -1))
                             {
-
-                                break;
+                                ;
                             }
                             else //需要传递到不同虚拟机
                             {
-
+                                arg = lua_tostring(L, -1);
+                                fun = lua_tostring(L, -2);
+                                called = lua_tostring(L, -3);
+                                caller = lua_tostring(L, -4);
+                                uid = lua_tostring(L, -5);
                             }
 
                             //判断是否需要解锁（调用了共有Vm才需要解锁）

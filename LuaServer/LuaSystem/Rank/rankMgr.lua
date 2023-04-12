@@ -6,6 +6,7 @@ local actorCoroutineMap_ = {}
 --接口容器
 local InterfaceFunMap_ = {}
 local function loadInterFace()
+	InterfaceFunMap_["AddScore"] = RANK.ChangeScoreRankInfo
 end
 
 --[[
@@ -56,3 +57,9 @@ end
 
 ----------------------------------------------------Moudle-FUN-------------------------------------------------------
 RANK = {}
+
+--获取信息
+function ACTOR:ChangeScoreRankInfo(uid, arg)
+	print("-------------------i am in RANK")
+	return "","","ACTOR","RANK",uid
+end

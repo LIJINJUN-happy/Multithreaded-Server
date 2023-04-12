@@ -81,6 +81,8 @@ function ACTOR:AddScore(uid, arg)
 	local num = info.score or 0
 	self.score = self.score + num
 	print("添加后当前积分为:",self.score)
+	coroutine.yield(self.score,"AddScore","RANK","ACTOR",uid)
+	print("RANK BACK-----")
 	return self.score
 end
 
