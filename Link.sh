@@ -5,7 +5,7 @@ echo "当前路径为:$dir"
 echo
 
 #所需链接
-needLink=" -lpthread -std=c++11 -L/usr/lib64/mysql -lmysqlclient -I/usr/local/include/ -L/usr/local/lib/ -lm -ljsoncpp "
+needLink=" -lpthread -std=c++11 -L/usr/lib64/mysql -lmysqlclient -I/usr/local/include/ -L/usr/local/lib/ -lm -ljsoncpp -ljemalloc "
 needLuaLink=" /usr/local/lib/liblua.a -ldl "
 echo "所需链接:$needLink"
 echo "所需Lua链接:$needLuaLink"

@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <initializer_list>
+#include <jemalloc/jemalloc.h>
 
 namespace Config
 {
