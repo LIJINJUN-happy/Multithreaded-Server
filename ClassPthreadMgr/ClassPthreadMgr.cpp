@@ -202,7 +202,7 @@ void *CheckTaskList(void *args)
                     called = parseData.get("Moudle", 0).asString();
                     fun = parseData.get("Protocol", 0).asString();
 
-                    //判断是不是登录或者注册协议（需要注册过以及登录成功的用户才可以生成 ActorLua虚拟机）
+                    //判断是不是登录或下线或者注册协议（需要注册过以及登录成功的用户才可以生成 ActorLua虚拟机）
                     bool ifSkip = false;//是否跳过LuaVm的交互操作
                     bool removeActorVmWithLogOut = false;
                     if (called == "GATE")

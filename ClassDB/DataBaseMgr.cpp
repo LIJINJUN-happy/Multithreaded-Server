@@ -9,6 +9,7 @@ DataBaseMgr::DataBaseMgr()
 {
 	this->count = Config::pollingPthreadNum;
 	//this->dbArry.assign();
+	this->dbArryPtr = &(this->dbArry);
 }
 
 DataBaseMgr::~DataBaseMgr()
@@ -44,6 +45,11 @@ void DataBaseMgr::Close()
 		}
 	}
 	return;
+}
+
+std::array<ClassDataBase*, Config::pollingPthreadNum>* DataBaseMgr::GetDBArryPtr()
+{
+	return this->dbArryPtr;
 }
 
 ClassDataBase* DataBaseMgr::GetDBByIndex(int index)
