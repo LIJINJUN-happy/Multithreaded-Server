@@ -14,7 +14,7 @@ ClassDataBase::ClassDataBase()
     //初始化数据库对象
     if (mysql_init(&(this->mysql)) == NULL)
     {
-        LOG.Log() << "数据库初始化失败    " << mysql_error(&mysql) << endl;
+        LOG.Log() << "DataBase Init Fail !   " << mysql_error(&mysql) << endl;
         assert(false);
         return;
     }
@@ -23,7 +23,7 @@ ClassDataBase::ClassDataBase()
     if (!mysql_real_connect(&(this->mysql), Config::host.c_str(), Config::user.c_str(),
                             Config::passwd.c_str(), Config::db.c_str(), Config::port, NULL, 0))
     {
-        LOG.Log() << "数据接入失败    " << mysql_error(&mysql) << endl;
+        LOG.Log() << "DataBase Connect Fail !   " << mysql_error(&mysql) << endl;
         assert(false);
         return;
     }
@@ -45,7 +45,7 @@ bool ClassDataBase::DoCommand(string command)
     int res = mysql_query(&(this->mysql), command.c_str());
     if (res != 0)
     {
-        LOG.Log() << "数据库操作失败" << mysql_error(&mysql) << endl;
+        LOG.Log() << "DataBase Command Fail ! " << mysql_error(&mysql) << endl;
         return false;
     }
     this->resultRes = mysql_store_result(&(this->mysql));
