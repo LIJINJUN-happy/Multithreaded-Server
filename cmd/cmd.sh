@@ -26,7 +26,7 @@ function ServerSatrt()
         touch ../Logger/LogInfo/main_Erro.txt
     fi
 
-    local result=$(lsof -i:8888 | cat | tail -n 1)
+    local result=$(lsof -i:8899 | cat | tail -n 1)
     
     if [ "$result" == "" ]; then
         $Purple && echo "开始启动服务器........." && $RESET
@@ -40,8 +40,8 @@ function ServerSatrt()
 
 function ServerStop()
 {
-    #端口为11967的进程数据，并获取最后一行(可以用 ps代替lsof 但是ps可能会包含本来的搜索命令的关键字)
-    local result=$(lsof -i:11967 | cat | tail -n 1)
+    #端口为8899的进程数据，并获取最后一行(可以用 ps代替lsof 但是ps可能会包含本来的搜索命令的关键字)
+    local result=$(lsof -i:8899 | cat | tail -n 1)
 
     if [ "$result" == "" ]; then
         $RED && echo "暂无服务器可以关闭" && $RESET
