@@ -75,10 +75,10 @@ function CleanLog()
     local LogFile="../Logger/LogInfo/main_Logger.txt"
     #判断文件是否存在
     if [ -e "$LogFile" ]; then
+        echo "" >  ../Logger/LogInfo/main_Logger.txt
+    else
         echo " "
         #> ../Logger/LogInfo/main_Logger.txt
-    else
-        echo "" >  ../Logger/LogInfo/main_Logger.txt
     fi
 
 
@@ -86,12 +86,13 @@ function CleanLog()
     local ErroFile="../Logger/LogInfo/main_Erro.txt"
     #判断文件是否存在
     if [ -e "$ErroFile" ]; then
+        echo "" >  ../Logger/LogInfo/main_Erro.txt
+    else
         echo " "
         #> ../Logger/LogInfo/main_Erro.txt
-    else
-        echo "" >  ../Logger/LogInfo/main_Erro.txt
     fi
     $Purple && echo "日志已清空" && $RESET
+    echo " "
 }
 
 function DoCmd()
