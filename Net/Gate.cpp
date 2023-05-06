@@ -96,7 +96,9 @@ int Gate::GetRandByTimes(int from, int to, int times)
 bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db)
 {
     std::string emailaddress(DBCommand::JudegeEmailBrandNew);
+    emailaddress += '"';
     emailaddress += tarEmailAddress;
+    emailaddress += '"';
     LOG.Log() << "The emailAdress is :" << emailaddress << std::endl;
     /*bool resCheck = db->DoCommand(emailaddress);
     if (resCheck != true)
@@ -135,11 +137,11 @@ void Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
         "Register Code");
     if (ret == 0)
     {
-        printf("SendEmail success\n");
+        LOG.Log() << "SendEmail success" << std::endl;
     } 
     else
     {
-        printf("SendEmail failed,errno= %d\n", ret);
+        LOG.Log() << "SendEmail failed,errno = " << ret << std::endl;
         return;
     }
        
