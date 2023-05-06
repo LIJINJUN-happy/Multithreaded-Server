@@ -2,7 +2,6 @@
 #define _DBCOMMAND_H_
 
 #include <string>
-#include <format>
 
 namespace DBCommand
 {
