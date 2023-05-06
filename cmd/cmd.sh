@@ -69,6 +69,31 @@ function ServerReboot()
     ServerSatrt
 }
 
+function CleanLog()
+{
+    #clean main_Logger
+    local LogFile="../Logger/LogInfo/main_Logger.txt"
+    #判断文件是否存在
+    if [ -e "$LogFile" ]; then
+        echo " "
+        #> ../Logger/LogInfo/main_Logger.txt
+    else
+        echo "" >  ../Logger/LogInfo/main_Logger.txt
+    fi
+
+
+    #clean main_Erro
+    local ErroFile="../Logger/LogInfo/main_Erro.txt"
+    #判断文件是否存在
+    if [ -e "$ErroFile" ]; then
+        echo " "
+        #> ../Logger/LogInfo/main_Erro.txt
+    else
+        echo "" >  ../Logger/LogInfo/main_Erro.txt
+    fi
+    $Purple && echo "日志已清空" && $RESET
+}
+
 function DoCmd()
 {
     if [ "$param" == "start" ]; then
@@ -77,6 +102,8 @@ function DoCmd()
         ServerStop
     elif [ "$param" == "reboot" ]; then
         ServerReboot
+    elif [ "$param" == "clean" ]; then
+        CleanLog
     else
         $RED && echo "Input Wrong!"  && $RESET
     fi
