@@ -1,3 +1,67 @@
 {
+	//网关模块GATE
 
+	//-----------------------------------------client-----------------------------------------------------
+	"Client_To_Server": [
+
+		//登录请求
+		{
+			"Moudle": "GATE",
+			"Protocol": "c_login_request",
+			"Account": "string", //登录账号
+			"Password": "string" //登录密码
+		},
+
+		//下线
+		{
+			"Moudle": "GATE",
+			"Protocol": "c_logout"
+		},
+
+		//注册请求
+		{
+			"Moudle": "GATE",
+			"Protocol": "c_registered_request",
+			"Account": "string",  //注册账号
+			"Password": "string", //注册账号的密码
+			"Code": "string"			//注册码字符串
+		},
+
+
+		//注册码请求
+		{
+			"Moudle": "GATE",
+			"Protocol": "c_registered_token_request",
+			"EmailAddress": "string"	//邮箱地址
+		}
+	],
+
+	//------------------------------------------server-----------------------------------------------------
+
+	"Server_To_Client": [
+
+		//登录请求返回
+		{
+			"Moudle": "GATE",
+			"Protocol": "c_login_respond",
+			"Result": "bool"		//登录结果
+		},
+
+		//注册码请求返回
+		{
+			"Moudle": "GATE",
+			"Protocol": "s_registered_token_respond",
+			"Result": "bool",		//注册码请求结果（true为成功，false为失败）
+			"Code": "string"		//注册码字符串（Result是false的时候为空字符）
+		},
+
+		//注册请求返回
+		{
+			"Moudle": "GATE",
+			"Protocol": "c_registered_respond",
+			"Result": "bool"		//注册请求验证结果（true为成功，false为失败）
+		}
+
+
+	]
 }
