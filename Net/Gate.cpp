@@ -95,6 +95,19 @@ int Gate::GetRandByTimes(int from, int to, int times)
 //是否为未注册的邮箱
 bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db)
 {
+    std::string emailaddress(DBCommand::JudegeEmailBrandNew);
+    emailaddress += tarEmailAddress;
+    LOG.Log() << "The emailAdress is :" << emailaddress << std::endl;
+    /*bool resCheck = db->DoCommand(emailaddress);
+    if (resCheck != true)
+    {
+        return false;
+    }
+    int resRow = db->GetResultRow();
+    if (resRow > 0)
+    {
+        return false;
+    }*/
     return true;
 }
 

@@ -2,6 +2,7 @@
 #define _CLASSLOGGER_H_
 
 #include "../../etc/Config.h"
+#include "../../ClassDB/DBCommand.h"
 
 class ClassLogger
 {
