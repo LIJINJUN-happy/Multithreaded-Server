@@ -100,16 +100,18 @@ bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db)
     emailaddress += tarEmailAddress;
     emailaddress += '"';
     LOG.Log() << "The emailAdress is :" << emailaddress << std::endl;
-    /*bool resCheck = db->DoCommand(emailaddress);
+    bool resCheck = db->DoCommand(emailaddress);
     if (resCheck != true)
     {
+        LOG.Log() << "resCheck is :" << resCheck << std::endl;
         return false;
     }
     int resRow = db->GetResultRow();
     if (resRow > 0)
     {
+        LOG.Log() << "resRow is :" << resRow << std::endl;
         return false;
-    }*/
+    }
     return true;
 }
 
