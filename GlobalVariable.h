@@ -39,6 +39,24 @@ namespace Global
         std::map<std::string, std::pair<int, std::string>>* GetMoudleInfo();
         int judgeMoudleType(std::string);
     };
+
+    struct MakeSendPackage
+    {
+    public:
+        Json::Value val;
+
+    public:
+        MakeSendPackage(std::string moudle, std::string proto);
+        ~MakeSendPackage();
+    
+    public:
+        int Flush(int socket); //发送协议内容
+        void SetVal(std::string tag, int arg);
+        void SetVal(std::string tag, std::string arg);
+        void SetVal(std::string tag, bool arg);
+        void SetVal(std::string tag, double arg);
+        void SetVal(std::string tag, float arg);
+    };
 }
 
 #endif

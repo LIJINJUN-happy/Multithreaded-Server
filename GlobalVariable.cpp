@@ -108,3 +108,50 @@ int Global::LuaMoudleFilesInfo::judgeMoudleType(std::string moudle)
     }
     return Global::PUBLIC;
 }
+
+Global::MakeSendPackage::MakeSendPackage(std::string moudle, std::string proto)
+{
+    val["Moudle"] = Json::Value(moudle);
+    val["Protocol"] = Json::Value(proto);
+}
+
+Global::MakeSendPackage::~MakeSendPackage()
+{
+}
+
+int Global::MakeSendPackage::Flush(int socket)
+{
+    Json::FastWriter writer;
+    std::string jsonStr = writer.write(val) + '|';
+    char buf[256] = { 0 };
+    memcpy(buf, jsonStr.c_str(), jsonStr.size());
+    int sendSize = send(socket, buf, strlen(buf), 0);
+    return sendSize;
+}
+
+void Global::MakeSendPackage::SetVal(std::string tag, int arg)
+{
+    val[tag.c_str()] = Json::Value(arg);
+}
+
+void Global::MakeSendPackage::SetVal(std::string tag, std::string arg)
+{
+    val[tag.c_str()] = Json::Value(arg);
+}
+
+void Global::MakeSendPackage::SetVal(std::string tag, bool arg)
+{
+    val[tag.c_str()] = Json::Value(arg);
+}
+
+void Global::MakeSendPackage::SetVal(std::string tag, double arg)
+{
+    val[tag.c_str()] = Json::Value(arg);
+}
+
+void Global::MakeSendPackage::SetVal(std::string tag, float arg)
+{
+    val[tag.c_str()] = Json::Value(arg);
+}
+
+
