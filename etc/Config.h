@@ -17,6 +17,8 @@
 #include <fstream>
 #include <assert.h>
 #include <sys/select.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>

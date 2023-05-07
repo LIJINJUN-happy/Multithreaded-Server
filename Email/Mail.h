@@ -1,12 +1,10 @@
 #ifndef _MAIL_H_
 #define _MAIL_H_
 
-#include <sys/socket.h>
 #include <netinet/in.h>
 #include <errno.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <sys/types.h>
 #include "../GlobalVariable.h"
 
 struct Base64Date6

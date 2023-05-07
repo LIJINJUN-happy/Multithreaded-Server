@@ -38,7 +38,6 @@ namespace Gate
 
 	//下线后移出socketIdMap容器
 	void RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid);
-
 }
 
 #endif
