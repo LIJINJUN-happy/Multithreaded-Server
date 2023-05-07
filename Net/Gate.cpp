@@ -103,13 +103,13 @@ bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db)
     bool resCheck = db->DoCommand(emailaddress);
     if (resCheck != true)
     {
-        LOG.Error() << "resCheck is :" << resCheck << std::endl;
+        LOG.Error() << "JudegeEmailBrandNew resCheck is :" << resCheck << std::endl;
         return false;
     }
     int resRow = db->GetResultRow();
     if (resRow > 0)
     {
-        LOG.Error() << "resRow is :" << resRow << std::endl;
+        LOG.Error() << "JudegeEmailBrandNew resRow is :" << resRow << std::endl;
         return false;
     }
     return true;
@@ -139,7 +139,7 @@ bool Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
         "Register Code");
     if (ret == 0)
     {
-        LOG.Log() << "SendEmail success" << std::endl;
+        //LOG.Log() << "SendEmail success" << std::endl;
     } 
     else
     {
@@ -157,16 +157,27 @@ bool Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 
 //注册请求
 //验证成功以及验证码过期会重置验证码和验证时间,但是验证码不匹配则不重置,给用户保留多次重输机会
-bool Gate::Registered(void* cliptr, std::string account, std::string pw, int code)
+bool Gate::Registered(void* cliptr, std::string account, std::string pw, int code, ClassDataBase* db)
 {
     bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(code);
     if (resRegister == false)
     {
         return false;
     }
-    /*
-    注册成功则保存信息,用来验证登录
-    */
+
+    /*注册成功则保存信息,用来验证登录*/
+    std::string makeAccount = DBCommand::MakeAccount;
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + account + "',"));
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + account + "',"));
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + pw + "',"));
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + ((Client*)cliptr)->GetEmailAddress() + "'"));
+    bool res = db->DoCommand(makeAccount);
+    if (res != true)
+    {
+        LOG.Error() << "Create Account result is :" << res << std::endl;
+        return false;
+    }
+
     ((Client*)cliptr)->SetRegisterCode(0);
     ((Client*)cliptr)->SetRegisterCodeTime(0);
     ((Client*)cliptr)->SetEmailAddress("");

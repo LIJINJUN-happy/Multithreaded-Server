@@ -25,7 +25,7 @@ namespace Gate
 	bool GetRegisteredToken(void* cliptr, const char* tarEmailAddress);
 
 	//注册请求处理
-	bool Registered(void* cliptr, std::string account, std::string pw, int code);
+	bool Registered(void* cliptr, std::string account, std::string pw, int code, ClassDataBase* db);
 
 	//登录请求处理
 	bool Login(int fd, void* fdMapPtr, std::string account, std::string pw);

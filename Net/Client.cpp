@@ -157,6 +157,11 @@ void Client::SetEmailAddress(std::string address)
     this->emailAddress = address;
 }
 
+std::string Client::GetEmailAddress()
+{
+    return std::string(this->emailAddress);
+}
+
 Client* Client::GetMyself()
 {
     return this->pMyself;

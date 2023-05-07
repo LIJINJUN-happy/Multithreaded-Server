@@ -43,7 +43,7 @@
 		//登录请求返回
 		{
 			"Moudle": "GATE",
-			"Protocol": "c_login_respond",
+			"Protocol": "s_login_respond",
 			"Result": "bool"		//登录结果
 		},
 
@@ -58,7 +58,7 @@
 		//注册请求返回
 		{
 			"Moudle": "GATE",
-			"Protocol": "c_registered_respond",
+			"Protocol": "s_registered_respond",
 			"Result": "bool"		//注册请求验证结果（true为成功，false为失败）
 		}
 

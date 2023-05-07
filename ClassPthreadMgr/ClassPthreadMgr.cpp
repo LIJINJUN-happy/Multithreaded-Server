@@ -236,7 +236,14 @@ void *CheckTaskList(void *args)
                             std::string account = parseData.get("Account", 0).asString();
                             std::string password = parseData.get("Password", 0).asString();
                             int code = parseData.get("Code", 0).asInt();
-                            Gate::Registered(msgPtr->GetOperatePtr(), account, password, code);
+                            bool resRegistered = Gate::Registered(msgPtr->GetOperatePtr(), account, password, code, dbPtr);
+                            
+                            //返回协议
+                            Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_registered_respond");
+                            pack->SetVal("Result", resRegistered);
+                            pack->Flush(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd());
+                            delete pack;
+                            
                             //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
                             ifSkip = true;
                         }

@@ -49,6 +49,7 @@ public:
     void SetRegisterCodeTime(long time);
     bool JudgeRegisterCode(int compareCode);
     void SetEmailAddress(std::string address);
+    std::string GetEmailAddress();
 
 };
 
