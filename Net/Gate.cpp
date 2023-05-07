@@ -167,10 +167,13 @@ bool Gate::Registered(void* cliptr, std::string account, std::string pw, int cod
 
     /*注册成功则保存信息,用来验证登录*/
     std::string makeAccount = DBCommand::MakeAccount;
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + account + "',"));
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + account + "',"));
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + pw + "',"));
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + ((Client*)cliptr)->GetEmailAddress() + "'"));
+    std::string emailAddress = ((Client*)cliptr)->GetEmailAddress();
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + account + "',"));       //账号
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + pw + "',"));            //密码
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + emailAddress + "',"));  //邮箱地址
+    emailAddress.erase(emailAddress.size() - 7, emailAddress.size() - 1);                //去除@qq.com
+    makeAccount.insert(makeAccount.size() - 1, std::string("'" + emailAddress + "'"));   //玩家UID（取邮箱前面的数值部分）
+    //执行MYSQL语句
     bool res = db->DoCommand(makeAccount);
     if (res != true)
     {
