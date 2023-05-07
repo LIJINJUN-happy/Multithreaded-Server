@@ -264,7 +264,7 @@ void *CheckTaskList(void *args)
                             //返回协议
                             Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_registered_token_respond");
                             pack->SetVal("Result", resJudege);
-                            pack->SetVal("Result", tip);
+                            pack->SetVal("Reason", tip);
                             pack->Flush(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd());
                             delete pack;
                         }

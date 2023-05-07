@@ -122,7 +122,8 @@ Global::MakeSendPackage::~MakeSendPackage()
 int Global::MakeSendPackage::Flush(int socket)
 {
     Json::FastWriter writer;
-    std::string jsonStr = writer.write(val) + '|';
+    std::string jsonStr = writer.write(val);
+    jsonStr.push_back('|')
     char buf[256] = { 0 };
     memcpy(buf, jsonStr.c_str(), jsonStr.size());
     int sendSize = send(socket, buf, strlen(buf), 0);
