@@ -260,6 +260,20 @@ void *CheckTaskList(void *args)
                                 }
                             }
                             ifSkip = true;//注册码请求也需要跳过
+
+                            //返回协议
+                            Json::FastWriter writer;
+                            Json::Value val;
+                            val["Moudle"] = Json::Value("GATE");
+                            val["Protocol"] = Json::Value("s_registered_token_respond");
+                            val["Result"] = Json::Value(resJudege);
+                            val["Reason"] = Json::Value(tip);
+                            std::string jsonStr = writer.write(val) + '|';
+                            char buf[256] = { 0 };
+                            memcpy(buf, jsonStr.c_str(), jsonStr.size());
+                            int sock = ((Client*)(msgPtr->GetOperatePtr()))->GetClientFd();
+                            int sendSize = send(sock, buf, strlen(buf), 0);
+
                         }
                         else if (fun == "c_logout")//下线
                         {
