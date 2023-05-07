@@ -245,13 +245,19 @@ void *CheckTaskList(void *args)
                             std::string em = parseData.get("EmailAddress", 0).asString();
                             //std::string em = "2231173990@qq.com";
                             bool resJudege = Gate::JudegeEmailBrandNew(em.c_str(), dbPtr);
+                            std::string tip = "";
                             if (resJudege == false)
                             {
-                                printf("该邮箱已经注册过了\n");
+                                LOG.Log() << "该邮箱已经注册过了" << std::endl;
+                                tip = "Email has been registered,please use another one";
                             } 
                             else
                             {
-                                Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str());
+                                resJudege = Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str());
+                                if (resJudege == false)
+                                {
+                                    tip = "Send Email failed";
+                                }
                             }
                             ifSkip = true;//注册码请求也需要跳过
                         }

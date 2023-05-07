@@ -22,7 +22,7 @@ namespace Gate
 	bool JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db);
 
 	//注册码请求处理
-	void GetRegisteredToken(void* cliptr, const char* tarEmailAddress);
+	bool GetRegisteredToken(void* cliptr, const char* tarEmailAddress);
 
 	//注册请求处理
 	bool Registered(void* cliptr, std::string account, std::string pw, int code);

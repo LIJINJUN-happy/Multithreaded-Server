@@ -99,24 +99,24 @@ bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db)
     emailaddress += '"';
     emailaddress += tarEmailAddress;
     emailaddress += '"';
-    LOG.Log() << "The emailAdress is :" << emailaddress << std::endl;
+    //LOG.Log() << "The emailAdress is :" << emailaddress << std::endl;
     bool resCheck = db->DoCommand(emailaddress);
     if (resCheck != true)
     {
-        LOG.Log() << "resCheck is :" << resCheck << std::endl;
+        LOG.Error() << "resCheck is :" << resCheck << std::endl;
         return false;
     }
     int resRow = db->GetResultRow();
     if (resRow > 0)
     {
-        LOG.Log() << "resRow is :" << resRow << std::endl;
+        LOG.Error() << "resRow is :" << resRow << std::endl;
         return false;
     }
     return true;
 }
 
 //验证码请求
-void Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
+bool Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 {
     //生产随机的数字组合
     int code = Gate::GetRandByTimes(1, 9, Config::registerCodeSize);
@@ -143,8 +143,8 @@ void Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
     } 
     else
     {
-        LOG.Log() << "SendEmail failed,errno = " << ret << std::endl;
-        return;
+        LOG.Error() << "SendEmail failed,errno = " << ret << std::endl;
+        return false;
     }
        
 
@@ -152,7 +152,7 @@ void Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
     ((Client*)cliptr)->SetRegisterCode(code);
     ((Client*)cliptr)->SetRegisterCodeTime(nTime);
     ((Client*)cliptr)->SetEmailAddress(std::string(tarEmailAddress));
-    return ;
+    return true;
 }
 
 //注册请求
