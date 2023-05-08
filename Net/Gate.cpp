@@ -263,7 +263,7 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
     return "";
 }
 
-bool Gate::Login(void* fdMapPtr, std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockmapPtr)
+bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockmapPtr)
 {
     //先验证账号密码
     int fd = ((Client*)cliptr)->GetClientFd();
