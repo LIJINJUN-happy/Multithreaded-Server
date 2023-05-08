@@ -31,7 +31,7 @@ namespace Gate
 	std::string CheckoutAccountPassword(std::string account, std::string pw, ClassDataBase* db);
 
 	//登录请求处理
-	bool Login(int fd, void* fdMapPtr, std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockmapPtr);
+	bool Login(void* fdMapPtr, std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockmapPtr);
 
 	//登录成功后创建用户LuaVm
 	bool CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr);
