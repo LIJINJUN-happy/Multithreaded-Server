@@ -93,31 +93,54 @@ int Gate::GetRandByTimes(int from, int to, int times)
 }
 
 //是否为未注册的邮箱
-bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db)
+bool Gate::JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db, int socket)
 {
+    bool result = true;
+    std::string tip = "";
+
+    //处理mysql语句中的字符
     std::string emailaddress(DBCommand::JudegeEmailBrandNew);
     emailaddress += '"';
     emailaddress += tarEmailAddress;
     emailaddress += '"';
     //LOG.Log() << "The emailAdress is :" << emailaddress << std::endl;
+
+    //执行mysql语句
     bool resCheck = db->DoCommand(emailaddress);
     if (resCheck != true)
     {
         LOG.Error() << "JudegeEmailBrandNew resCheck is :" << resCheck << std::endl;
-        return false;
+        result = false;
+        tip = "JudegeEmailBrandNew DBCommand Fail";
     }
     int resRow = db->GetResultRow();
     if (resRow > 0)
     {
-        LOG.Error() << "JudegeEmailBrandNew resRow is :" << resRow << std::endl;
-        return false;
+        LOG.Log() << "该邮箱已经注册过了" << std::endl;
+        result = false;
+        tip = "Email has been registered,please use another one";
     }
-    return true;
+
+    //返回协议(错误才返回，因为这里仅仅是判断是否注册了，还没对数据库进行插入操作,不能返回true的协议内容)
+    if (result != true)
+    {
+        Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_registered_token_respond");
+        pack->SetVal("Result", result);
+        pack->SetVal("Reason", tip);
+        pack->Flush(socket);
+        delete pack;
+    }
+
+    return result;
 }
 
 //验证码请求
 bool Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
 {
+    bool result = true;
+    std::string tip = "";
+    int socket = ((Client*)cliptr)->GetClientFd();
+
     //生产随机的数字组合
     int code = Gate::GetRandByTimes(1, 9, Config::registerCodeSize);
     long nTime = Global::GetNowTime();
@@ -139,57 +162,121 @@ bool Gate::GetRegisteredToken(void* cliptr, const char* tarEmailAddress)
         "Register Code");
     if (ret == 0)
     {
+        //发送成功设置验证码信息
         //LOG.Log() << "SendEmail success" << std::endl;
+        ((Client*)cliptr)->SetRegisterCode(code);
+        ((Client*)cliptr)->SetRegisterCodeTime(nTime);
+        ((Client*)cliptr)->SetEmailAddress(std::string(tarEmailAddress));
     } 
     else
     {
         LOG.Error() << "SendEmail failed,errno = " << ret << std::endl;
-        return false;
+        tip = "SendEmail Failed";
+        result = false;
     }
-       
 
-    //发送成功设置验证码信息
-    ((Client*)cliptr)->SetRegisterCode(code);
-    ((Client*)cliptr)->SetRegisterCodeTime(nTime);
-    ((Client*)cliptr)->SetEmailAddress(std::string(tarEmailAddress));
-    return true;
+    //返回协议
+    Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_registered_token_respond");
+    pack->SetVal("Result", result);
+    pack->SetVal("Reason", tip);
+    pack->Flush(socket);
+    delete pack;
+
+    return result;
 }
 
 //注册请求
 //验证成功以及验证码过期会重置验证码和验证时间,但是验证码不匹配则不重置,给用户保留多次重输机会
 bool Gate::Registered(void* cliptr, std::string account, std::string pw, int code, ClassDataBase* db)
 {
+    bool res = true;
     bool resRegister = ((Client*)cliptr)->JudgeRegisterCode(code);
     if (resRegister == false)
     {
-        return false;
+        res = false;
     }
-
-    /*注册成功则保存信息,用来验证登录*/
-    std::string makeAccount = DBCommand::MakeAccount;
-    std::string emailAddress = ((Client*)cliptr)->GetEmailAddress();
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + account + "',"));       //账号
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + pw + "',"));            //密码
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + emailAddress + "',"));  //邮箱地址
-    emailAddress.erase(emailAddress.size() - 7, emailAddress.size() - 1);                //去除@qq.com
-    makeAccount.insert(makeAccount.size() - 1, std::string("'" + emailAddress + "'"));   //玩家UID（取邮箱前面的数值部分）
-    //执行MYSQL语句
-    bool res = db->DoCommand(makeAccount);
-    if (res != true)
+    else
     {
-        LOG.Error() << "Create Account result is :" << res << std::endl;
-        return false;
+        /*注册成功则保存信息,用来验证登录*/
+        std::string makeAccount = DBCommand::MakeAccount;
+        std::string emailAddress = ((Client*)cliptr)->GetEmailAddress();
+        makeAccount.insert(makeAccount.size() - 1, std::string("'" + account + "',"));       //账号
+        makeAccount.insert(makeAccount.size() - 1, std::string("'" + pw + "',"));            //密码
+        makeAccount.insert(makeAccount.size() - 1, std::string("'" + emailAddress + "',"));  //邮箱地址
+        emailAddress.erase(emailAddress.size() - 7, emailAddress.size() - 1);                //去除@qq.com
+        makeAccount.insert(makeAccount.size() - 1, std::string("'" + emailAddress + "'"));   //玩家UID（取邮箱前面的数值部分）
+        //执行MYSQL语句
+        res = db->DoCommand(makeAccount);
+        if (res != true)
+        {
+            LOG.Error() << "Create Account result is :" << res << std::endl;
+            LOG.Log() << "myslq插入数据失败" << std::endl;
+        }
+        else
+        {
+            ((Client*)cliptr)->SetRegisterCode(0);
+            ((Client*)cliptr)->SetRegisterCodeTime(0);
+            ((Client*)cliptr)->SetEmailAddress("");
+        }
     }
+    
+    //返回协议
+    Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_registered_respond");
+    pack->SetVal("Result", res);
+    pack->Flush(((Client*)cliptr)->GetClientFd());
+    delete pack;
 
-    ((Client*)cliptr)->SetRegisterCode(0);
-    ((Client*)cliptr)->SetRegisterCodeTime(0);
-    ((Client*)cliptr)->SetEmailAddress("");
-    return true;
+    return res;
 }
 
-bool Gate::Login(int fd, void* fdMapPtr, std::string account, std::string pw)
+std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, ClassDataBase* db)
 {
-    return true;
+    std::string dbString = DBCommand::CheckoutPassword;
+    dbString.insert(dbString.find('=') + 2, account);
+    dbString.insert(dbString.find_last_of('=') + 2, pw);
+    LOG.Log() << "dbString = " << dbString << std::endl;
+    bool res = db->DoCommand(dbString);
+    if (res != true)
+    {
+        LOG.Error() << "SomeThing Wrong With CheckoutAccountPassword`s DBString ! " << std::endl;
+        return "";
+    }
+    else
+    {
+        int row = db->GetResultRow();
+        int count = this->GetResultCount();
+        LOG.Log << "row = " << row << std::endl;
+        LOG.Log << "count = " << count << std::endl;
+        if (row <= 0 || count <= 0)
+        {
+            LOG.Log() << "Login Fail With Password not right !" << std::endl;
+            return "";
+        }
+        else if(row == 1 && count == 1)
+        {
+            LOG.Log() << "Login Success !" << std::endl;
+            std::string actorID = (*(db->GetNextRowInfo()))[0];
+            LOG.Log() << "actorID" << actorID << std::endl;
+            return actorID;
+        }
+    }
+    return "";
+}
+
+bool Gate::Login(int fd, void* fdMapPtr, std::string account, std::string pw, ClassDataBase* db)
+{
+    //先验证账号密码
+    std::string actorId = Gate::CheckoutAccountPassword(account, pw, db);
+    if (actorId.size() <= 0)
+    {
+
+    }
+    else
+    {
+
+    }
+
+    return false;
 }
 
 //Create Client LuaVm
@@ -215,6 +302,7 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
             }
             else
             {
+                //LOG.Error() << "Personal Moudle Init Fail fd : " << uid << std::endl;
                 delete L;
                 return false;
                 //continue;

@@ -75,6 +75,12 @@ void ClassDataBase::release()
     return;
 }
 
+MYSQL_ROW* ClassDataBase::GetNextRowInfo()
+{
+    this->row = mysql_fetch_row(this->resultRes);
+    return this->row;
+}
+
 void ClassDataBase::PrintOutQuery()
 {
     int resRow = this->GetResultRow();
@@ -85,7 +91,7 @@ void ClassDataBase::PrintOutQuery()
         this->row = mysql_fetch_row(this->resultRes);
         for (int j = 0; j < count; j++)
         {
-            printf("row[%d]=%s  ", j, row[j]);
+            printf("row[%d]=%s  ", i, row[j]);
         }
     }
     this->release();

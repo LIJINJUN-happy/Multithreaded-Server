@@ -209,26 +209,15 @@ void *CheckTaskList(void *args)
                     {
                         if (fun == "c_login_request")//登录请求
                         {
-                            int fd = ((Client*)(msgPtr->GetOperatePtr()))->GetClientFd();
-                            void* np = msgPtr->GetsockfdMapPrt();
                             std::string account = parseData.get("Account", 0).asString();
                             std::string password = parseData.get("Password", 0).asString();
-                            bool resLogin = Gate::Login(fd, np, account, password);
-                            if (resLogin == false)
-                            {
-                                ifSkip = true;//登录失败要调过虚拟机交互,成功则进入虚拟机
-                            }
-                            else
-                            {
-                                //创建虚拟机
-                                void* clientPtr = msgPtr->GetOperatePtr();
-                                bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(clientPtr, luaVmMgrPtr);
-                                if(resCreateLuaVm != true)
-                                    ifSkip = true;//创建失败也要跳过
-                                else
-                                {   //登录成功且创建Vm成功后,才可以加入socketIdMap中
-                                    Gate::AddIntoSockIdMap(clientPtr, msgPtr->GetsockidMapPrt());
-                                }
+                            bool resultLogin = Gate::Login(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd(), msgPtr->GetsockfdMapPrt(), account, password);
+                            if (resultLogin == false){
+                                ifSkip = true;}                                                                                             //登录失败要调过虚拟机交互
+                            else{
+                                bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(msgPtr->GetOperatePtr(), luaVmMgrPtr);                    //登录成功则尝试创建虚拟机
+                                if (resCreateLuaVm != true) { ifSkip = true; }                                                              //即使登录成功但创建失败也要跳过
+                                if (resCreateLuaVm == true) { Gate::AddIntoSockIdMap(msgPtr->GetOperatePtr(), msgPtr->GetsockidMapPrt()); } //登录成功且创建Vm成功后,才可以加入socketIdMap中
                             }
                         }
                         else if (fun == "c_registered_request")//注册请求
@@ -237,43 +226,14 @@ void *CheckTaskList(void *args)
                             std::string password = parseData.get("Password", 0).asString();
                             int code = parseData.get("Code", 0).asInt();
                             bool resRegistered = Gate::Registered(msgPtr->GetOperatePtr(), account, password, code, dbPtr);
-                            
-                            //返回协议
-                            Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_registered_respond");
-                            pack->SetVal("Result", resRegistered);
-                            pack->Flush(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd());
-                            delete pack;
-                            
-                            //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
-                            ifSkip = true;
+                            ifSkip = true;                                                                                                  //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
                         }
                         else if (fun == "c_registered_token_request")//注册码请求
                         {
                             std::string em = parseData.get("EmailAddress", 0).asString();
-                            //std::string em = "2231173990@qq.com";
-                            bool resJudege = Gate::JudegeEmailBrandNew(em.c_str(), dbPtr);
-                            std::string tip = "";
-                            if (resJudege == false)
-                            {
-                                LOG.Log() << "该邮箱已经注册过了" << std::endl;
-                                tip = "Email has been registered,please use another one";
-                            } 
-                            else
-                            {
-                                resJudege = Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str());
-                                if (resJudege == false)
-                                {
-                                    tip = "Send Email failed";
-                                }
-                            }
-                            ifSkip = true;//注册码请求也需要跳过
-
-                            //返回协议
-                            Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_registered_token_respond");
-                            pack->SetVal("Result", resJudege);
-                            pack->SetVal("Reason", tip);
-                            pack->Flush(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd());
-                            delete pack;
+                            bool resJudege = Gate::JudegeEmailBrandNew(em.c_str(), dbPtr, ((Client*)(msgPtr->GetOperatePtr()))->GetClientFd());
+                            if (resJudege == true) { Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str()); }
+                            ifSkip = true;                                                                                                  //注册码请求也需要跳过
                         }
                         else if (fun == "c_logout")//下线
                         {

@@ -19,7 +19,7 @@ namespace Gate
 	int GetRandByTimes(int from, int to, int times);
 
 	//判断邮箱是否无注册过账号
-	bool JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db);
+	bool JudegeEmailBrandNew(const char* tarEmailAddress, ClassDataBase* db, int socket);
 
 	//注册码请求处理
 	bool GetRegisteredToken(void* cliptr, const char* tarEmailAddress);
@@ -27,8 +27,11 @@ namespace Gate
 	//注册请求处理
 	bool Registered(void* cliptr, std::string account, std::string pw, int code, ClassDataBase* db);
 
+	//登录验证账号密码(返回玩家UID,验证失败返回空字符)
+	std::string CheckoutAccountPassword(std::string account, std::string pw, ClassDataBase* db);
+
 	//登录请求处理
-	bool Login(int fd, void* fdMapPtr, std::string account, std::string pw);
+	bool Login(int fd, void* fdMapPtr, std::string account, std::string pw, ClassDataBase* db);
 
 	//登录成功后创建用户LuaVm
 	bool CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr);
