@@ -356,7 +356,7 @@ void *CheckTaskList(void *args)
             {
                 void* sockmapPtr = msgPtr->GetsockidMapPrt();
                 auto it = ((map<string, Client*>*)sockmapPtr)->find(uid);
-                if (it != ((map<string, Client*>*)sockmapPtr)->end())//防止掉线了,clientPtr指向无效对象
+                if (it != ((map<string, Client*>*)sockmapPtr)->end())//防止掉线了,clientPtr指向无效对象，所以需要判断一下
                 {
                     Client* clientPtr = (Client*)(msgPtr->GetOperatePtr());
                     clientPtr->UpdateClientTaskNum(-1);
