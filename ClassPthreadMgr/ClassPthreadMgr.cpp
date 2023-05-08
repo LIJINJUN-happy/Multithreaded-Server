@@ -211,14 +211,8 @@ void *CheckTaskList(void *args)
                         {
                             std::string account = parseData.get("Account", 0).asString();
                             std::string password = parseData.get("Password", 0).asString();
-                            bool resultLogin = Gate::Login(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd(), msgPtr->GetsockfdMapPrt(), account, password, dbPtr);
-                            if (resultLogin == false){
-                                ifSkip = true;}                                                                                             //登录失败要调过虚拟机交互
-                            else{
-                                bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(msgPtr->GetOperatePtr(), luaVmMgrPtr);                    //登录成功则尝试创建虚拟机
-                                if (resCreateLuaVm != true) { ifSkip = true; }                                                              //即使登录成功但创建失败也要跳过
-                                if (resCreateLuaVm == true) { Gate::AddIntoSockIdMap(msgPtr->GetOperatePtr(), msgPtr->GetsockidMapPrt()); } //登录成功且创建Vm成功后,才可以加入socketIdMap中
-                            }
+                            bool resultLogin = Gate::Login(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd(), msgPtr->GetsockfdMapPrt(), account, password, dbPtr, msgPtr->GetOperatePtr(), luaVmMgrPtr, msgPtr->GetsockidMapPrt());
+                            if (resultLogin == false) { ifSkip = true; }                                                                    //登录失败要调过虚拟机交互
                         }
                         else if (fun == "c_registered_request")//注册请求
                         {
