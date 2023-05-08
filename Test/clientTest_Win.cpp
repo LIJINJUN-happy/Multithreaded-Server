@@ -51,6 +51,7 @@ int main()
 				what_want_to_send = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_registered_request\",\"Account\":\"li\",\"Password\":\"abc\",\"Code\":111}|";
 				break; //
 			case 3:
+				what_want_to_send = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_login_request\",\"Account\":\"li\",\"Password\":\"abcd\"}|";
 				break; //
 			case 4:
 				break; //
