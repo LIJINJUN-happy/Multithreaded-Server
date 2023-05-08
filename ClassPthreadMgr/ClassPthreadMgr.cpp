@@ -229,10 +229,7 @@ void *CheckTaskList(void *args)
                             if (resJudege == true) { Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str()); }
                             ifSkip = true;                                                                                                  //注册码请求也需要跳过
                         }
-                        else if (fun == "c_logout")//下线
-                        {
-                            removeActorVmWithLogOut = true;
-                        }
+                        else if (fun == "c_logout") { removeActorVmWithLogOut = true; }//下线
                     }
 
                     caller = "";
