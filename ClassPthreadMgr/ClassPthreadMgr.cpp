@@ -211,7 +211,7 @@ void *CheckTaskList(void *args)
                         {
                             std::string account = parseData.get("Account", 0).asString();
                             std::string password = parseData.get("Password", 0).asString();
-                            bool resultLogin = Gate::Login(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd(), msgPtr->GetsockfdMapPrt(), account, password);
+                            bool resultLogin = Gate::Login(((Client*)(msgPtr->GetOperatePtr()))->GetClientFd(), msgPtr->GetsockfdMapPrt(), account, password, dbPtr);
                             if (resultLogin == false){
                                 ifSkip = true;}                                                                                             //登录失败要调过虚拟机交互
                             else{

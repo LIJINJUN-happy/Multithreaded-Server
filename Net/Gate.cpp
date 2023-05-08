@@ -244,9 +244,9 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
     else
     {
         int row = db->GetResultRow();
-        int count = this->GetResultCount();
-        LOG.Log << "row = " << row << std::endl;
-        LOG.Log << "count = " << count << std::endl;
+        int count = db->GetResultCount();
+        LOG.Log() << "row = " << row << std::endl;
+        LOG.Log() << "count = " << count << std::endl;
         if (row <= 0 || count <= 0)
         {
             LOG.Log() << "Login Fail With Password not right !" << std::endl;

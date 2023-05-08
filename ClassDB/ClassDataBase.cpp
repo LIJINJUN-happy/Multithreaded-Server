@@ -78,7 +78,7 @@ void ClassDataBase::release()
 MYSQL_ROW* ClassDataBase::GetNextRowInfo()
 {
     this->row = mysql_fetch_row(this->resultRes);
-    return this->row;
+    return &(this->row);
 }
 
 void ClassDataBase::PrintOutQuery()
