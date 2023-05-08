@@ -57,6 +57,12 @@ int Client::GetClientFd()
     return this->fd;
 }
 
+void Client::SetClientUid(std::string id)
+{
+    this->uid = id;
+    return;
+}
+
 //查看距离上次的心跳时间差是否超出范围
 bool Client::CheckoutIfOnLine()
 {

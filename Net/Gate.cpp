@@ -256,7 +256,7 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
         {
             LOG.Log() << "Login Success !" << std::endl;
             std::string actorID = (*(db->GetNextRowInfo()))[0];
-            LOG.Log() << "actorID" << actorID << std::endl;
+            LOG.Log() << "actorID = " << actorID << std::endl;
             return actorID;
         }
     }
@@ -266,17 +266,27 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
 bool Gate::Login(int fd, void* fdMapPtr, std::string account, std::string pw, ClassDataBase* db)
 {
     //先验证账号密码
+    bool result = true;
     std::string actorId = Gate::CheckoutAccountPassword(account, pw, db);
     if (actorId.size() <= 0)
     {
-
+        result = false;
     }
     else
     {
-
+        //result = true;
+        string key = std::to_string(fd);
+        Client* pClient = (*((std::map<std::string, Client*>*)fdMapPtr))[key]->GetMyself();
+        pClient->SetClientUid(actorId);//设置Uid（因为验证账号密码成功后，会根据玩家的UID创建Vm虚拟机，以Uid作为VmMap的索引）
     }
 
-    return false;
+    //返回协议
+    Global::MakeSendPackage* pack = new Global::MakeSendPackage("GATE", "s_login_respond");
+    pack->SetVal("Result", result);
+    pack->Flush(fd);
+    delete pack;
+
+    return result;
 }
 
 //Create Client LuaVm
