@@ -223,7 +223,7 @@ void ClassTcpNet::StartEpoll()
                                 else
                                 {
                                     string completeStr(messageResidue, 0, findIndex);
-                                    LOG.Log() << "收到完整信息" << completeStr << endl;
+                                    //LOG.Log() << "收到完整信息" << completeStr << endl;
                                     /*
                                     解析：待补充
                                     */

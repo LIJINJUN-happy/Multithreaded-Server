@@ -95,7 +95,7 @@ Task* ClassPthreadMgr::GetTaskArgs(int index)
 //把信息传进任务列表容器
 void ClassPthreadMgr::AddMsgIntoTaskPool(list<MsgPackage*>& msgList,int minIndex)
 {
-    LOG.Log() << "放入index为："<< minIndex << "的任务列表" << endl;
+    //LOG.Log() << "放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
     std::copy(msgList.begin(), msgList.end(), std::back_inserter(*(pTaskList->pMessTaskList)));
 
