@@ -366,7 +366,7 @@ void *CheckTaskList(void *args)
 
             //销毁
             delete msgPtr;
-            usleep(170000);
+            //usleep(170000);
         }
     }
     //pthread_mutex_unlock(((Task*)args)->lock); //解锁,其实这一步解锁还是不解锁已经无所谓了,可以屏蔽掉
