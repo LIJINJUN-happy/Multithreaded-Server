@@ -282,7 +282,7 @@ void *CheckTaskList(void *args)
                             }
                             else
                             {
-                                LOG.Log() << "Moudle Not Belong To Personal And Public" << called << endl;
+                                //LOG.Log() << "Moudle Not Belong To Personal And Public" << called << endl;
                                 break;
                             }
 
@@ -325,7 +325,7 @@ void *CheckTaskList(void *args)
                         }
                         else
                         {
-                            LOG.Log() << "called Moudle Wrong With Finding " << called << endl;
+                            //LOG.Log() << "called Moudle Wrong With Finding " << called << endl;
                             break;
                         }
                     }
@@ -359,7 +359,7 @@ void *CheckTaskList(void *args)
                 }
                 else
                 {
-                    LOG.Log() << "用户 " << "不在线" << std::endl;
+                    //LOG.Log() << "用户 " << "不在线" << std::endl;
                 }
                 userOperator = false;
             }
