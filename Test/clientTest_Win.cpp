@@ -46,15 +46,16 @@ int main()
 			{
 			case 1:
 				what_want_to_send = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_registered_token_request\",\"EmailAddress\":\"2231173990@qq.com\"}|";
-				break; //
+				break; //注册码请求
 			case 2:
 				what_want_to_send = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_registered_request\",\"Account\":\"li\",\"Password\":\"abc\",\"Code\":111}|";
-				break; //
+				break; //注册请求
 			case 3:
-				what_want_to_send = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_login_request\",\"Account\":\"li\",\"Password\":\"abcd\"}|";
-				break; //
+				what_want_to_send = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_login_request\",\"Account\":\"li\",\"Password\":\"abc\"}|";
+				break; //登录请求
 			case 4:
-				break; //
+				what_want_to_send = "{\"Moudle\":\"ACTOR\",\"Protocol\":\"AddScore\",\"score\":1997}|";
+				break; //添加积分请求
 			case 5:
 				break; //
 			default:
