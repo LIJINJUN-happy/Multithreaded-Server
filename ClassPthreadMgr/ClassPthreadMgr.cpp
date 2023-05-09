@@ -234,11 +234,12 @@ void *CheckTaskList(void *args)
                     uid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
                     while (ifSkip == false)
                     {
-                        LOG.Log() << "caller " << caller << std::endl;
+                        /*LOG.Log() << "caller " << caller << std::endl;
                         LOG.Log() << "called " << called << std::endl;
                         LOG.Log() << "fun " << fun << std::endl;
                         LOG.Log() << "uid " << uid << std::endl;
-                        LOG.Log() << "arg " << arg << std::endl << endl;
+                        LOG.Log() << "arg " << arg << std::endl << endl;*/
+
                         //首先修正以下called的模块信息
                         auto it = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->find(called);
                         if (it != luaVmMgrPtr->GetLuaMoudleFilesInfoPtr()->GetMoudleInfo()->end())
@@ -308,11 +309,11 @@ void *CheckTaskList(void *args)
                                     called = lua_tostring(L, -3);
                                     caller = lua_tostring(L, -2);
                                     uid = lua_tostring(L, -1);
-                                    LOG.Log() << "type -1 :" << lua_typename(L, lua_type(L, -1)) << std::endl;
+                                    /*LOG.Log() << "type -1 :" << lua_typename(L, lua_type(L, -1)) << std::endl;
                                     LOG.Log() << "type -2 :" << lua_typename(L, lua_type(L, -2)) << std::endl;
                                     LOG.Log() << "type -3 :" << lua_typename(L, lua_type(L, -3)) << std::endl;
                                     LOG.Log() << "type -4 :" << lua_typename(L, lua_type(L, -4)) << std::endl;
-                                    LOG.Log() << "type -5 :" << lua_typename(L, lua_type(L, -5)) << std::endl;
+                                    LOG.Log() << "type -5 :" << lua_typename(L, lua_type(L, -5)) << std::endl;*/
                                 }
                             }
 
