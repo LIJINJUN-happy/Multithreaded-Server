@@ -40,6 +40,7 @@ namespace Global
         int judgeMoudleType(std::string);
     };
 
+    //C++的协议发送包结构
     struct MakeSendPackage
     {
     public:
@@ -57,6 +58,9 @@ namespace Global
         void SetVal(std::string tag, double arg);
         void SetVal(std::string tag, float arg);
     };
+
+    //Lua发送协议
+    static int LuaSendMessage(lua_State* L);
 }
 
 #endif
