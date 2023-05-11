@@ -1,6 +1,13 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+//Lua_API 的三个主要文件以C程序方式编译
+extern "C" {
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+};
+
 #include <string>
 #include <atomic>
 #include <vector>

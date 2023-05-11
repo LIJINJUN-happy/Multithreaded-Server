@@ -2,13 +2,6 @@
 #ifndef _GLOBALVARIABLE_H_
 #define _GLOBALVARIABLE_H_
 
-//Lua_API 的三个主要文件以C程序方式编译
-extern "C" {
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-};
-
 #include "Logger/ClassLogger/ClassLogger.h"
 
 //logger全局声明
