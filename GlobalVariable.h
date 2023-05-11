@@ -67,7 +67,7 @@ namespace Global
     };
 
     //Lua发送协议
-    static int LuaSendMessage(lua_State* L);
+    int LuaSendMessage(lua_State* L);
 }
 
 #endif
