@@ -363,8 +363,8 @@ void *CheckTaskList(void *args)
             {
                 //LOG.Log() << "Client " << "Is't Not Online" << std::endl;
             }
-            userOperator = false;
         }
+        userOperator = false;
 
         //销毁
         delete msgPtr;
