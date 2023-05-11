@@ -6,6 +6,7 @@ using std::endl;
 bool LuaPersonalVm::Init(std::string path)
 {
 	lua_State* L = this->GetLuaStatePtr();
+	lua_register(L, "LuaSendMessage", Global::LuaSendMessage);
 	luaL_openlibs(L);
 	int resLoad = luaL_loadfile(L, path.c_str());
 	if (resLoad || lua_pcall(L, 0, 0, 0))
