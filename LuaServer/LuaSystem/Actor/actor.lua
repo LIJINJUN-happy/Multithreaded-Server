@@ -55,7 +55,7 @@ function DoInit_(serPath)
 	dofile(serPath .. "LuaServer/LuaSystem/Email/email.lua")
 
 	--Redis
-	REDIS = rqeuire("redis")
+	REDIS = require("redis")
 	local redis = REDIS.connect('127.0.0.1', 6379)
 	redis:set("k1","v1")
 
