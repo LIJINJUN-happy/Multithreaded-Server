@@ -254,7 +254,7 @@ void *CheckTaskList(void *args)
                                 {
                                     LuaBaseVm* vmPtr = luaVmMgrPtr->GetLuaVmByIndex(uid);
                                     L = vmPtr->GetLuaStatePtr();
-                                    LOG.Log() << "调用个人模块虚拟机" << std::endl;
+                                    LOG.Log() << "Call Personal LuaVm" << std::endl;
                                 }
                                 else
                                 {
@@ -272,7 +272,7 @@ void *CheckTaskList(void *args)
                                     pthread_mutex_lock(vMLock);
                                     isCallPublicVm = true;
                                     L = vmPtr->GetLuaStatePtr();
-                                    LOG.Log() << "调用公共模块虚拟机" << std::endl;
+                                    LOG.Log() << "Call Public LuaVm" << std::endl;
                                 }
                                 else
                                 {
@@ -350,7 +350,7 @@ void *CheckTaskList(void *args)
                     Client* clientPtr = (Client*)(msgPtr->GetOperatePtr());
                     clientPtr->UpdateClientTaskNum(-1);
                     int taskNum = clientPtr->GetClientTaskNum();
-                    LOG.Log() << "用户 " << uid << " 任务数量剩余: " << taskNum << std::endl;
+                    LOG.Log() << "Client " << uid << " Task Total Amount: " << taskNum << std::endl;
                     if (taskNum <= 0)
                     {
                         //恢复被操作的线程索引
@@ -359,7 +359,7 @@ void *CheckTaskList(void *args)
                 }
                 else
                 {
-                    //LOG.Log() << "用户 " << "不在线" << std::endl;
+                    //LOG.Log() << "Client " << "Is't Not Online" << std::endl;
                 }
                 userOperator = false;
             }
