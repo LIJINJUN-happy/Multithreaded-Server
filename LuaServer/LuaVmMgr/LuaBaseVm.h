@@ -1,13 +1,6 @@
 #ifndef _LUABASEVM_H_
 #define _LUABASEVM_H_
 
-//Lua_API 的三个主要文件以C程序方式编译
-extern "C" {
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-};
-
 #include "../../Email/Mail.h"
 
 //LuaVM基类
