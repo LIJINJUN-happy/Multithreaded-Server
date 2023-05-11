@@ -54,6 +54,14 @@ function DoInit_(serPath)
 	--Email
 	dofile(serPath .. "LuaServer/LuaSystem/Email/email.lua")
 
+	--Redis
+	REDIS = rqeuire("redis")
+	local redis = REDIS.connect('127.0.0.1', 6379)
+	redis:set("k1","v1")
+
+	--MySql
+
+
 	loadInterFace()
 	return true
 end
