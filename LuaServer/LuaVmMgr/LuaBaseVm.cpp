@@ -49,13 +49,15 @@ int LuaBaseVm::GetLuaVmType()
 
 int LuaScript::LuaSendMessage(lua_State* L)
 {
-	int fd = luaL_checknumber(L, -1);
-	std::string jsonStr = luaL_checkstring(L, -2);
+	int top = lua_gettop(L);
+	LOG.Log() << "top : " << top << std::endl;
+	int fd = luaL_checknumber(L, 1);
+	std::string jsonStr = luaL_checkstring(L, 2);
 	LOG.Log() << "fd : " << fd << std::endl;
 	LOG.Log() << "jsonStr : " << jsonStr << std::endl;
 	char buf[256] = { 0 };
 	memcpy(buf, jsonStr.c_str(), jsonStr.size());
 	int sendSize = send(fd, buf, strlen(buf), 0);
 	lua_pushnumber(L, sendSize); //Net Send Message Size
-	return true;
+	return 1;
 }
