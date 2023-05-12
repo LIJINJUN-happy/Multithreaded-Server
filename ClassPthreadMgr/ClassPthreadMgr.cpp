@@ -322,6 +322,7 @@ void *CheckTaskList(void *args)
                         {
                             LOG.Log() << "lua_isboolean(L,-6) = " << lua_isboolean(L, -6) << endl;
                             LOG.Log() << "lua_toboolean(L,-6) = " << lua_toboolean(L, -6) << endl;
+                            ifSkip = true;
                         }
 
                         //判断是否需要解锁（调用了共有Vm才需要解锁）

@@ -88,8 +88,9 @@ function ACTOR:AddScore(uid, arg)
 	self.score = self.score + num
 	print("添加后当前积分为:", self.score)
 	coroutine.yield(tostring(self.score), "AddScore", "RANK", "ACTOR", tostring(uid))
+	print("RANK BACK-----")
 	local res = LuaSendMessage(num, "Get Message from Server")
-	print("RANK BACK-----"..tostring(res))
+	print("LuaSendMessage = "..tostring(res))
 	return self.score
 end
 
