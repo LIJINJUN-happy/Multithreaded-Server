@@ -1,7 +1,7 @@
 #ifndef _CLASSDATABASE_H_
 #define _CLASSDATABASE_H_
 
-#include "../Net/ClassMsgPackage.h"
+#include "../Email/Mail.h"
 #include <mysql/mysql.h>
 
 

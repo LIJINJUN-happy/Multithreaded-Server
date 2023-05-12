@@ -1,7 +1,7 @@
 #ifndef _LUABASEVM_H_
 #define _LUABASEVM_H_
 
-#include "../../Email/Mail.h"
+#include "../../Net/ClassMsgPackage.h"
 
 //LuaVM»ùÀà
 class LuaBaseVm

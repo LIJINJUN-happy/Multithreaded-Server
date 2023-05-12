@@ -1,7 +1,7 @@
 #ifndef _CLASSMSGPACKAGE_H_
 #define _CLASSMSGPACKAGE_H_
 
-#include "../LuaServer/LuaVmMgr/ClassLuaVmMgr.h"
+#include "../ClassDB/DataBaseMgr.h"
 
 class Client;//Ô¤ÉùÃ÷
 
