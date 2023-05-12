@@ -315,7 +315,7 @@ void *CheckTaskList(void *args)
                                 LOG.Log() << "type -2 :" << lua_typename(L, lua_type(L, -2)) << std::endl;
                                 LOG.Log() << "type -3 :" << lua_typename(L, lua_type(L, -3)) << std::endl;
                                 LOG.Log() << "type -4 :" << lua_typename(L, lua_type(L, -4)) << std::endl;
-                                LOG.Log() << "type -5 :" << lua_typename(L, lua_type(L, -5)) << std::endl;*/
+                                LOG.Log() << "type -5 :" << lua_typename(L, lua_type(L, -5)) << std::endl << std::endl;*/
                             }
                         }
 
