@@ -43,6 +43,11 @@ int LuaBaseVm::GetLuaVmType()
 	return this->luaVmType;
 }
 
+void LuaBaseVm::LoadScritpFunction(lua_State* L)
+{
+	lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);//Lua∑¢ÀÕ–≠“È@ args£®socket,jsonStr£©
+}
+
 
 
 /*----------------------------------------Lua Call C++ Script Function-----------------------------------------------*/
@@ -50,11 +55,11 @@ int LuaBaseVm::GetLuaVmType()
 int LuaScript::LuaSendMessage(lua_State* L)
 {
 	int top = lua_gettop(L);
-	LOG.Log() << "top : " << top << std::endl;
+	//LOG.Log() << "top : " << top << std::endl;
 	int fd = luaL_checknumber(L, 1);
 	std::string jsonStr = luaL_checkstring(L, 2);
-	LOG.Log() << "fd : " << fd << std::endl;
-	LOG.Log() << "jsonStr : " << jsonStr << std::endl;
+	//LOG.Log() << "fd : " << fd << std::endl;
+	//LOG.Log() << "jsonStr : " << jsonStr << std::endl;
 	char buf[256] = { 0 };
 	memcpy(buf, jsonStr.c_str(), jsonStr.size());
 	int sendSize = send(fd, buf, strlen(buf), 0);

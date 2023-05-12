@@ -21,6 +21,9 @@ public:
 	virtual bool Init() {};
 	lua_State* GetLuaStatePtr();
 	int GetLuaVmType();
+
+public:
+	void LoadScritpFunction(lua_State* L);//加载Lua调用C++的函数
 };
 
 
