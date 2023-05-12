@@ -36,6 +36,9 @@ namespace Gate
 	//登录成功后创建用户LuaVm
 	bool CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr);
 
+	//创建LuaVm后加载Mysql的数据
+	bool LuaVmLoadMysqlDataByLogin();
+
 	//登录成功后加入socketIdMap容器
 	void AddIntoSockIdMap(void* cliptr, void* sockmapPtr);
 

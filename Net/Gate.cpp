@@ -308,7 +308,13 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
         if (path.size() >= 1)
         {
             LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
-            bool resLoad = L->Init(path);
+            bool resInit = L->Init(path);
+            bool resLoad = false;
+            if (resInit == true)
+            {
+                resLoad = Gate::LuaVmLoadMysqlDataByLogin();
+            }
+
             if (resLoad == true)
             {
                 //LOG.Log() << "Personal Moudle Init Success fd : "<< uid << std::endl;
@@ -329,6 +335,11 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
         return false;
     }
     return true;
+}
+
+bool Gate::LuaVmLoadMysqlDataByLogin()
+{
+    return false;
 }
 
 void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
