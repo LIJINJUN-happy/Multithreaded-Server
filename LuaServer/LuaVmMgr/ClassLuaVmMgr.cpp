@@ -80,6 +80,7 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
         this->luaVmMap.erase(strIndex);
         delete vmPtr;
         vmPtr = nullptr;
+        //LOG.Log() << "LuaVmMap Delete Success " << std::endl;
         //LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
     }

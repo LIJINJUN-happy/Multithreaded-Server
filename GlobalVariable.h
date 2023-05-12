@@ -58,9 +58,6 @@ namespace Global
         void SetVal(std::string tag, double arg);
         void SetVal(std::string tag, float arg);
     };
-
-    //Lua发送协议
-    int LuaSendMessage(lua_State* L);
 }
 
 #endif

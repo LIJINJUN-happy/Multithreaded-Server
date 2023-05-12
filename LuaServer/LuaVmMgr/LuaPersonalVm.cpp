@@ -25,7 +25,7 @@ bool LuaPersonalVm::Init(std::string path)
 	else if (lua_isboolean(L, -1) && lua_toboolean(L, -1) == 1)
 	{
 		//LOG.Log() << "Lua Personal Moudle DoInit_ Finish !" << std::endl;
-		lua_register(L, "LuaSendMessage", Global::LuaSendMessage);
+		lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);
 		lua_settop(L, 0);//clear
 	}
 	else

@@ -23,4 +23,12 @@ public:
 	int GetLuaVmType();
 };
 
+
+namespace LuaScript
+{
+	//Lua Send Net Message
+	int LuaSendMessage(lua_State* L);
+}
+
+
 #endif
