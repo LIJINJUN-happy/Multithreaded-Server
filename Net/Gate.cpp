@@ -312,7 +312,7 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
             bool resLoad = false;
             if (resInit == true)
             {
-                resLoad = Gate::LuaVmLoadMysqlDataByLogin();
+                resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr);
             }
 
             if (resLoad == true)
@@ -337,9 +337,22 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
     return true;
 }
 
-bool Gate::LuaVmLoadMysqlDataByLogin()
+bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr)
 {
-    return false;
+    Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
+    for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
+    {
+        if (it->second.first == Global::PERSONAL)
+        {
+            std::string moudele = it->first;
+
+        }
+        else
+        {
+            continue;
+        }
+    }
+    return true;
 }
 
 void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
