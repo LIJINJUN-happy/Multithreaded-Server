@@ -168,7 +168,7 @@ void ClassTcpNet::StartEpoll()
                         string key = std::to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
-                        //LOG.Log() << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
+                        LOG.Log() << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
                         //LOG.Log() << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
                 }
