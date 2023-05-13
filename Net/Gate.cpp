@@ -347,7 +347,7 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
         if (it->second.first == Global::PERSONAL)
         {
             std::string moudle = it->first;
-            lua_pushstring(L, moudle);
+            lua_pushstring(L, moudle.c_str());
         }
         else
         {
