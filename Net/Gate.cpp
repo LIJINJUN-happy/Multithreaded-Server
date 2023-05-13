@@ -312,7 +312,7 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
             bool resLoad = false;
             if (resInit == true)
             {
-                resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr);
+                resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr, L->GetLuaStatePtr());
             }
 
             if (resLoad == true)
@@ -337,21 +337,27 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
     return true;
 }
 
-bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr)
+bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L)
 {
+    lua_settop(L, 0);
+    lua_getglobal(L, "LoadDbData_");
     Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
     for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
     {
         if (it->second.first == Global::PERSONAL)
         {
-            std::string moudele = it->first;
-
+            std::string moudle = it->first;
+            lua_pushstring(L, moudle);
         }
         else
         {
             continue;
         }
     }
+    int size = lua_gettop(L) - 1;
+    lua_pcall(L, size, 1, 0);
+    bool res = lua_isboolean(L, -1);
+    LOG.Log() << "LuaVmLoadMysqlDataByLogin res = " << res << std::endl;
     return true;
 }
 

@@ -66,6 +66,15 @@ function DoInit_(serPath)
 	return true
 end
 
+function LoadDbData_(...)
+	local list = table.pack(...)
+	for index,name in pairs(list) do
+		print(index,name)
+	end
+	return true
+end
+
+
 ----------------------------------------------------Moudle-FUN-------------------------------------------------------
 
 --用户模块
@@ -75,6 +84,7 @@ ACTOR = {
 
 --获取信息
 function ACTOR:GetData()
+
 end
 
 --改变名字
