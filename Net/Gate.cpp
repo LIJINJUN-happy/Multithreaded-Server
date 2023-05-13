@@ -343,12 +343,17 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
     lua_settop(L, 0);
     lua_getglobal(L, "LoadDbData_");
     Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
-    const std::string dbString = "";
+    std::string dbString = "";
     for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
     {
         if (it->second.first == Global::PERSONAL)
         {
             std::string moudle = it->first;
+            for (int index = 0; index < moudle.size(); index++)
+            {
+                tolower(moudle[i]);
+            }
+
             dbString = DBCommand::LoadLuaDataFromMysql;
             dbString.insert(dbString.find('.'), moudle);
             dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
@@ -364,12 +369,14 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
             else
             {
                 int row = db->GetResultRow();
-                if (row == 1 && moudle == "ACTOR")
+                if (row == 1)
                 {
                     std::string jsonMysqlDataString = (*(db->GetNextRowInfo()))[0];
                     moudle = moudle + ":" + jsonMysqlDataString;
                     lua_pushstring(L, moudle.c_str());
                 }
+                else
+                    continue;
             }
         }
         else

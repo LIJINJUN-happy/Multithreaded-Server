@@ -32,6 +32,7 @@ extern "C" {
 #include <stdio.h>
 #include <initializer_list>
 #include <jemalloc/jemalloc.h>
+#include <ctype.h>
 
 namespace Config
 {
