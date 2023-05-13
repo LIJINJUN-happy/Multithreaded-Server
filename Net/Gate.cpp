@@ -351,7 +351,7 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
             std::string moudle = it->first;
             for (int index = 0; index < moudle.size(); index++)
             {
-                tolower(moudle[i]);
+                moudle[i] = tolower(moudle[i]);
             }
 
             dbString = DBCommand::LoadLuaDataFromMysql;
