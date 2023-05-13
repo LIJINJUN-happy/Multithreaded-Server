@@ -55,25 +55,31 @@ function DoInit_(serPath)
 	dofile(serPath .. "LuaServer/LuaSystem/Email/email.lua")
 
 	--Redis
-	--REDIS = require("redis")
-	--local redis = REDIS.connect('127.0.0.1', 6379)
-	--redis:set("k1","v1")
+	--REDISMOUDLE = require("redis")
+	--local REDIS = REDISMOUDLE.connect('127.0.0.1', 6379)
 
-	--MySql
-
-
+	--加载接口函数
 	loadInterFace()
 	return true
 end
 
+--登录时加载数据进Redis缓存
 function LoadDbData_(...)
 	local list = table.pack(...)
-	for index,name in ipairs(list) do
-		print(index,name)
+	for _,dataString in ipairs(list) do
+		local moudleName,data = string.match(dataString, "(%a+)%s*::%s*(%a+)")
+		print("dataString === ",dataString)
+		print("moudleName === ",moudleName," data === ",data)
+		--REDIS:set("k1","v1")
 	end
 	return true
 end
 
+--用户下线的数据保存处理
+function SaveDbData_(uid, moudle)
+	local josnDataString = ""
+	return josnDataString
+end
 
 ----------------------------------------------------Moudle-FUN-------------------------------------------------------
 

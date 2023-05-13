@@ -359,7 +359,7 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
             dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
             dbString.insert(dbString.find_last_of('.'), moudle);
             dbString.insert(dbString.find_last_of('=') + 2, uid);
-            LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
+            //LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
 
             bool doCommandResult = db->DoCommand(dbString);
             if (!doCommandResult)
@@ -372,7 +372,7 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
                 if (row == 1)
                 {
                     std::string jsonMysqlDataString = (*(db->GetNextRowInfo()))[0];
-                    moudle = moudle + ":" + jsonMysqlDataString;
+                    moudle = moudle + "::" + jsonMysqlDataString;
                     lua_pushstring(L, moudle.c_str());
                 }
                 else
