@@ -357,8 +357,12 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
     int size = lua_gettop(L) - 1;
     lua_pcall(L, size, 1, 0);
     bool res = lua_isboolean(L, -1);
-    LOG.Log() << "LuaVmLoadMysqlDataByLogin res = " << res << std::endl;
-    return true;
+    if ((res != true) || (lua_toboolean(L, -1) != true))
+    {
+        res = false;
+    }
+    //LOG.Log() << "LuaVmLoadMysqlDataByLogin res = " << res << std::endl;
+    return res;
 }
 
 void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)

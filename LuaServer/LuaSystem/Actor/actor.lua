@@ -68,7 +68,7 @@ end
 
 function LoadDbData_(...)
 	local list = table.pack(...)
-	for index,name in pairs(list) do
+	for index,name in ipairs(list) do
 		print(index,name)
 	end
 	return true
