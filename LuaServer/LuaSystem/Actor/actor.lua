@@ -83,8 +83,8 @@ ACTOR = {
 }
 
 --获取信息
-function ACTOR:GetData()
-
+function ACTOR:GetData(uid)
+	
 end
 
 --改变名字

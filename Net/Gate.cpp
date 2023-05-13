@@ -279,7 +279,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         //string key = std::to_string(fd);
         //Client* pClient = (*((std::map<std::string, Client*>*)fdMapPtr))[key]->GetMyself();
         ((Client*)cliptr)->SetClientUid(actorId);                                           //设置Uid（因为验证账号密码成功后，会根据玩家的UID创建Vm虚拟机，以Uid作为VmMap的索引）
-        bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(cliptr, luaVmMgrPtr);             //登录成功则尝试创建虚拟机
+        bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(cliptr, luaVmMgrPtr, db);         //登录成功则尝试创建虚拟机
         if (resCreateLuaVm != true) { result = false; }                                     //即使登录成功但创建失败也要跳过虚拟机操作(返回false)
         if (resCreateLuaVm == true) { Gate::AddIntoSockIdMap(cliptr, sockmapPtr); }         //登录成功且创建Vm成功后,才可以加入socketIdMap中
     }
@@ -294,7 +294,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
 }
 
 //Create Client LuaVm
-bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
+bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr, ClassDataBase* db)
 {
     std::string uid = ((Client*)cliptr)->GetClientUid();
     //std::map<std::string, LuaBaseVm*>* luaVmMapPtr = luaVmMgrPtr->GetLuaVmMapPtr();
@@ -312,7 +312,8 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
             bool resLoad = false;
             if (resInit == true)
             {
-                resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr, L->GetLuaStatePtr());
+                //加载数据库数据进入Lua中，Lua加载进redis
+                resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr, L->GetLuaStatePtr(), db);
             }
 
             if (resLoad == true)
@@ -337,7 +338,7 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr)
     return true;
 }
 
-bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L)
+bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L, ClassDataBase* db)
 {
     lua_settop(L, 0);
     lua_getglobal(L, "LoadDbData_");
