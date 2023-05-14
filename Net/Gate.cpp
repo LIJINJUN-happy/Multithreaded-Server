@@ -406,6 +406,89 @@ void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
     }
 }
 
+bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L, ClassDataBase* db)
+{
+    Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
+    std::string dbString = "";
+    bool result = true;
+    for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
+    {
+        if (it->second.first == Global::PERSONAL)
+        {
+            std::string moudle = it->first;
+            for (int index = 0; index < moudle.size(); index++)
+            {
+                moudle[index] = tolower(moudle[index]);
+            }
+
+            //调用Lua函数返回对应模块的Redis数据
+            lua_settop(L, 0);
+            lua_getglobal(L, "SaveDbData_");
+            lua_pushstring(L, uid.c_str());
+            lua_pushstring(L, moudle.c_str());
+            lua_pcall(L, 2, 1, 0);
+            bool res = lua_isstring(L, -1);
+            if (res == false)
+            {
+                LOG.Error() << "SaveDbData_ Wrong When C++ Call Lua  :" << moudle << std::endl;
+                result = false;
+                continue;
+            }
+            std::string data = lua_tostring(L, -1);
+
+            //判断数据库是否存在数据（结果决定操作是update还是Insert）
+            dbString = DBCommand::LoadLuaDataFromMysql;
+            dbString.insert(dbString.find('.'), moudle);
+            dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
+            dbString.insert(dbString.find_last_of('.'), moudle);
+            dbString.insert(dbString.find_last_of('=') + 2, uid);
+            bool doCommandResult = db->DoCommand(dbString);
+            if (doCommandResult == false)
+            {
+                LOG.Error() << "DataBase Command Worng With Judege :" << moudle << std::endl;
+                result = false;
+                continue;
+            }
+            else
+            {
+                int row = db->GetResultRow();
+                LOG.Log() << "Mysql Load Lua Json's row = " << row << std::endl;
+                if (row == 1)   //找到了就是证明有数据（update）
+                {
+                    dbString = DBCommand::SaveLuaDataWithUpdate;
+                    dbString.insert(dbString.find('.') + 1, moudle);
+                    dbString.insert(dbString.find('.', dbString.find('.') + 1), moudle);
+                    dbString.insert(dbString.find('=') + 2, data);
+                    dbString.insert(dbString.find_last_of('.'), moudle);
+                    dbString.insert(dbString.find_last_of('=') + 2, uid);
+                }
+                else if(row == 0)   //找不到就是证明暂无数据（insert）
+                {
+                    dbString = DBCommand::SaveLuaDataWithInsert;
+                    dbString.insert(dbString.find('.') + 1, moudle);
+                    dbString.insert(dbString.find('\'') + 1, uid);
+                    dbString.insert(dbString.find_last_of('\''), data);
+                }
+                else
+                {
+                    result = false;
+                    continue;
+                }
+            }
+
+            LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
+            bool doCommandResult = db->DoCommand(dbString);
+            if (!doCommandResult)
+            {
+                LOG.Error() << "SaveDbData_ Wrong With  :" << dbString << std::endl;
+                result = false;
+                continue;
+            }
+        }
+    }
+    return result;
+}
+
 void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
 {
     auto it = ((std::map<string, Client*>*)sockmapPtr)->find(uid);

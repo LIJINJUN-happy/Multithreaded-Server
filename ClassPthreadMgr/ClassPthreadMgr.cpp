@@ -341,6 +341,7 @@ void *CheckTaskList(void *args)
                 //用户下线（放在这里判断是为了让用户在LuaVm处理完下线操作后才进行移除）
                 if (removeActorVmWithLogOut == true)
                 {
+                    Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr);
                     Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
                     luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
                 }

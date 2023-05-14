@@ -16,6 +16,12 @@ namespace DBCommand
 
 	//加载某个模块的数据（返回数据库中某块对应的json格式的DB数据）
 	const std::string LoadLuaDataFromMysql = "SELECT .script FROM actor. WHERE .actorId=''";
+
+	//保存某个模块的数据,数据库无数据，需要插入 insert（redis's json to mysql）
+	const std::string SaveLuaDataWithInsert = "INSERT INTO actor. VALUES('','')";
+
+	//保存某个模块的数据,数据库有数据，只需更新 update（redis's json to mysql）
+	const std::string SaveLuaDataWithUpdate = "UPDATE actor. SET .script='' WHERE .actorId=''";
 }
 
 #endif
