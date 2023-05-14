@@ -477,7 +477,7 @@ bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_S
             }
 
             LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
-            bool doCommandResult = db->DoCommand(dbString);
+            doCommandResult = db->DoCommand(dbString);
             if (!doCommandResult)
             {
                 LOG.Error() << "SaveDbData_ Wrong With  :" << dbString << std::endl;
