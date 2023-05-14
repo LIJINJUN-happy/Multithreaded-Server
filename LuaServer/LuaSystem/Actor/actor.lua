@@ -67,9 +67,11 @@ end
 function LoadDbData_(...)
 	local list = table.pack(...)
 	for _,dataString in ipairs(list) do
-		local moudleName,data = string.match(dataString, "(%a+)%s*::%s*(%a+)")
-		print("dataString === ",dataString)
-		print("moudleName === ",moudleName," data === ",data)
+		local beginIndex, endIndex = string.find(dataString, "::")
+		local moduleName, jsonData = string.sub(str, 1, beginIndex-1), string.sub(str, endIndex+1, #str)
+		print(moduleName, jsonData)
+		print("dataString === ", dataString)
+		print("moduleName === ", moduleName, " jsonData === ", jsonData)
 		--REDIS:set("k1","v1")
 	end
 	return true
