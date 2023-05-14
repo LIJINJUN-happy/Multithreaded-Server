@@ -372,7 +372,7 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
                 if (row == 1)
                 {
                     std::string jsonMysqlDataString = (*(db->GetNextRowInfo()))[0];
-                    moudle = moudle + "::" + jsonMysqlDataString;
+                    moudle = moudle + "::" + uid + "::" + jsonMysqlDataString;
                     lua_pushstring(L, moudle.c_str());
                 }
                 else
