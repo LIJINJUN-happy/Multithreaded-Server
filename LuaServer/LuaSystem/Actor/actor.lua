@@ -68,7 +68,7 @@ function LoadDbData_(...)
 	local list = table.pack(...)
 	for _,dataString in ipairs(list) do
 		local beginIndex, endIndex = string.find(dataString, "::")
-		local moduleName, jsonData = string.sub(str, 1, beginIndex-1), string.sub(str, endIndex+1, #str)
+		local moduleName, jsonData = string.sub(dataString, 1, beginIndex-1), string.sub(dataString, endIndex+1, #dataString)
 		print(moduleName, jsonData)
 		print("dataString === ", dataString)
 		print("moduleName === ", moduleName, " jsonData === ", jsonData)
