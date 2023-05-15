@@ -48,6 +48,9 @@ function DoInit_(serPath)
 	--JSON
 	JSON = dofile(serPath .. "LuaServer/luaLib/json.lua")
 
+	--UTILITY 自定义工具库 
+	dofile(serPath .. "LuaServer/luaLib/utility.lua")
+
 	--Bag
 	dofile(serPath .. "LuaServer/LuaSystem/Bag/bagMgr.lua")
 
@@ -67,12 +70,13 @@ end
 function LoadDbData_(...)
 	local list = table.pack(...)
 	for _,dataString in ipairs(list) do
-		local beginIndex, endIndex = string.find(dataString, "::")
-		local moduleName, jsonData = string.sub(dataString, 1, beginIndex-1), string.sub(dataString, endIndex+1, #dataString)
-		print(moduleName, jsonData)
-		print("dataString === ", dataString)
-		print("moduleName === ", moduleName, " jsonData === ", jsonData)
-		--REDIS:set("k1","v1")
+		local splitList = UTILITY:Split(dataString, "::")
+		if #splitList == 3 then
+			local moudle = splitList[1]
+			local uid = splitList[2]
+			local jsonMysqlDataString = splitList[3]
+			print(moudle,"  ",uid,"  ",jsonMysqlDataString)
+		end
 	end
 	return true
 end
