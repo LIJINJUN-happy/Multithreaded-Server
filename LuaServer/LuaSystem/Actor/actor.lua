@@ -84,7 +84,7 @@ end
 --用户下线的数据保存处理
 function SaveDbData_(uid, moudle)
 	print(uid,moudle)
-	local josnDataString = '{\"name\": \"xieyujun\"}'
+	local josnDataString = '{\"name\": \"lijinjun\"}'
 	return josnDataString
 end
 

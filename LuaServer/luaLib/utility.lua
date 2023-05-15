@@ -3,7 +3,7 @@ UTILITY = {}
 --ÇÐ¸î×Ö·û´® 
 --Args£¨´ýÇÐ¸îµÄ×Ö·û´®, ÇÐ¸î·û£© 
 --Return ±»ÇÐ¸î×Ö·ûµÄÁÐ±í
-function UTILITY:function Split(str, char)
+function UTILITY:Split(str, char)
     local ret = {}
     local beginIndex,endIndex = string.find(str, char)
     local resHead, resTail
