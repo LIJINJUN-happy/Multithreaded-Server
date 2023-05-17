@@ -30,3 +30,7 @@ std::string fun = "";   //调用函数/协议
 std::string called = "";//被调用的模块VM名字
 std::string caller = "";//调用者,一开始调用者模块默认为空
 std::string uid = "";   //调用者id
+
+
+
+该项目的Lua部分的要求是,需要在Linux下载LuaRock管理工具,然后用管理工具下载 Lua-Redis 来作为lua数据的缓存
