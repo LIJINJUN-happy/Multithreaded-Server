@@ -16,3 +16,17 @@ Lua虚拟机分为 “个人类型” 以及 “公共类型”
 模块定义在该文件同目录下的名为“MoudleFilesLoad.txt”的文本文件内，只需要按规定填写上新建的模块信息即可：
 格式：{模块名（全大写）,模块的文件路径}
 例：{ROOM,LuaServer/LuaSystem/Room/roomMgr.lua}
+
+
+Lua虚拟机与C++之间传递的参数数据类型为：JSON格式,因为Mysql5.7.xxx后支持JSON格式数据的存储
+为了统一性,协议,数据库,以及Lua信息的传递均用JSON格式处理.
+
+Lua虚拟机之间若要传递信息,则返回固定的格式作为corotinue的挂起返回值
+如：
+coroutine.yield(xxx,xxx,xx,xx,xx,x)
+返回参数分别是：
+std::string arg = "";   //参数
+std::string fun = "";   //调用函数/协议
+std::string called = "";//被调用的模块VM名字
+std::string caller = "";//调用者,一开始调用者模块默认为空
+std::string uid = "";   //调用者id
