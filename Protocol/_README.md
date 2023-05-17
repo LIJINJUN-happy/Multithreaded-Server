@@ -1,17 +1,17 @@
-Э�鶨���������
-Э��ʹ�õ��ǣ�JSON��ʽЭ��
+协议定义的描述：
+协议使用的是：JSON格式协议
 
-��ʽ��
+格式：
 {
-	"Moudle": "ģ����",
-	"Protocol": "Э����",
-	"�����ֶ�1": "����1", 
-	"�����ֶ�2": "����2", 
+	"Moudle": "模块名",
+	"Protocol": "协议名",
+	"参数字段1": "数据1", 
+	"参数字段2": "数据2", 
 	...
 }
 
-���ӣ�
-//��¼����
+例子：
+//登录请求
 {
 	"Moudle": "GATE",
 	"Protocol": "c_login_request",
@@ -19,6 +19,6 @@
 	"Password": "string"
 }
 
-##�ļ���ȫСд
-##�ļ��������ģ����ʹ��ȫ��д,�磺"Moudle": "GATE",
-##Э���� �ͻ��˷��͸���������c_xxxx  ��֮��s_xxxx
+##文件名全小写,如：actor.json
+##文件内容里的模块名使用全大写,如："Moudle": "GATE",
+##协议名 客户端发送给服务器：c_xxxx  反之：s_xxxx
