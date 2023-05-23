@@ -41,7 +41,8 @@ void ClassMonitor::CheckoutClientIfOnline()
             //LOG.Log() << "移除fdMap内数据后大小为：" << pSockfdMap->size() << std::endl;
 
             //移除idMap内数据
-            pSockidMap->erase(uid);
+            if(pSockidMap->find(uid) != pSockidMap->end())
+                pSockidMap->erase(uid);
             //LOG.Log() << "移除fdMap内数据后大小为：" << pSockidMap->size() << std::endl;
 
             //移除LuaVm
