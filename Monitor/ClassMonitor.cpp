@@ -38,12 +38,15 @@ void ClassMonitor::CheckoutClientIfOnline()
             Client* pClient = mapIter.second->GetMyself();
             std::string uid = pClient->GetClientUid();
             tcpNetObj->CloseClientByFd(mapIter.first);
+            //LOG.Log() << "移除fdMap内数据后大小为：" << pSockfdMap->size() << std::endl;
 
             //移除idMap内数据
             pSockidMap->erase(uid);
+            //LOG.Log() << "移除fdMap内数据后大小为：" << pSockidMap->size() << std::endl;
 
             //移除LuaVm
             luaVmptr->DeleteLuaBaseVm(uid);
+            //LOG.Log() << "移除LuaVm内数据后大小为：" << luaVmptr->GetLuaVmMapPtr()->size() << std::endl;
 
             //析构client指针所指向的内存
             delete pClient;
