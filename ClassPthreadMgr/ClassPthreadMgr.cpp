@@ -346,6 +346,7 @@ void *CheckTaskList(void *args)
                     luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
                     extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
                     GLOBAL_UID_SOCKET_MAP.erase(uid);
+                    //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << GLOBAL_UID_SOCKET_MAP.size() << endl;
                 }
 
             }

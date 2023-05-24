@@ -289,6 +289,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         { 
             Gate::AddIntoSockIdMap(cliptr, sockmapPtr);
             ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
+            //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << ::GLOBAL_UID_SOCKET_MAP.size() << endl;
         }         
     }
 
