@@ -11,72 +11,38 @@
 #include "../etc/Config.h"
 using namespace std;
 
-int main(int argc, char *argv[])
+const int total = 20;
+
+int main(int argc, char* argv[])
 {
-    int sock;
-    struct sockaddr_in serv_addr;
-    sock = socket(PF_INET, SOCK_STREAM, 0);
-    if (sock == -1)
+	int sock[total] = {};
+	struct sockaddr_in serv_addr[total];
+	for (int i = 0; i < total; i++)
 	{
-		return 0;
-	}
-    memset(&serv_addr, 0, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = inet_addr(Config::addrString.c_str());
-    serv_addr.sin_port = htons(Config::listenPort);
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1)
-    {
-		cout<<" connect erro  ";
-		return 0; 
-    }
-     else
-	 {
-		while(true)
+		sock[i] = socket(PF_INET, SOCK_STREAM, 0);
+		if (sock[i] == -1)
 		{
-			string sq = "";
-			char c = getchar();
-			if (c == '\0' || c=='\r')
-				continue;
-
-
-			if (c == 'w')//登录请求
-			{
-				sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_login_request\",\"Account\":\"a\",\"Password\":\"b\"}|";
-			}
-
-			if (c == 'e')//注册请求
-			{
-				int num = 0;
-				cout << "please input code :" << endl;
-				cin >> num;
-				sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_registered_request\",\"Account\":\"a\",\"Password\":\"b\",\"Code\":\"" + std::to_string(num) + "\"}|";
-			}
-
-			if (c == 'r')//注册码请求
-			{
-				sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_registered_token_request\",\"EmailAddress\":\"2231173990@qq.com\"}|";
-			}
-				
-			if (c == 'a')//调用LuaVm的添加积分请求
-			{
-				sq = "{\"Moudle\":\"ACTOR\",\"Protocol\":\"AddScore\",\"score\":\"100\"}|";
-			}
-				
-			if (c == 'q')//quit
-			{
-				break;
-			}
-
-			if (sq.size() != 0)
-			{
-				char buf[256] = { 0 };
-				memcpy(buf, sq.c_str(), sq.size());
-				int how = send(sock, buf, strlen(buf), 0);
-				cout << "send Size = " << how << endl;
-				cout << "Send Info = " << sq << endl;
-			}
+			return 0;
 		}
-	 //usleep(1000000000);		
-	 }
-	 return 0;
+		memset(&serv_addr[i], 0, sizeof(serv_addr[i]));
+		serv_addr[i].sin_family = AF_INET;
+		serv_addr[i].sin_addr.s_addr = inet_addr(Config::addrString.c_str());
+		serv_addr[i].sin_port = htons(Config::listenPort);
+		if (connect(sock[i], (struct sockaddr*)&(serv_addr[i]), sizeof(serv_addr[i])) == -1)
+		{
+			cout << " connect erro  ";
+			return 0;
+		}
+	}
+	string sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_login_request\",\"Account\":\"li\",\"Password\":\"abc\"}|";
+	char buf[256] = { 0 };
+	memcpy(buf, sq.c_str(), sq.size());
+	for (int i = 0; i < total; i++)
+	{
+		int how = send(sock[i], buf, strlen(buf), 0);
+		cout << "send Size = " << how << endl;
+	}
+
+	char c = getchar();
+	return 0;
 }
