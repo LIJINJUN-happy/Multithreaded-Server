@@ -57,10 +57,9 @@ int LuaScript::LuaSendMessage(lua_State* L)
 	int top = lua_gettop(L);
 	//LOG.Log() << "top : " << top << std::endl;
 	std::string uid = luaL_checkstring(L, 1);
-	extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
-	auto it = GLOBAL_UID_SOCKET_MAP.find(uid);
+	auto it = ::GLOBAL_UID_SOCKET_MAP.find(uid);
 	std::string jsonStr = luaL_checkstring(L, 2);
-	if (it == GLOBAL_UID_SOCKET_MAP.end())
+	if (it == ::GLOBAL_UID_SOCKET_MAP.end())
 	{
 		lua_pushnumber(L, 0);
 		return 1;

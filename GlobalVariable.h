@@ -8,9 +8,6 @@
 class ClassLogger;
 extern ClassLogger LOG;
 
-//全局uid - socket 的键值对容器
-std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};
-
 namespace Global
 {
     long GetNowTime(); //获取当前时间戳

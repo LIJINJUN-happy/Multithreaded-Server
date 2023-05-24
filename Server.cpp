@@ -3,6 +3,9 @@
 #include "./ClassTimer/ClassTimer.h"	 //自定义Timer头文件
 #include "./Monitor/ClassMonitor.h"		 //自定义监视头文件
 
+//全局uid - socket 的键值对容器
+std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};
+
 using namespace std;
 int main()
 {

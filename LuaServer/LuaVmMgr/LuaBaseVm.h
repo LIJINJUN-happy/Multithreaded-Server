@@ -3,6 +3,8 @@
 
 #include "../../Net/ClassMsgPackage.h"
 
+extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+
 //LuaVM»ùÀà
 class LuaBaseVm
 {

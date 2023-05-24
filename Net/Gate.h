@@ -7,6 +7,8 @@
 class Client;
 class ClassTcpNet;
 
+extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+
 namespace Gate
 {
 	//转换为char*然后send（弃用）
