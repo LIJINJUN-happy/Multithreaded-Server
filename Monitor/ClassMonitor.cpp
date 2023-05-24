@@ -49,6 +49,10 @@ void ClassMonitor::CheckoutClientIfOnline()
             luaVmptr->DeleteLuaBaseVm(uid);
             //LOG.Log() << "移除LuaVm内数据后大小为：" << luaVmptr->GetLuaVmMapPtr()->size() << std::endl;
 
+            //移除UID-Socket的键值对容器内的数据
+            extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+            GLOBAL_UID_SOCKET_MAP.erase(uid);
+
             //析构client指针所指向的内存
             delete pClient;
         }
