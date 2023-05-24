@@ -288,6 +288,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         else                        //登录成功且创建Vm成功后,才可以加入socketIdMap中
         { 
             Gate::AddIntoSockIdMap(cliptr, sockmapPtr);
+            extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
             GLOBAL_UID_SOCKET_MAP[actorId] = fd;
         }         
     }

@@ -29,9 +29,6 @@ int main()
 	chdir("/"); //改变当前工作目录
 	umask(0);	//防止限制文件权限引起混乱
 
-	//初始化 全局uid-socket 的键值对Map GLOBAL_UID_SOCKET_MAP
-	GLOBAL_UID_SOCKET_MAP.clear();
-
 	//日志初始化
 	LOG.Init();
 

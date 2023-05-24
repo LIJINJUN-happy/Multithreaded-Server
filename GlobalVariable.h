@@ -9,7 +9,7 @@ class ClassLogger;
 extern ClassLogger LOG;
 
 //全局uid - socket 的键值对容器
-extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};
 
 namespace Global
 {

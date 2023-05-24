@@ -344,6 +344,7 @@ void *CheckTaskList(void *args)
                     Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr);
                     Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
                     luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
+                    extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
                     GLOBAL_UID_SOCKET_MAP.erase(uid);
                 }
 
