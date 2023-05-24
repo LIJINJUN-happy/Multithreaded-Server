@@ -280,8 +280,16 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         //Client* pClient = (*((std::map<std::string, Client*>*)fdMapPtr))[key]->GetMyself();
         ((Client*)cliptr)->SetClientUid(actorId);                                           //设置Uid（因为验证账号密码成功后，会根据玩家的UID创建Vm虚拟机，以Uid作为VmMap的索引）
         bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(cliptr, luaVmMgrPtr, db);         //登录成功则尝试创建虚拟机
-        if (resCreateLuaVm != true) { result = false; }                                     //即使登录成功但创建失败也要跳过虚拟机操作(返回false)
-        if (resCreateLuaVm == true) { Gate::AddIntoSockIdMap(cliptr, sockmapPtr); }         //登录成功且创建Vm成功后,才可以加入socketIdMap中
+        
+        if (resCreateLuaVm != true) //即使登录成功但创建失败也要跳过虚拟机操作(返回false)
+        { 
+            result = false; 
+        }                                     
+        else                        //登录成功且创建Vm成功后,才可以加入socketIdMap中
+        { 
+            Gate::AddIntoSockIdMap(cliptr, sockmapPtr);
+            GLOBAL_UID_SOCKET_MAP[actorId] = fd;
+        }         
     }
 
     //返回协议

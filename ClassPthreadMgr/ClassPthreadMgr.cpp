@@ -212,7 +212,7 @@ void *CheckTaskList(void *args)
                     std::string account = parseData.get("Account", 0).asString();
                     std::string password = parseData.get("Password", 0).asString();
                     bool resultLogin = Gate::Login(account, password, dbPtr, msgPtr->GetOperatePtr(), luaVmMgrPtr, msgPtr->GetsockidMapPrt());
-                    if (resultLogin == false) { ifSkip = true; }                                                                    //登录失败要调过虚拟机交互
+                    if (resultLogin == false) { ifSkip = true; }  //登录失败要调过虚拟机交互
                 }
                 else if (called == "GATE" && fun == "c_registered_request")//注册请求
                 {
@@ -220,14 +220,14 @@ void *CheckTaskList(void *args)
                     std::string password = parseData.get("Password", 0).asString();
                     int code = parseData.get("Code", 0).asInt();
                     bool resRegistered = Gate::Registered(msgPtr->GetOperatePtr(), account, password, code, dbPtr);
-                    ifSkip = true;                                                                                                  //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
+                    ifSkip = true;    //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
                 }
                 else if (called == "GATE" && fun == "c_registered_token_request")//注册码请求
                 {
                     std::string em = parseData.get("EmailAddress", 0).asString();
                     bool resJudege = Gate::JudegeEmailBrandNew(em.c_str(), dbPtr, ((Client*)(msgPtr->GetOperatePtr()))->GetClientFd());
                     if (resJudege == true) { Gate::GetRegisteredToken(msgPtr->GetOperatePtr(), em.c_str()); }
-                    ifSkip = true;                                                                                                  //注册码请求也需要跳过
+                    ifSkip = true;   //注册码请求也需要跳过
                 }
                 else if (called == "GATE" && fun == "c_logout") { removeActorVmWithLogOut = true; }//下线
 
@@ -344,6 +344,7 @@ void *CheckTaskList(void *args)
                     Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr);
                     Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
                     luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
+                    GLOBAL_UID_SOCKET_MAP.erase(uid);
                 }
 
             }

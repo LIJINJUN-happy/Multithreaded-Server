@@ -168,7 +168,7 @@ void ClassTcpNet::StartEpoll()
                         string key = std::to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
-                        LOG.Log() << "accept函数接受客户端成功! clientSock = " << clientSock << endl;
+                        LOG.Log() << "Ser Accept Client Success ! ClientSocket = " << clientSock << endl;
                         //LOG.Log() << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
                 }
@@ -224,9 +224,6 @@ void ClassTcpNet::StartEpoll()
                                 {
                                     string completeStr(messageResidue, 0, findIndex);
                                     //LOG.Log() << "收到完整信息" << completeStr << endl;
-                                    /*
-                                    解析：待补充
-                                    */
                                     MsgPackage* msgPack = new MsgPackage(completeStr, (void*)pClient, (void*)(this->GetSockfdMap()), (void*)(this->GetSockidMap()), "Actor");
                                     limitDataList.push_back(msgPack);
                                     messageResidue.assign(messageResidue, findIndex + 1, messageResidue.npos);

@@ -59,6 +59,6 @@ RANK = {}
 
 --获取信息
 function RANK:ChangeScoreRankInfo(uid, arg)
-	print("-------------------i am in RANK")
+	print("-------------------i am in RANK,arg = ",arg)
 	return "", "", "ACTOR", "RANK", uid
 end
