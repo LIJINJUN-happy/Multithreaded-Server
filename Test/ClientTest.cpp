@@ -9,14 +9,38 @@
 #include <string>
 #include <cstring>
 #include "../etc/Config.h"
+#include <sys/syscall.h>
+#include <pthread.h>
+#include <memory>
+#include <algorithm>
 using namespace std;
 
 const int total = 20;
+
+void* Looping(void* sock)
+{
+
+	char dataBuff[Config::maxReadDataSize] = "";
+	while (1)
+	{
+		memset(dataBuff, 0, 0);
+		int socket = *((int*)sock);
+		int resRead = recv(socket, dataBuff, sizeof(dataBuff), MSG_DONTWAIT);
+		if (resRead <= 0)
+		{
+			continue;
+		}
+		string getString(dataBuff, 0, resRead);
+		cout << "getString = " << getString << std::endl;
+	}
+	return NULL;
+}
 
 int main(int argc, char* argv[])
 {
 	int sock[total] = {};
 	struct sockaddr_in serv_addr[total];
+	pthread_t timeTid[total];
 	for (int i = 0; i < total; i++)
 	{
 		sock[i] = socket(PF_INET, SOCK_STREAM, 0);
@@ -33,16 +57,25 @@ int main(int argc, char* argv[])
 			cout << " connect erro  ";
 			return 0;
 		}
+		else
+		{
+			timeTid[i] = 0;
+			int resTimerCreate = pthread_create(&(timeTid[i]), NULL, Looping, &(sock[i]));
+		}
 	}
+
+
 	string sq = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_login_request\",\"Account\":\"li\",\"Password\":\"abc\"}|";
 	char buf[256] = { 0 };
 	memcpy(buf, sq.c_str(), sq.size());
 	for (int i = 0; i < total; i++)
 	{
 		int how = send(sock[i], buf, strlen(buf), 0);
-		cout << "send Size = " << how << endl;
+		printf("[i] == %d  send Size = %d \n",i,how);
 	}
 
 	char c = getchar();
 	return 0;
 }
+
+//g++ ./ClientTest.cpp  -o ClientTest.out -lpthread   -std=c++11
