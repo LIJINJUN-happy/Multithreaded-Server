@@ -1,7 +1,7 @@
 #ifndef _MONITOR_H_
 #define _MONITOR_H_
 
-#include "../Net/ClassTcpNet.h"
+#include "../ClassServer.h"
 
 class ClassMonitor
 {

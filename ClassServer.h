@@ -2,7 +2,7 @@
 #ifndef _CLASSSERVER_H_
 #define _CLASSSERVER_H_
 
-#include "./GlobalVariable.h"
+#include "./Net/ClassTcpNet.h"
 
 class ClassServer
 {

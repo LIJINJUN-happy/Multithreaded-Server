@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include "../ClassServer.h"
+#include "../GlobalVariable.h"
 
 struct Base64Date6
 {
