@@ -5,8 +5,7 @@
 
 //全局变量
 std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};	//UID - SOCKET 键值对容器
-int SERVER_STATUS = Global::Running;					//服务器状态
-int SERVER_CONNECT_CONDITION = Global::Fluency;			//服务器连接情况
+ClassServer *SERVER_OBJECT = nullptr;
 
 using namespace std;
 int main()
@@ -33,6 +32,9 @@ int main()
 	}
 	chdir("/"); //改变当前工作目录
 	umask(0);	//防止限制文件权限引起混乱
+
+	//初始化Server类对象
+	SERVER_OBJECT = new ClassServer();
 
 	//日志初始化
 	LOG.Init();
