@@ -33,8 +33,6 @@ int main()
 	chdir("/"); //改变当前工作目录
 	umask(0);	//防止限制文件权限引起混乱
 
-	//初始化Server类对象
-	SERVER_OBJECT = new ClassServer();
 
 	//日志初始化
 	LOG.Init();
@@ -115,7 +113,7 @@ int main()
 	int resListen = pthread_create(&netTid, NULL, epollListening, tcpNetObj);
 	if (resListen == 0)
 	{
-		;
+		SERVER_OBJECT = new ClassServer(tcpNetObj);//初始化Server类对象;
 	}
 	else
 	{
