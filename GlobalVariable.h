@@ -58,6 +58,21 @@ namespace Global
         void SetVal(std::string tag, double arg);
         void SetVal(std::string tag, float arg);
     };
+
+    enum ServerStatus
+    {
+        Running = 1,//正常运作
+        Fixing,     //维护（不接受连接以及任何客户端数据）
+        Codeing,    //调试（只接受指定的UID连接以及协议数据）
+    };
+
+    enum ServerConnectCondition
+    {
+        Fluency = 1,//流畅
+        Normal,     //正常
+        Hotly,      //火热
+        Fully,      //拥堵（爆满）
+    };
 }
 
 #endif

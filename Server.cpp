@@ -3,8 +3,10 @@
 #include "./ClassTimer/ClassTimer.h"	 //自定义Timer头文件
 #include "./Monitor/ClassMonitor.h"		 //自定义监视头文件
 
-//全局uid - socket 的键值对容器
-std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};
+//全局变量
+std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};	//UID - SOCKET 键值对容器
+int SERVER_STATUS = Global::Running;					//服务器状态
+int SERVER_CONNECT_CONDITION = Global::Fluency;			//服务器连接情况
 
 using namespace std;
 int main()
