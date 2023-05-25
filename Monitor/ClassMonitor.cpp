@@ -61,12 +61,20 @@ void ClassMonitor::CheckoutClientIfOnline()
     }
 }
 
+void ClassMonitor::CheckoutClientAmount()
+{
+    extern ClassServer* SERVER_OBJECT;
+    int num = SERVER_OBJECT->GetActorAmount();
+    LOG.Log() << "Online Actor Amount Is ：" << num << std::endl;
+}
+
 void ClassMonitor::BeginCheck()
 {
     while (true)
     {
         //检测心跳
         this->CheckoutClientIfOnline();
+        this->CheckoutClientAmount();
         usleep((Config::CheckoutIntervalTime)*1000000);
     }
 }

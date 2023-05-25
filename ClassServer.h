@@ -16,9 +16,13 @@ private:
 	long serverStartTime;							//服务器启动时间
 	int serverStatus;								//服务器状态
 	int serverConnectCondition;						//服务器连接情况
+
+	ClassTcpNet* tcpNetObj;
+
 public:
     ClassServer();
 	~ClassServer();
+	ClassServer(ClassTcpNet* netObj);
 
 public:
 	int GetServerStatus();

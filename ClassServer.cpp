@@ -2,6 +2,14 @@
 
 ClassServer::ClassServer()
 {
+}
+
+ClassServer::~ClassServer()
+{
+}
+
+ClassServer::ClassServer(ClassTcpNet* netObj)
+{
 	this->serverStatus = Global::Running;				//服务器状态
 	this->serverConnectCondition = Global::Fluency;		//服务器连接情况
 	this->serverStartTime = Global::GetNowTime();
@@ -10,10 +18,7 @@ ClassServer::ClassServer()
 	this->serverOpenTime = Config::serOpenTime;
 	this->serverID = Config::servID;
 	this->serverName = Config::servName;
-}
-
-ClassServer::~ClassServer()
-{
+	this->tcpNetObj = netObj;
 }
 
 int ClassServer::GetServerStatus()
@@ -40,5 +45,6 @@ void ClassServer::SetServerConnectCondition(int condition)
 
 int ClassServer::GetActorAmount()
 {
-	return 0;
+	int num = this->tcpNetObj->GetSockidMap()->size();
+	return num;
 }

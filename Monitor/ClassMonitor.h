@@ -14,6 +14,7 @@ public:
     ClassMonitor(ClassTcpNet *, ClassPthreadMgr *);
     ~ClassMonitor();
     void CheckoutClientIfOnline(); //检测客户端对象Client心跳间隔
+    void CheckoutClientAmount();   //检查客户端连接数量
     void BeginCheck();             //检测触发函数
 };
 
