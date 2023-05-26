@@ -12,6 +12,7 @@ public:
 	int luaVmType;			//luaVm类型（用户，公共，xxxx）
 	lua_State* luaState;	//luaVm对象指针
 	std::string moudleName;	//模块名称(用户为uid转化而来,公共模块则为模块名)
+	long lastGcTime = 0;	//模块最后一次GC的时间戳
 	
 public:
 	LuaBaseVm();
@@ -23,9 +24,13 @@ public:
 	virtual bool Init() {};
 	lua_State* GetLuaStatePtr();
 	int GetLuaVmType();
+	long GetLuaVMLastGcTime();
+	void SetLuaVMLastGcTime(long time);
 
 public:
 	void LoadScritpFunction(lua_State* L);//加载Lua调用C++的函数
+	long CheckGcTimeArrive();
+	void Gc();
 };
 
 

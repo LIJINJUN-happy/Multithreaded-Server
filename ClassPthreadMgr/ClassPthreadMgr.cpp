@@ -365,8 +365,8 @@ void *CheckTaskList(void *args)
                 LOG.Log() << "Client " << uid << " Task Total Amount: " << taskNum << std::endl;
                 if (taskNum <= 0)
                 {
-                    //恢复被操作的线程索引
-                    clientPtr->UpdateWorkPthreadIndex(-1);
+                    clientPtr->UpdateWorkPthreadIndex(-1);  //恢复被操作的线程索引
+                    luaVmMgrPtr->GetLuaVmByIndex(uid)->Gc();//任务数量为0且到了间隔时间的时候GC
                 }
             }
             else

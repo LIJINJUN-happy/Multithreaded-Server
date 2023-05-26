@@ -8,6 +8,7 @@ LuaBaseVm::LuaBaseVm()
 	this->luaVmType = 0;//Ä¬ÈÏÎª0
 	this->luaState = luaL_newstate();
 	this->moudleName = "";
+	this->lastGcTime = Global::GetNowTime();
 }
 
 LuaBaseVm::LuaBaseVm(int type, std::string mName)
@@ -20,6 +21,7 @@ LuaBaseVm::LuaBaseVm(int type, std::string mName)
 	this->luaVmType = type;
 	this->moudleName = mName;
 	this->luaState = luaL_newstate();
+	this->lastGcTime = Global::GetNowTime();
 }
 
 LuaBaseVm::~LuaBaseVm()
@@ -41,6 +43,40 @@ lua_State* LuaBaseVm::GetLuaStatePtr()
 int LuaBaseVm::GetLuaVmType()
 {
 	return this->luaVmType;
+}
+
+long LuaBaseVm::GetLuaVMLastGcTime()
+{
+	return this->lastGcTime;
+}
+
+void LuaBaseVm::SetLuaVMLastGcTime(long time)
+{
+	this->lastGcTime = time;
+	return;
+}
+
+long LuaBaseVm::CheckGcTimeArrive()
+{
+	long nowTime = Global::GetNowTime();
+	long lastTime = this->GetLuaVMLastGcTime();
+	long needFlushTime = lastTime + Config::LuaVMGcIntervalTime;
+	if (nowTime >= needFlushTime)
+		return nowTime;
+	return 0;
+}
+
+void LuaBaseVm::Gc()
+{
+	long nowTime = CheckGcTimeArrive();
+	if (nowTime == 0)
+		return;
+
+	//int size = lua_gc(this->luaState, LUA_GCCOUNT, 0);
+	int collectRes = lua_gc(this->luaState, LUA_GCCOLLECT, 0);
+	//LOG.Log() << "size = " << size << " collectRes = " << collectRes << std::endl;
+	this->SetLuaVMLastGcTime(nowTime);
+	return;
 }
 
 void LuaBaseVm::LoadScritpFunction(lua_State* L)

@@ -75,6 +75,8 @@ namespace Config
 	const int registerCodeSize = 6;				//验证码长度
 	const long registerCodeOutTimeInterval = 60;//验证码有效秒数
 
+	//LuaGC 间隔
+	const int LuaVMGcIntervalTime = 250;  //LuaVm GC 间隔
 }
 
 #endif

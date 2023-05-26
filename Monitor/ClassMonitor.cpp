@@ -68,13 +68,57 @@ void ClassMonitor::CheckoutClientAmount()
     LOG.Log() << "Online Actor Amount Is ：" << num << std::endl;
 }
 
+void ClassMonitor::CheckoutLuaVmWithActorMap()
+{
+    int type = 0;
+    std::string uid = "";
+    LuaVmMgr* pLuaVmMap = this->pthreadObj->GetLuaVmMgrPtr();
+    for (auto mapIter : (*(pLuaVmMap->GetLuaVmMapPtr())))
+    {
+        //共有LuaVm忽略
+        type = mapIter.second->GetLuaVmType();
+        if (type == Global::PUBLIC)
+            continue;
+
+        uid = mapIter.first;
+        auto itIdMap = this->tcpNetObj->GetSockidMap()->find(uid);
+        if (itIdMap == this->tcpNetObj->GetSockidMap()->end())
+        {
+            //移除luaVm
+            this->pthreadObj->GetLuaVmMgrPtr()->DeleteLuaBaseVm(uid);
+
+            //判断fdMap是否还有残留
+            extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+            if (GLOBAL_UID_SOCKET_MAP.find(uid) != GLOBAL_UID_SOCKET_MAP.end())
+            {
+                std::string fd = std::to_string(GLOBAL_UID_SOCKET_MAP[uid]);
+                GLOBAL_UID_SOCKET_MAP.erase(uid);
+
+                auto itFdMap = this->tcpNetObj->GetSockfdMap()->find(fd);
+                if (itFdMap != this->tcpNetObj->GetSockfdMap()->end())
+                {
+                    Client* pClient = itFdMap->second;
+                    this->tcpNetObj->GetSockfdMap()->erase(fd);
+                    if (pClient)
+                        delete pClient;
+                }
+            }
+        }
+        uid.clear();
+    }
+}
+
 void ClassMonitor::BeginCheck()
 {
     while (true)
     {
         //检测心跳
         this->CheckoutClientIfOnline();
+        //检测Lua虚拟机和客户Map中数量是否均存在（有可能出现lua虚拟机存在，actor不存在的情况）
+        this->CheckoutLuaVmWithActorMap();
+        //检查客户端连接数量
         this->CheckoutClientAmount();
+
         usleep((Config::CheckoutIntervalTime)*1000000);
     }
 }
