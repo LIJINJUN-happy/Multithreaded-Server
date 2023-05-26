@@ -75,6 +75,7 @@ void LuaBaseVm::Gc()
 	//int size = lua_gc(this->luaState, LUA_GCCOUNT, 0);
 	//LOG.Log() << "before collect Gc Vm size = " << size << std::endl;
 	int collectRes = lua_gc(this->luaState, LUA_GCCOLLECT, 0);
+	//size = lua_gc(this->luaState, LUA_GCCOUNT, 0);
 	//LOG.Log() << "after collect Gc Vm size = " << size << " collectRes = " << collectRes << std::endl;
 	this->SetLuaVMLastGcTime(nowTime);
 	return;
