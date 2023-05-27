@@ -121,7 +121,7 @@ void ClassMonitor::CheckoutServerCondition(int num, std::array<int,4>& list)
         {
             int condition = i + 1;
             extern ClassServer* SERVER_OBJECT;
-            SERVER_OBJECT->SetServerConnectCondition(condition)
+            SERVER_OBJECT->SetServerConnectCondition(condition);
             LOG.Log() << "ServerCondition Is ：" << condition << std::endl;
         }
     }
