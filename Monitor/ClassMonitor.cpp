@@ -123,6 +123,7 @@ void ClassMonitor::CheckoutServerCondition(int num, std::array<int,4>& list)
             extern ClassServer* SERVER_OBJECT;
             SERVER_OBJECT->SetServerConnectCondition(condition);
             LOG.Log() << "ServerCondition Is ：" << condition << std::endl;
+            return;
         }
     }
     return;
