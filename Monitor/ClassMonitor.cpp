@@ -109,12 +109,28 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
     }
 }
 
-void ClassMonitor::CheckoutServerCondition(int num)
+void ClassMonitor::CheckoutServerCondition(int num, std::array<int,4>& list)
 {
+    for (int i = 0; i < 4; i++)
+    {
+        if (num >= list)
+        {
+            continue;
+        }
+        else
+        {
+            int condition = i + 1;
+            extern ClassServer* SERVER_OBJECT;
+            SERVER_OBJECT->SetServerConnectCondition(condition)
+            LOG.Log() << "ServerCondition Is ：" << condition << std::endl;
+        }
+    }
+    return;
 }
 
 void ClassMonitor::BeginCheck()
 {
+    std::array<int,4> actorAmountList{200,500,800,Config::maxSocketfd};
     int totalActor = 0;
     while (true)
     {
@@ -125,7 +141,7 @@ void ClassMonitor::BeginCheck()
         //检查客户端连接数量
         totalActor = this->CheckoutClientAmount();
         //服務器狀況
-        this->CheckoutServerCondition(totalActor);
+        this->CheckoutServerCondition(totalActor, actorAmountList);
 
         usleep((Config::CheckoutIntervalTime)*1000000);
     }
