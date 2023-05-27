@@ -73,6 +73,8 @@ namespace Global
         Hotly,      //火热
         Fully,      //拥堵（爆满）
     };
+
+
 }
 
 #endif

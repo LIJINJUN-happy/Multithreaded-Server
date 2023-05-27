@@ -61,11 +61,12 @@ void ClassMonitor::CheckoutClientIfOnline()
     }
 }
 
-void ClassMonitor::CheckoutClientAmount()
+int ClassMonitor::CheckoutClientAmount()
 {
     extern ClassServer* SERVER_OBJECT;
     int num = SERVER_OBJECT->GetActorAmount();
     LOG.Log() << "Online Actor Amount Is ：" << num << std::endl;
+    return num;
 }
 
 void ClassMonitor::CheckoutLuaVmWithActorMap()
@@ -108,8 +109,13 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
     }
 }
 
+void ClassMonitor::CheckoutServerCondition(int num)
+{
+}
+
 void ClassMonitor::BeginCheck()
 {
+    int totalActor = 0;
     while (true)
     {
         //检测心跳
@@ -117,7 +123,9 @@ void ClassMonitor::BeginCheck()
         //检测Lua虚拟机和客户Map中数量是否均存在（有可能出现lua虚拟机存在，actor不存在的情况）
         this->CheckoutLuaVmWithActorMap();
         //检查客户端连接数量
-        this->CheckoutClientAmount();
+        totalActor = this->CheckoutClientAmount();
+        //服務器狀況
+        this->CheckoutServerCondition(totalActor);
 
         usleep((Config::CheckoutIntervalTime)*1000000);
     }
