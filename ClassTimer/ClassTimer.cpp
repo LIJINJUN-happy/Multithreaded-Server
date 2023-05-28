@@ -84,11 +84,6 @@ void ClassTimer::CheckoutOnceEventList()
             onceList->pop_front();
             continue;
         }
-        //由于排过序第一个不符合后面的都不符合
-        else
-        {
-            break;
-        }
     }
 }
 
@@ -100,14 +95,14 @@ void ClassTimer::CheckoutLoopEventList()
     for (index; index != loopList->end(); index++)
     {
         int nowt = (*index).nowTime;
-        if (nowt + 1 >= (*index).tarTime)
+        if (nowt >= (*index).tarTime)
         {
             //this->pthreadObj->AddMsgIntoTaskPool((*index).event);
-            (*index).nowTime = 0;
+            (*index).nowTime = 0;//归零重新计算新的一轮循环
         }
         else
         {
-            (*index).nowTime = nowt + 1;
+            (*index).nowTime = nowt + 1;//下一秒
         }
         continue;
     }
