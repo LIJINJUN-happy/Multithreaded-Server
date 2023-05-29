@@ -71,19 +71,24 @@ void ClassTimer::CheckoutOnceEventList()
 
     list<OnceEvent> *onceList = this->GetOnceEventListPtr();
     onceList->sort(CompareDiffEvent); //按tarhour来排序
+    
+    list<OnceEvent>::iterator index = (*onceList).begin();
     while (true)
     {
-        list<OnceEvent>::iterator index = (*onceList).begin();
         if(index == onceList->end())
         {
             break;
         }
+
         if ((*index).tarHour == nowHour)
         {
             //this->pthreadObj->AddMsgIntoTaskPool((*index).event);
             onceList->pop_front();
+            index = (*onceList).begin(); //删除后重新开始赋值遍历（指针会失效）
             continue;
         }
+
+        index++;
     }
 }
 
