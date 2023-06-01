@@ -83,7 +83,7 @@ void ClassTimer::CheckoutOnceEventList()
         if ((*index).tarHour == nowHour)
         {
             //this->pthreadObj->AddMsgIntoTaskPool((*index).event);
-            onceList->pop_front();
+            onceList->erase(index);
             index = (*onceList).begin(); //删除后重新开始赋值遍历（指针会失效）
             continue;
         }
