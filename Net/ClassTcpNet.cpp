@@ -169,7 +169,7 @@ void ClassTcpNet::StartEpoll()
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
                         pSockfdMap[key]->UpdateHeartBeatTime();
-                        LOG.Log() << "Ser Accept Client Success ! ClientSocket = " << clientSock << endl;
+                        //LOG.Log() << "Ser Accept Client Success ! ClientSocket = " << clientSock << endl;
                         //LOG.Log() << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
                 }
@@ -186,7 +186,7 @@ void ClassTcpNet::StartEpoll()
                         //客户端关闭了
                         if (resRead == 0)
                         {
-                            LOG.Log() << "Client:" << events[index].data.fd << "Close" << endl;
+                            //LOG.Log() << "Client:" << events[index].data.fd << "Close" << endl;
                             this->CloseClientByFd(std::to_string(events[index].data.fd));
                             std::string jsonMessage = "{\"Moudle\":\"GATE\",\"Protocol\":\"c_logout\"}";
                             MsgPackage* msgPack = new MsgPackage(jsonMessage, (void*)pClient, (void*)(this->GetSockfdMap()), (void*)(this->GetSockidMap()), "Actor");

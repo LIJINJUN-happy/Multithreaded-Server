@@ -191,7 +191,7 @@ void *CheckTaskList(void *args)
             userOperator = true;
         }
         stringMsg = msgPtr->GetCMD();
-        LOG.Log() << "stringMsg = " << stringMsg << std::endl;
+        //LOG.Log() << "stringMsg = " << stringMsg << std::endl;
             
         //执行任务
         if (stringMsg.size() >= 1)
@@ -362,7 +362,7 @@ void *CheckTaskList(void *args)
                 Client* clientPtr = (Client*)(msgPtr->GetOperatePtr());
                 clientPtr->UpdateClientTaskNum(-1);
                 int taskNum = clientPtr->GetClientTaskNum();
-                LOG.Log() << "Client " << uid << " Task Total Amount: " << taskNum << std::endl;
+                //LOG.Log() << "Client " << uid << " Task Total Amount: " << taskNum << std::endl;
                 if (taskNum <= 0)
                 {
                     clientPtr->UpdateWorkPthreadIndex(-1);  //恢复被操作的线程索引
