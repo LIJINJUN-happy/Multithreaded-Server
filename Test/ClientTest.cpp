@@ -15,9 +15,9 @@
 #include <algorithm>
 #include <atomic>
 using namespace std;
-
+using std::atomic_int;
 const int total = 500;
-std::atomic<int> login_total = 0;
+std::atomic<int> login_total{ 0 };
 
 void* Looping(void* sock)
 {
