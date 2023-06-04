@@ -13,14 +13,17 @@
 #include <pthread.h>
 #include <memory>
 #include <algorithm>
+#include <atomic>
 using namespace std;
 
-const int total = 20;
+const int total = 500;
+std::atomic<int> login_total = 0;
 
 void* Looping(void* sock)
 {
 
 	char dataBuff[Config::maxReadDataSize] = "";
+	int login = 0;
 	while (1)
 	{
 		memset(dataBuff, 0, 0);
@@ -32,6 +35,13 @@ void* Looping(void* sock)
 		}
 		string getString(dataBuff, 0, resRead);
 		cout << "getString = " << getString << std::endl;
+		login_total.fetch_add(1);
+
+		if (login == 0)
+		{
+			cout << "load total = " << login_total.load() << std::endl;
+			login = login + 1;
+		}
 	}
 	return NULL;
 }
@@ -71,10 +81,28 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < total; i++)
 	{
 		int how = send(sock[i], buf, strlen(buf), 0);
-		printf("[i] == %d  send Size = %d \n",i,how);
+		//printf("[i] == %d  send Size = %d \n",i,how);
 	}
 
+	while (1)
+	{
+		if (total == login_total)
+		{
+			std::cout << "µÇÂ¼Íê³É£¡" << std::endl;
+			break;
+		}
+		else
+			continue;
+	}
 	char c = getchar();
+
+	sq = "{\"Moudle\":\"ACTOR\",\"Protocol\":\"AddScore\",\"score\":1997}|";
+	memcpy(buf, sq.c_str(), sq.size());
+	for (int i = 0; i < total; i++)
+	{
+		int how = send(sock[i], buf, strlen(buf), 0);
+		//printf("[i] == %d  send Size = %d \n", i, how);
+	}
 	return 0;
 }
 
