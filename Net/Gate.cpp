@@ -263,16 +263,12 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
     return "";
 }
 
-bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr)
+bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockmapPtr)
 {
     //先验证账号密码
     int fd = ((Client*)cliptr)->GetClientFd();
     bool result = true;
     std::string actorId = Gate::CheckoutAccountPassword(account, pw, db);
-
-    //检测是否有残旧数据需要删除（有可能之前掉线了, 导致没有正常下线, 以至于数据还残存）
-    CheckoutReLogin(actorId, luaVmMgrPtr, sockidmapPtr, sockfdmapPtr);
-    
     if (actorId.size() <= 0)
     {
         result = false;
@@ -291,7 +287,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         }                                     
         else                        //登录成功且创建Vm成功后,才可以加入socketIdMap中
         { 
-            Gate::AddIntoSockIdMap(cliptr, sockidmapPtr);
+            Gate::AddIntoSockIdMap(cliptr, sockmapPtr);
             ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
             //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << ::GLOBAL_UID_SOCKET_MAP.size() << endl;
         }         
@@ -512,44 +508,4 @@ void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
         delete clientp;//释放Client*内存
         //LOG.Log() << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
     }
-}
-
-void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr)
-{
-    std::map<string, Client*>* pSockfdMap = (std::map<string, Client*>*)sockfdmapPtr;
-    std::map<string, Client*>* pSockidMap = (std::map<string, Client*>*)sockidmapPtr;
-    Client* pClient = nullptr;
-
-    //移除idMap内旧数据
-    if (pSockidMap->find(uid) != pSockidMap->end())
-    {
-        //LOG.Log() << "有旧数据残留,删除旧数据：" << uid << endl;
-        pClient = pSockidMap[uid];
-        pSockidMap->erase(uid);
-    }
-
-    //移除LuaVm
-    luaVmMgrPtr->DeleteLuaBaseVm(uid);
-
-    //移除fdMap内数据
-    if (pClient)
-    {
-        int clientFd = pClient->GetClientFd();
-        //LOG.Log() << "clientFd == ：" << clientFd << endl;
-        close(clientFd);
-        std::string fd = std::to_string(clientFd);
-        //epoll_ctl(, EPOLL_CTL_DEL, clientFd, NULL);
-        pSockfdMap->erase(fd);
-    }
-
-    //移除UID-Socket的键值对容器内的数据
-    if (::GLOBAL_UID_SOCKET_MAP.find(uid) != ::GLOBAL_UID_SOCKET_MAP.end())
-    {
-        //LOG.Log() << "GLOBAL_UID_SOCKET_MAP [clientFd] == ：" << (::GLOBAL_UID_SOCKET_MAP)[uid] << endl << endl;
-        ::GLOBAL_UID_SOCKET_MAP.erase(uid);
-    }
-
-    //析构client指针所指向的内存
-    delete pClient;
-    return;
 }

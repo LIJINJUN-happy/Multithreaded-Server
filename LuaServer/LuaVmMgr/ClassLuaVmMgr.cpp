@@ -84,7 +84,7 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
         //LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
     }
-    //LOG.Log() << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl;
+    LOG.Log() << "Vm " << strIndex << " Delete Fail, Not Exsit!" << endl;
     return false;
 }
 
