@@ -523,7 +523,7 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
     if (pSockidMap->find(uid) != pSockidMap->end())
     {
         //LOG.Log() << "有旧数据残留,删除旧数据：" << uid << endl;
-        pClient = pSockidMap[uid];
+        pClient = (*pSockidMap)[uid];
         pSockidMap->erase(uid);
     }
 
