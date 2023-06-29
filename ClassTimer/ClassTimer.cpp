@@ -138,8 +138,8 @@ void *TimerLooping(void *args)
         temp.tv_sec = seconds;
         temp.tv_usec = 0;
         select(0, NULL, NULL, NULL, &temp);
-        ((ClassTimer *)args)->CheckoutOnceEventList();
-        ((ClassTimer *)args)->CheckoutLoopEventList();
+        //((ClassTimer *)args)->CheckoutOnceEventList();
+        //((ClassTimer *)args)->CheckoutLoopEventList();
     }
     return NULL;
 }

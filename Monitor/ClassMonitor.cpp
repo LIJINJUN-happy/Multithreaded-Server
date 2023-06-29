@@ -141,7 +141,7 @@ void ClassMonitor::BeginCheck()
     while (true)
     {
         //检测心跳
-        this->CheckoutClientIfOnline();
+        //this->CheckoutClientIfOnline();
 
         //检测Lua虚拟机和客户Map中数量是否均存在（有可能出现lua虚拟机存在，actor不存在的情况）
         //this->CheckoutLuaVmWithActorMap();
