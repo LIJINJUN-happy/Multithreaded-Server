@@ -2,7 +2,7 @@
 #ifndef _CLASSSERVER_H_
 #define _CLASSSERVER_H_
 
-#include "./Net/ClassTcpNet.h"
+#include "./GlobalVariable.h"
 
 class ClassServer
 {
@@ -17,12 +17,13 @@ private:
 	int serverStatus;								//服务器状态
 	int serverConnectCondition;						//服务器连接情况
 
-	ClassTcpNet* tcpNetObj;
+	int epollFd;								//监听Socket
+	std::atomic<int> clientAmount;				//客户端数量
 
 public:
     ClassServer();
 	~ClassServer();
-	ClassServer(ClassTcpNet* netObj);
+	ClassServer(int epoll_fd);
 
 public:
 	int GetServerStatus();
@@ -32,6 +33,8 @@ public:
 	void SetServerConnectCondition(int condition);
 
 	int GetActorAmount();
+	void ChangeClientAmount(int val);
+	void SetActorAmount(int val);
 };
 
 

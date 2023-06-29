@@ -327,6 +327,11 @@ void ClassTcpNet::AddMsgIntoTaskPool(Client* pClient, list<MsgPackage*>& limitDa
     }
 }
 
+int ClassTcpNet::GetEpollFd()
+{
+    return this->epollfd;
+}
+
 //开始执行Epoll监听线程，把数据存进去Tasklist里面
 void *epollListening(void *args)
 {

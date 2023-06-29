@@ -113,7 +113,8 @@ int main()
 	int resListen = pthread_create(&netTid, NULL, epollListening, tcpNetObj);
 	if (resListen == 0)
 	{
-		SERVER_OBJECT = new ClassServer(tcpNetObj);//初始化Server类对象;
+		int epoll_fd = tcpNetObj->GetEpollFd();
+		SERVER_OBJECT = new ClassServer(epoll_fd);//初始化Server类对象;
 	}
 	else
 	{
