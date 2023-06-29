@@ -209,9 +209,9 @@ void *CheckTaskList(void *args)
                 bool removeActorVmWithLogOut = false;
                 if (called == "GATE" && fun == "c_login_request")//登录请求
                 {
-                    std::string account = parseData.get("Account", 0).asString();
-                    std::string password = parseData.get("Password", 0).asString();
-                    bool resultLogin = Gate::Login(account, password, dbPtr, msgPtr->GetOperatePtr(), luaVmMgrPtr, msgPtr->GetsockidMapPrt(), msgPtr->GetsockfdMapPrt());
+                    std::string account = parseData.get("Account", 0).asString(), password = parseData.get("Password", 0).asString();
+                    extern ClassServer* SERVER_OBJECT;
+                    bool resultLogin = Gate::Login(account, password, dbPtr, msgPtr->GetOperatePtr(), luaVmMgrPtr, msgPtr->GetsockidMapPrt(), msgPtr->GetsockfdMapPrt(), SERVER_OBJECT);
                     if (resultLogin == false) { ifSkip = true; }  //登录失败要调过虚拟机交互
                 }
                 else if (called == "GATE" && fun == "c_registered_request")//注册请求

@@ -33,7 +33,7 @@ namespace Gate
 	std::string CheckoutAccountPassword(std::string account, std::string pw, ClassDataBase* db);
 
 	//登录请求处理
-	bool Login(std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr);
+	bool Login(std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr, ClassServer* classServerPtr);
 
 	//登录成功后创建用户LuaVm
 	bool CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr, ClassDataBase* db);
@@ -51,7 +51,7 @@ namespace Gate
 	void RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid);
 
 	//判断是否需要重登处理(有可能之前掉线了, 导致没有正常下线, 以至于数据还残存)
-	void CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr);
+	void CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr, ClassServer* classServerPtr);
 }
 
 #endif

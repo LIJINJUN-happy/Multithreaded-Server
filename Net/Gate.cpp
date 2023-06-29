@@ -263,7 +263,7 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
     return "";
 }
 
-bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr)
+bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* cliptr, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr, ClassServer* classServerPtr)
 {
     //先验证账号密码
     int fd = ((Client*)cliptr)->GetClientFd();
@@ -276,7 +276,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
     else
     {
         //检测是否有残旧数据需要删除（有可能之前掉线了, 导致没有正常下线, 以至于数据还残存）
-        CheckoutReLogin(actorId, luaVmMgrPtr, sockidmapPtr, sockfdmapPtr);
+        CheckoutReLogin(actorId, luaVmMgrPtr, sockidmapPtr, sockfdmapPtr, classServerPtr);
 
         //result = true;
         //string key = std::to_string(fd);
@@ -513,7 +513,7 @@ void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
     }
 }
 
-void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr)
+void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr, ClassServer* classServerPtr)
 {
     std::map<string, Client*>* pSockfdMap = (std::map<string, Client*>*)sockfdmapPtr;
     std::map<string, Client*>* pSockidMap = (std::map<string, Client*>*)sockidmapPtr;
@@ -538,9 +538,8 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
         close(clientFd);
         std::string fd = std::to_string(clientFd);
         pSockfdMap->erase(fd);
-        extern ClassServer* SERVER_OBJECT;
-        epoll_ctl(SERVER_OBJECT->GetEpollFd(), EPOLL_CTL_DEL, clientFd, NULL);
-        SERVER_OBJECT->ChangeClientAmount(-1);
+        epoll_ctl(classServerPtr->GetEpollFd(), EPOLL_CTL_DEL, clientFd, NULL);
+        classServerPtr->ChangeClientAmount(-1);
     }
 
     //移除UID-Socket的键值对容器内的数据
