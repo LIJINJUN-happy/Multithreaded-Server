@@ -139,6 +139,19 @@ std::string LuaVmMgr::GetPathByStringFromFilesInfo(std::string str)
     return std::string(it->second.second);
 }
 
+int LuaVmMgr::GetPersonalVmAmount()
+{
+    int num = 0;
+    for (auto x : *(this->luaVmMapPtr))
+    {
+        if (x.second->GetLuaVmType() == Global::PERSONAL)
+        {
+            num += 1;
+        }
+    }
+    return num;
+}
+
 int LuaVmMgr::GetLuaVmTypeByIndex(std::string strIndex)
 {
     LuaBaseVm* p = this->luaVmMap[strIndex];

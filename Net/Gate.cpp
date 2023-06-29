@@ -537,8 +537,10 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
         //LOG.Log() << "clientFd == ：" << clientFd << endl;
         close(clientFd);
         std::string fd = std::to_string(clientFd);
-        //epoll_ctl(, EPOLL_CTL_DEL, clientFd, NULL);
         pSockfdMap->erase(fd);
+        extern ClassServer* SERVER_OBJECT;
+        epoll_ctl(SERVER_OBJECT->GetEpollFd(), EPOLL_CTL_DEL, clientFd, NULL);
+        SERVER_OBJECT->ChangeClientAmount(-1);
     }
 
     //移除UID-Socket的键值对容器内的数据

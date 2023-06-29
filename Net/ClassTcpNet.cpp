@@ -169,6 +169,8 @@ void ClassTcpNet::StartEpoll()
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
                         pSockfdMap[key]->UpdateHeartBeatTime();
+                        extern ClassServer* SERVER_OBJECT;
+                        SERVER_OBJECT->ChangeClientAmount(1);
                         //LOG.Log() << "Ser Accept Client Success ! ClientSocket = " << clientSock << endl;
                         //LOG.Log() << "当前连接人数为：" << pSockfdMap.size() << endl;
                     }
@@ -265,6 +267,8 @@ void ClassTcpNet::CloseClientByFd(string fd)
     close(clientFd);
     epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
     this->pSockfdMap.erase(fd);
+    extern ClassServer* SERVER_OBJECT;
+    SERVER_OBJECT->ChangeClientAmount(-1);
     //LOG.Log() << "当前SockfdMap人数为：" << pSockfdMap.size() << endl;
 }
 

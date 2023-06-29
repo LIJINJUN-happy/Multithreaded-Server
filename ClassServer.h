@@ -17,8 +17,8 @@ private:
 	int serverStatus;								//服务器状态
 	int serverConnectCondition;						//服务器连接情况
 
-	int epollFd;								//监听Socket
-	std::atomic<int> clientAmount;				//客户端数量
+	int epollFd;									//监听Socket
+	std::atomic<int> clientAmount;					//客户端数量
 
 public:
     ClassServer();
@@ -35,6 +35,8 @@ public:
 	int GetActorAmount();
 	void ChangeClientAmount(int val);
 	void SetActorAmount(int val);
+
+	int GetEpollFd();
 };
 
 

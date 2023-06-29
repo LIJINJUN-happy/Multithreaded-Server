@@ -66,6 +66,9 @@ int ClassMonitor::CheckoutClientAmount()
     extern ClassServer* SERVER_OBJECT;
     int num = SERVER_OBJECT->GetActorAmount();
     LOG.Log() << "Online Actor Amount Is ：" << num << std::endl;
+    LOG.Log() << "FdMap Amount Is ：" << this->tcpNetObj->GetSockfdMap()->size() << std::endl;
+    LOG.Log() << "IdMap Amount Is ：" << this->tcpNetObj->GetSockidMap()->size() << std::endl;
+    LOG.Log() << "LuaVm Amount Is ：" << this->pthreadObj->GetLuaVmMgrPtr()->GetPersonalVmAmount() << std::endl << endl;
     return num;
 }
 

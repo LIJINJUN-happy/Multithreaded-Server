@@ -70,3 +70,8 @@ void ClassServer::SetActorAmount(int val)
 	this->clientAmount.store(val);
 	return;
 }
+
+int ClassServer::GetEpollFd()
+{
+	return this->epollFd;
+}
