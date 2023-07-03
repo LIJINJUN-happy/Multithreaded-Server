@@ -154,9 +154,6 @@ void *CheckTaskList(void *args)
     std::string fun = "";   //调用函数/协议
     std::string arg = "";   //参数
 
-    //是否用户操作
-    bool userOperator = false;//默认为否,若用户类型协议则为true,用作任务数量减少依据
-
     pthread_mutex_lock(lock); //上锁
     while (true)
     {
@@ -177,19 +174,10 @@ void *CheckTaskList(void *args)
             pWorkList = *(((Task*)args)->pWorkList);
         }
 
-        if (pWorkList->size() < 1)
-        {
-            continue;
-        }
+        if (pWorkList->size() < 1) continue;
         //从消息列表取出消息包并读取消息包信息
         MsgPackage* msgPtr = *(pWorkList->begin());
         pWorkList->erase(pWorkList->begin());
-        bool resCheck = msgPtr->CheckMsgType("Actor");
-        if (resCheck == true)
-        {
-            //判断是否来自用户的socketMsg
-            userOperator = true;
-        }
         stringMsg = msgPtr->GetCMD();
         //LOG.Log() << "stringMsg = " << stringMsg << std::endl;
             
@@ -353,7 +341,7 @@ void *CheckTaskList(void *args)
         }
 
         //修改任务数量
-        if (userOperator == true && uid.size() > 0)
+        if ((msgPtr->CheckMsgType("Actor") == true) && uid.size() > 0)
         {
             void* sockmapPtr = msgPtr->GetsockidMapPrt();
             auto it = ((map<string, Client*>*)sockmapPtr)->find(uid);
@@ -374,7 +362,6 @@ void *CheckTaskList(void *args)
                 //LOG.Log() << "Client " << "Is't Not Online" << std::endl;
             }
         }
-        userOperator = false;
 
         //销毁
         delete msgPtr;
