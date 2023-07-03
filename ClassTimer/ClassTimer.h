@@ -1,7 +1,8 @@
 #ifndef _CLASSTIMER_H_
 #define _CLASSTIMER_H_
 
-#include "../ClassPthreadMgr/ClassPthreadMgr.h"
+//#include "../ClassPthreadMgr/ClassPthreadMgr.h"
+#include "../Net/ClassTcpNet.h"
 
 
 //(循环事件子元素)
