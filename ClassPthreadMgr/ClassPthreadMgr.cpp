@@ -204,8 +204,7 @@ void *CheckTaskList(void *args)
                 }
                 else if (called == "GATE" && fun == "c_registered_request")//注册请求
                 {
-                    std::string account = parseData.get("Account", 0).asString();
-                    std::string password = parseData.get("Password", 0).asString();
+                    std::string account = parseData.get("Account", 0).asString(), password = parseData.get("Password", 0).asString();
                     int code = parseData.get("Code", 0).asInt();
                     bool resRegistered = Gate::Registered(msgPtr->GetOperatePtr(), account, password, code, dbPtr);
                     ifSkip = true;    //注册必须跳过,因为只有登录成功才可进入对应的用户LuaVm进行交互
