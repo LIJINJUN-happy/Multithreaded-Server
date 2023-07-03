@@ -20,6 +20,9 @@ private:
 	int epollFd;									//监听Socket
 	std::atomic<int> clientAmount;					//客户端数量
 
+	int minTaskListIndex;							//所有执行线程所对应的任务链中,存放最少任务List的索引
+	void *noLimitDataListPtr;						//无限制接受socket信息容器指针
+
 public:
     ClassServer();
 	~ClassServer();
@@ -37,6 +40,15 @@ public:
 	void SetActorAmount(int val);
 
 	int GetEpollFd();
+	void SetEpollFd(int fd);
+
+	int GetMinTaskListIndex();
+	void SetMinTaskListIndex(int index);
+
+	void* GetNoLimitDataListPtr();
+	void SetNoLimitDataListPtr(void * ptr);
+
+
 };
 
 

@@ -2,6 +2,17 @@
 
 ClassServer::ClassServer()
 {
+	this->serverStatus = Global::Running;				//服务器状态
+	this->serverConnectCondition = Global::Fluency;		//服务器连接情况
+	this->serverStartTime = Global::GetNowTime();
+	this->addrString = Config::addrString;
+	this->listenPort = Config::listenPort;
+	this->serverOpenTime = Config::serOpenTime;
+	this->serverID = Config::servID;
+	this->serverName = Config::servName;
+	this->clientAmount = 0;
+	this->minTaskListIndex = 1;
+	this->noLimitDataListPtr = nullptr;
 }
 
 ClassServer::~ClassServer()
@@ -20,6 +31,8 @@ ClassServer::ClassServer(int epoll_fd)
 	this->serverName = Config::servName;
 	this->epollFd = epoll_fd;
 	this->clientAmount = 0;
+	this->minTaskListIndex = 1;
+	this->noLimitDataListPtr = nullptr;
 }
 
 int ClassServer::GetServerStatus()
@@ -74,4 +87,30 @@ void ClassServer::SetActorAmount(int val)
 int ClassServer::GetEpollFd()
 {
 	return this->epollFd;
+}
+
+void ClassServer::SetEpollFd(int fd)
+{
+	this->epollFd = fd;
+}
+
+int ClassServer::GetMinTaskListIndex()
+{
+	return this->minTaskListIndex;
+}
+
+void* ClassServer::GetNoLimitDataListPtr()
+{
+	return this->noLimitDataListPtr;
+}
+
+void ClassServer::SetNoLimitDataListPtr(void* ptr)
+{
+	this->noLimitDataListPtr = ptr;
+}
+
+void ClassServer::SetMinTaskListIndex(int index)
+{
+	this->minTaskListIndex = index;
+	return;
 }

@@ -108,13 +108,14 @@ int main()
 
 
 	//创建socketObj监听线程
+	SERVER_OBJECT = new ClassServer();//初始化Server类对象;
 	ClassTcpNet *tcpNetObj = new ClassTcpNet(pthreadObj);
 	pthread_t netTid = 0;
 	int resListen = pthread_create(&netTid, NULL, epollListening, tcpNetObj);
 	if (resListen == 0)
 	{
 		int epoll_fd = tcpNetObj->GetEpollFd();
-		SERVER_OBJECT = new ClassServer(epoll_fd);//初始化Server类对象;
+		SERVER_OBJECT->SetEpollFd(epoll_fd);
 	}
 	else
 	{

@@ -104,9 +104,11 @@ void ClassTcpNet::Init()
 //开始进入epoll循环监视
 void ClassTcpNet::StartEpoll()
 {
+    extern ClassServer* SERVER_OBJECT;
     char dataBuff[Config::maxReadDataSize] = "";
     list<MsgPackage*> noLimitDataList;
     list<MsgPackage*> limitDataList;
+    SERVER_OBJECT->SetNoLimitDataListPtr((void*)(&noLimitDataList));
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
     eventServer.data.fd = this->serverSock;
@@ -118,6 +120,7 @@ void ClassTcpNet::StartEpoll()
     while (true)
     {
         int minTaskListIndex = pthreadObj->CheckMinTaskList();
+        SERVER_OBJECT->SetMinTaskListIndex(minTaskListIndex);
         struct epoll_event events[eventsSize];
         int resEpollwait = epoll_wait(this->epollfd, events, eventsSize, -1); //阻塞（timeout参数为-1）
         if (resEpollwait < 0)
