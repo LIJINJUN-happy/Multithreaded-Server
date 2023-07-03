@@ -8,14 +8,14 @@ using std::endl;
 ClassTimer::ClassTimer()
 {
     this->intervalTime = 1; //默认为1
-    this->pthreadObj = NULL;
+    this->tcpObj = NULL;
 }
 
 ClassTimer::~ClassTimer()
 {
 }
 
-ClassTimer::ClassTimer(int time, ClassPthreadMgr *obj)
+ClassTimer::ClassTimer(int time, ClassTcpNet* tcpObj)
 {
     if (time <= 0)
     {
@@ -23,7 +23,7 @@ ClassTimer::ClassTimer(int time, ClassPthreadMgr *obj)
         return;
     }
     this->intervalTime = time;
-    this->pthreadObj = obj;
+    this->tcpObj = tcpObj;
 }
 
 int ClassTimer::GetIntervalTime()

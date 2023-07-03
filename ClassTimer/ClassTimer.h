@@ -32,12 +32,12 @@ private:
     std::list<OnceEvent> onceEventList;  //单次事件容器
     std::list<LoopEvent> loopEventList;  //循环事件列表
     int intervalTime;                    //时间间隔
-    ClassPthreadMgr *pthreadObj;         //线程对象的地址（指针）
+    ClassTcpNet* tcpObj;                 //TCP网络对象地址（指针）
 
 public:
     ClassTimer();
     ~ClassTimer();
-    ClassTimer(int, ClassPthreadMgr *);
+    ClassTimer(int, ClassTcpNet* tcpObj);
     int GetIntervalTime();
     bool AddOnceEvent(int, std::string);
     bool AddLoopEvent(int, std::string);

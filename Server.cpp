@@ -90,23 +90,6 @@ int main()
 		 << endl;
 
 
-	//创建计时器线程（精度是秒）
-	ClassTimer *timeObj = new ClassTimer(Config::timerIntervalTime, pthreadObj);
-	pthread_t timeTid = 0;
-	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
-	if (resTimerCreate == 0)
-	{
-		LOG.Log() << "\033[32m计时器精度间隔为: " << timeObj->GetIntervalTime() << "秒\033[0m" << endl;
-		LOG.Log() << "\033[35m计时器线程启动步骤成功\033[0m\n"
-			 << endl;
-	}
-	else
-	{
-		LOG.Log() << "\033[31m计时器线程启动步骤失败\033[0m" << endl;
-		return -1;
-	}
-
-
 	//创建socketObj监听线程
 	SERVER_OBJECT = new ClassServer();//初始化Server类对象;
 	ClassTcpNet *tcpNetObj = new ClassTcpNet(pthreadObj);
@@ -120,6 +103,23 @@ int main()
 	else
 	{
 		LOG.Log() << "\033[31m监听线程启动步骤失败\033[0m" << endl;
+		return -1;
+	}
+
+
+	//创建计时器线程（精度是秒）
+	ClassTimer* timeObj = new ClassTimer(Config::timerIntervalTime, tcpNetObj);
+	pthread_t timeTid = 0;
+	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);
+	if (resTimerCreate == 0)
+	{
+		LOG.Log() << "\033[32m计时器精度间隔为: " << timeObj->GetIntervalTime() << "秒\033[0m" << endl;
+		LOG.Log() << "\033[35m计时器线程启动步骤成功\033[0m\n"
+			<< endl;
+	}
+	else
+	{
+		LOG.Log() << "\033[31m计时器线程启动步骤失败\033[0m" << endl;
 		return -1;
 	}
 
