@@ -10,6 +10,7 @@ class MsgPackage
 public:
 	MsgPackage(std::string cmdString, void* optr, void* mfdptr, void* midptr, const char* type);
 	~MsgPackage();
+	MsgPackage() {};
 
 	std::string GetCMD();
 	bool CheckMsgType(const char*);
