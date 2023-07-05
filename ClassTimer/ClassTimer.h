@@ -4,6 +4,7 @@
 //#include "../ClassPthreadMgr/ClassPthreadMgr.h"
 #include "../Net/ClassTcpNet.h"
 
+extern std::list<std::string> TIMER_LIST;
 
 //(循环事件子元素)
 typedef struct LoopEvent

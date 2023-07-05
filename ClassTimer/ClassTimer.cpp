@@ -138,6 +138,21 @@ void *TimerLooping(void *args)
         temp.tv_sec = seconds;
         temp.tv_usec = 0;
         select(0, NULL, NULL, NULL, &temp);
+
+        if (::TIMER_LIST.size() >= 1)//检测全局定时器任务列表中是否有任务时间需要加载进入定时器
+        {
+            //上锁（防止取数据的时候有新数据的加入）
+
+            //取数据
+            auto it = ::TIMER_LIST.begin();
+            while (it != ::TIMER_LIST.end())
+            {
+
+            }
+
+            //解锁
+        }
+
         //((ClassTimer *)args)->CheckoutOnceEventList();
         //((ClassTimer *)args)->CheckoutLoopEventList();
     }
