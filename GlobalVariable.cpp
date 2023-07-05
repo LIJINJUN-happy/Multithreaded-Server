@@ -45,7 +45,7 @@ std::string Global::BreakDownByString(std::string& str, std::string posString)
     }
 
     std::string resString(str, 0, index - 1);
-    str.assign(str.begin() + 7; str.end());
+    str.assign(str.begin() + 7, str.end());
     return resString;
 }
 
