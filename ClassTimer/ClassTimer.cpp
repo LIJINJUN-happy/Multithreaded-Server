@@ -33,13 +33,12 @@ int ClassTimer::GetIntervalTime()
 
 bool ClassTimer::AddLoopEvent(std::string ev)
 {
+    int ttime = 0;
     if (ttime <= 0 || ev.size() < 1)
     {
         LOG.Log() << "参数不正确" << endl;
         return false;
     }
-
-    int ttime = 0;
 
     LoopEvent loopEvent;
     loopEvent.nowTime = 0;
@@ -51,13 +50,12 @@ bool ClassTimer::AddLoopEvent(std::string ev)
 
 bool ClassTimer::AddOnceEvent(std::string ev)
 {
+    int thour = 0;
     if (thour < 0 || thour >= 24 || ev.size() < 1)
     {
         LOG.Log() << "参数不正确" << endl;
         return false;
     }
-
-    int thour = 0;
 
     OnceEvent onceEvent;
     onceEvent.tarHour = thour;
