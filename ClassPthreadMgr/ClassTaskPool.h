@@ -1,11 +1,6 @@
 #ifndef _CLASSTASKPOOL_H_
 #define _CLASSTASKPOOL_H_
 
-#include <list>
-#include <sys/syscall.h>
-#include <pthread.h>
-#include <memory>
-#include <algorithm>
 #include "../Net/Gate.h"
 
 //一个任务链表(一个链表对应一个工作线程)

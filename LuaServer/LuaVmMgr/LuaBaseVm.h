@@ -4,6 +4,8 @@
 #include "../../Net/ClassMsgPackage.h"
 
 extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+extern std::list<std::string> TIMER_LIST;
+extern pthread_mutex_t TIMER_LIST_LOCK;
 
 //LuaVM»ùÀà
 class LuaBaseVm
@@ -38,6 +40,9 @@ namespace LuaScript
 {
 	//Lua Send Net Message
 	int LuaSendMessage(lua_State* L);
+
+	//add event in timerList
+	int LuaAddEventIntoTimerList(lua_State* L);
 }
 
 

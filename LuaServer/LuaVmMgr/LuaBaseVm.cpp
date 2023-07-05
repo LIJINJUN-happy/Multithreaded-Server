@@ -111,3 +111,33 @@ int LuaScript::LuaSendMessage(lua_State* L)
 	lua_pushnumber(L, sendSize); //Net Send Message Size
 	return 1;
 }
+
+int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
+{
+	int top = lua_gettop(L);
+	//LOG.Log() << "top : " << top << std::endl;
+	std::string msgType = luaL_checkstring(L, 1);	//消息类型（Actor or System）
+	std::string called = luaL_checkstring(L, 2);	//调用的模块名
+	std::string fun = luaL_checkstring(L, 3);		//调用的模块中的函数名
+	std::string uid = luaL_checkstring(L, 4);		//消息事件类型为Actor则Uid为用户id  System则是模块名
+	std::string eventType = luaL_checkstring(L, 5);	//消息事件类型(LoopEvent or OnceEvent)
+	std::string paraTime1 = luaL_checkstring(L, 6);	//时间参数1
+	std::string paraTime2 = luaL_checkstring(L, 7);	//时间参数2
+
+	//判断用户在不在线
+	if (msgType == "Actor")
+	{
+		auto it = ::GLOBAL_UID_SOCKET_MAP.find(uid);
+		if (it == ::GLOBAL_UID_SOCKET_MAP.end())
+		{
+			lua_pushnumber(L, 0);
+			return 1;
+		}
+	}
+	std::string msgEvent(msgType + "|" + called + "|" + fun + "|" + uid + "|" + eventType + "|" + paraTime1 + "|" + paraTime2 + "|");
+	pthread_mutex_lock(&(::TIMER_LIST_LOCK));
+	::TIMER_LIST.push_back(msgEvent);
+	pthread_mutex_unlock(&(::TIMER_LIST_LOCK));
+	lua_pushnumber(L, 1);
+	return 1;
+}

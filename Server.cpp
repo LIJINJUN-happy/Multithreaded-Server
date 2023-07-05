@@ -5,7 +5,12 @@
 
 //全局变量
 std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};	//UID - SOCKET 键值对容器
-ClassServer *SERVER_OBJECT = nullptr;
+ClassServer *SERVER_OBJECT = nullptr;					//服务器类对象指针
+
+//lua虚拟机所注册的定时任务,放在这里,然后定时器从这里取出
+std::list<std::string> TIMER_LIST = {};					//定时器容器
+pthread_mutex_t TIMER_LIST_LOCK;						//定时器容器锁（防止塞入或取出任务同时操作）
+
 
 using namespace std;
 int main()
@@ -108,6 +113,7 @@ int main()
 
 
 	//创建计时器线程（精度是秒）
+	pthread_mutex_init(&TIMER_LIST_LOCK, NULL);	//初始化定时器容器锁
 	ClassTimer* timeObj = new ClassTimer(Config::timerIntervalTime, tcpNetObj);
 	pthread_t timeTid = 0;
 	int resTimerCreate = pthread_create(&timeTid, NULL, TimerLooping, timeObj);

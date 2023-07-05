@@ -21,6 +21,7 @@ extern "C" {
 #include <iostream>
 #include <utility>
 #include <map>
+#include <list>
 #include <jsoncpp/json/json.h>
 #include <fstream>
 #include <assert.h>
@@ -34,6 +35,10 @@ extern "C" {
 #include <initializer_list>
 #include <jemalloc/jemalloc.h>
 #include <ctype.h>
+#include <sys/syscall.h>
+#include <pthread.h>
+#include <memory>
+#include <algorithm>
 
 namespace Config
 {
