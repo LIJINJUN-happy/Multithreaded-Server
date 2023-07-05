@@ -121,8 +121,7 @@ int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
 	std::string fun = luaL_checkstring(L, 3);		//调用的模块中的函数名
 	std::string uid = luaL_checkstring(L, 4);		//消息事件类型为Actor则Uid为用户id  System则是模块名
 	std::string eventType = luaL_checkstring(L, 5);	//消息事件类型(LoopEvent or OnceEvent)
-	std::string paraTime1 = luaL_checkstring(L, 6);	//时间参数1
-	std::string paraTime2 = luaL_checkstring(L, 7);	//时间参数2
+	std::string paraTime = luaL_checkstring(L, 6);	//时间参数
 
 	//判断用户在不在线
 	if (msgType == "Actor")
@@ -134,10 +133,11 @@ int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
 			return 1;
 		}
 	}
-	std::string msgEvent(msgType + "|" + called + "|" + fun + "|" + uid + "|" + eventType + "|" + paraTime1 + "|" + paraTime2 + "|");
+	std::string msgEvent(msgType + "|" + called + "|" + fun + "|" + uid + "|" + eventType + "|" + paraTime + "|");
 	pthread_mutex_lock(&(::TIMER_LIST_LOCK));
 	::TIMER_LIST.push_back(msgEvent);
 	pthread_mutex_unlock(&(::TIMER_LIST_LOCK));
+	//LOG.Log() << "After Put In , TIMER_LIST_LOCK Size : " << ::TIMER_LIST_LOCK.size() << std::endl;
 	lua_pushnumber(L, 1);
 	return 1;
 }

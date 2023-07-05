@@ -36,6 +36,19 @@ void Global::SignalReady()
     signal(SIGQUIT, ServerQuit);
 }
 
+std::string Global::BreakDownByString(std::string& str, std::string posString)
+{
+    auto index = str.find(posString);
+    if (index == str.npos)
+    {
+        return "";
+    }
+
+    std::string resString(str, 0, index - 1);
+    str.assign(str.begin() + 7; str.end());
+    return resString;
+}
+
 
 Global::LuaMoudleFilesInfo::LuaMoudleFilesInfo()
 {

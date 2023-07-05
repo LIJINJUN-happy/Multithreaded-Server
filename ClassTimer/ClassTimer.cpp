@@ -31,31 +31,37 @@ int ClassTimer::GetIntervalTime()
     return this->intervalTime;
 }
 
-bool ClassTimer::AddLoopEvent(int ttime, string ev)
+bool ClassTimer::AddLoopEvent(std::string ev)
 {
     if (ttime <= 0 || ev.size() < 1)
     {
         LOG.Log() << "参数不正确" << endl;
         return false;
     }
+
+    int ttime = 0;
+
     LoopEvent loopEvent;
-    loopEvent.event = ev;
     loopEvent.nowTime = 0;
     loopEvent.tarTime = ttime;
+    loopEvent.msgPack = new MsgPackage();
     this->loopEventList.push_back(loopEvent);
     return true;
 }
 
-bool ClassTimer::AddOnceEvent(int thour, string ev)
+bool ClassTimer::AddOnceEvent(std::string ev)
 {
     if (thour < 0 || thour >= 24 || ev.size() < 1)
     {
         LOG.Log() << "参数不正确" << endl;
         return false;
     }
+
+    int thour = 0;
+
     OnceEvent onceEvent;
     onceEvent.tarHour = thour;
-    onceEvent.event = ev;
+    onceEvent.msgPack = new MsgPackage();
     this->onceEventList.push_back(onceEvent);
     return true;
 }
@@ -142,15 +148,26 @@ void *TimerLooping(void *args)
         if (::TIMER_LIST.size() >= 1)//检测全局定时器任务列表中是否有任务时间需要加载进入定时器
         {
             //上锁（防止取数据的时候有新数据的加入）
+            pthread_mutex_lock(&(::TIMER_LIST_LOCK));
 
             //取数据
             auto it = ::TIMER_LIST.begin();
             while (it != ::TIMER_LIST.end())
             {
-
+                if (it->find("LoopEvent") != std::string::npos )
+                {
+                    ((ClassTimer*)args)->AddLoopEvent(*it);
+                }
+                else if(it->find("OnceEvent") != std::string::npos)
+                {
+                    ((ClassTimer*)args)->AddOnceEvent(*it);
+                }
+                it = ::TIMER_LIST.begin();//重新赋值迭代器（删除后迭代器失效）
+                //LOG.Log() << "After Get Out , TIMER_LIST_LOCK Size : " << ::TIMER_LIST_LOCK.size() << std::endl;
             }
 
             //解锁
+            pthread_mutex_unlock(&(::TIMER_LIST_LOCK));
         }
 
         //((ClassTimer *)args)->CheckoutOnceEventList();

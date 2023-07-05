@@ -5,20 +5,21 @@
 #include "../Net/ClassTcpNet.h"
 
 extern std::list<std::string> TIMER_LIST;
+extern pthread_mutex_t TIMER_LIST_LOCK;
 
 //(循环事件子元素)
 typedef struct LoopEvent
 {
     int nowTime;        //当前累计second
     int tarTime;        //目标second
-    std::string event; //事件容器
+    MsgPackage* msgPack;//事件容器
 } LoopEvent;
 
 //（单次事件子元素）
 typedef struct OnceEvent
 {
-    int tarHour;       //触发事件的hour
-    std::string event; //事件容器
+    int tarHour;         //触发事件的hour
+    MsgPackage* msgPack; //事件容器
 } OnceEvent;
 
 //定时器循环阻塞执行
@@ -40,8 +41,8 @@ public:
     ~ClassTimer();
     ClassTimer(int, ClassTcpNet* tcpObj);
     int GetIntervalTime();
-    bool AddOnceEvent(int, std::string);
-    bool AddLoopEvent(int, std::string);
+    bool AddOnceEvent(std::string);
+    bool AddLoopEvent(std::string);
     void CheckoutOnceEventList();
     void CheckoutLoopEventList();
     std::list<OnceEvent> *GetOnceEventListPtr();

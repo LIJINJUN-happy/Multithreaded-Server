@@ -74,7 +74,7 @@ namespace Global
         Fully,      //拥堵（爆满）
     };
 
-
+    std::string BreakDownByString(std::string &str, std::string posString);
 }
 
 #endif
