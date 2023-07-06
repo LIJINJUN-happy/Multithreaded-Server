@@ -136,7 +136,7 @@ int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
 	pthread_mutex_lock(&(::TIMER_LIST_LOCK));
 	::TIMER_LIST.push_back(msgEvent);
 	pthread_mutex_unlock(&(::TIMER_LIST_LOCK));
-	//LOG.Log() << "After Put In , TIMER_LIST_LOCK Size : " << ::TIMER_LIST_LOCK.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
-	lua_pushnumber(L, 1);
+	//LOG.Log() << "After Put In , TIMER_LIST Size : " << ::TIMER_LIST.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
+	lua_pushnumber(L, ::TIMER_LIST.size());
 	return 1;
 }

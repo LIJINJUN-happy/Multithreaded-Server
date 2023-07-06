@@ -272,7 +272,7 @@ void *TimerLooping(void *args)
                 }
                 ::TIMER_LIST.pop_front();
                 it = ::TIMER_LIST.begin();//重新赋值迭代器（删除后迭代器失效）
-                //LOG.Log() << "After Get Out , TIMER_LIST_LOCK Size : " << ::TIMER_LIST_LOCK.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
+                //LOG.Log() << "After Get Out , TIMER_LIST Size : " << ::TIMER_LIST.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
             }
 
             //解锁
