@@ -35,6 +35,11 @@ int ClassTimer::GetIntervalTime()
 
 bool ClassTimer::AddLoopEvent(std::string ev)
 {
+    if (ev.size() < 1)
+    {
+        LOG.Log() << " ev 参数不正确" << endl;
+        return false;
+    }
     std::string msgType = ::Global::BreakDownByString(ev, "|");         //消息类型（Actor or System）
     std::string events = ::Global::BreakDownByString(ev, "|");		    //事件
     const std::string uid = ::Global::BreakDownByString(ev, "|");		//消息事件类型为Actor则Uid为用户id  System则是模块名
@@ -45,7 +50,7 @@ bool ClassTimer::AddLoopEvent(std::string ev)
         return false;
     }
     int ttime = atoi(paraTime.c_str());
-    if (ttime <= 0 || ev.size() < 1)
+    if (ttime <= 0)
     {
         LOG.Log() << " paraTime 参数不正确" << endl;
         return false;
@@ -82,6 +87,11 @@ bool ClassTimer::AddLoopEvent(std::string ev)
 
 bool ClassTimer::AddOnceEvent(std::string ev)
 {
+    if (ev.size() < 1)
+    {
+        LOG.Log() << " ev 参数不正确" << endl;
+        return false;
+    }
     std::string msgType = ::Global::BreakDownByString(ev, "|");         //消息类型（Actor or System）
     std::string events = ::Global::BreakDownByString(ev, "|");		    //事件
     const std::string uid = ::Global::BreakDownByString(ev, "|");		//消息事件类型为Actor则Uid为用户id  System则是模块名
@@ -92,7 +102,7 @@ bool ClassTimer::AddOnceEvent(std::string ev)
         return false;
     }
     int thour = atoi(paraTime.c_str());
-    if (thour < 0 || thour >= 24 || ev.size() < 1)
+    if (thour < 0 || thour >= 24 )
     {
         LOG.Log() << " paraTime 参数不正确" << endl;
         return false;
@@ -268,6 +278,7 @@ void *TimerLooping(void *args)
                 }
                 else
                 {
+                    LOG.Log() << "Event Not LoopEvent or OnceEvent" << endl;
                     break;
                 }
                 ::TIMER_LIST.pop_front();
