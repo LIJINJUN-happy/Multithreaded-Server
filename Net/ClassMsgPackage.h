@@ -17,6 +17,7 @@ public:
 	void* GetOperatePtr();
 	void* GetsockfdMapPrt();
 	void* GetsockidMapPrt();
+	std::string GetMsgType();
 	//void* GetNetObjectPrt();
 
 private:

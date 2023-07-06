@@ -51,6 +51,11 @@ void* MsgPackage::GetsockidMapPrt()
 	return this->sockidMapPrt;
 }
 
+std::string MsgPackage::GetMsgType()
+{
+	return std::string(this->msgType);
+}
+
 /*
 void* MsgPackage::GetNetObjectPrt()
 {

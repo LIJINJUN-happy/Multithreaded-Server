@@ -146,6 +146,7 @@ void ClassTimer::CheckoutOnceEventList()
 
         if ((*index).tarHour == nowHour)
         {
+            this->AddMsgIntoTaskPool(index->msgPack);
             onceList->pop_front();
             index = (*onceList).begin(); //删除后重新开始赋值遍历（指针会失效）
             continue;
@@ -164,7 +165,9 @@ void ClassTimer::CheckoutLoopEventList()
     {
         int nowt = (*index).nowTime;
         if (nowt >= (*index).tarTime)
-        {
+        {      
+            MsgPackage* msg = new MsgPackage(index->msgPack->GetCMD(), index->msgPack->GetOperatePtr(), (void*)(tcpObj->GetSockfdMap()), (void*)(tcpObj->GetSockidMap()), index->msgPack->GetMsgType().c_str());
+            this->AddMsgIntoTaskPool(msg);
             (*index).nowTime = 0;//归零重新计算新的一轮循环
         }
         else
