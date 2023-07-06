@@ -133,6 +133,7 @@ bool ClassTimer::AddOnceEvent(std::string ev)
     onceEvent.tarHour = thour;
     onceEvent.msgPack = new MsgPackage(events, oper, (void*)(tcpObj->GetSockfdMap()), (void*)(tcpObj->GetSockidMap()), msgType.c_str());
     this->onceEventList.push_back(onceEvent);
+    //LOG.Log() << "After Add Into OnceEventList.size()  : " << this->onceEventList.size() << std::endl;
     return true;
 }
 
@@ -161,6 +162,7 @@ void ClassTimer::CheckoutOnceEventList()
             this->AddMsgIntoTaskPool(index->msgPack);
             onceList->pop_front();
             index = (*onceList).begin(); //删除后重新开始赋值遍历（指针会失效）
+            //LOG.Log() << "After Del From OnceEventList.size()  : " << this->onceEventList.size() << std::endl;
             continue;
         }
 
