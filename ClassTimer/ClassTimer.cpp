@@ -291,10 +291,10 @@ void *TimerLooping(void *args)
         }
 
         //检测一次性任务定时器列表
-        //((ClassTimer *)args)->CheckoutOnceEventList();
+        ((ClassTimer *)args)->CheckoutOnceEventList();
         
         //检测循环任务定时器列表
-        //((ClassTimer *)args)->CheckoutLoopEventList();
+        ((ClassTimer *)args)->CheckoutLoopEventList();
     }
     return NULL;
 }
