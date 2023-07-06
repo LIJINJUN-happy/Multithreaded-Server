@@ -72,7 +72,7 @@ namespace Config
 	const int CheckoutIntervalTime = 120;  //监视线程多久检测一次心跳以及线程状态
 
 	//定时器线程配置
-	const int timerIntervalTime = 1; //计时器精度秒数
+	const int timerIntervalTime = 5; //计时器精度秒数
 
 	//项目代码目录（部署时必须修改对应正确项目路径）
 	const std::string LoadCodePathString = "/home/lijinjun/公共/debug_env/";
