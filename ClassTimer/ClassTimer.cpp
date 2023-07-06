@@ -9,6 +9,7 @@ ClassTimer::ClassTimer()
 {
     this->intervalTime = 1; //默认为1
     this->tcpObj = NULL;
+    this->taskPoolObj = nullptr;
 }
 
 ClassTimer::~ClassTimer()
@@ -24,6 +25,7 @@ ClassTimer::ClassTimer(int time, ClassTcpNet* tcpObj)
     }
     this->intervalTime = time;
     this->tcpObj = tcpObj;
+    this->taskPoolObj = this->tcpObj->GetPthreadObj()->GetTaskPool();
 }
 
 int ClassTimer::GetIntervalTime()
@@ -191,7 +193,44 @@ list<LoopEvent> *ClassTimer::GetLoopEventListPtr()
 
 void ClassTimer::AddMsgIntoTaskPool(MsgPackage* msgPack)
 {
-    
+    extern ClassServer* SERVER_OBJECT;
+    int taskListIndex = SERVER_OBJECT->GetMinTaskListIndex();
+    if (msgPack->CheckMsgType("Actor") == true) //用户事件（需要增加任务数量 以及 选择当前的任务消息队列）
+    {
+        Client* pClient = ((Client*)(msgPack->GetOperatePtr()));
+        int taskNum = pClient->GetClientTaskNum();
+        if (taskNum <= 0)
+        {   //证明该用户没有任务尚未完成（设置任务数最少的任务列表来存放）
+            pClient->UpdateWorkPthreadIndex(taskListIndex);
+        }
+        else
+        {
+            //还有任务正在任务链表中未处理完
+            taskListIndex = pClient->GetWorkPthreadIndex();
+        }
+        pClient->UpdateClientTaskNum(1);
+    }
+    else if(msgPack->CheckMsgType("System") == true) //系统模块事件（直接放入任务数量最少的列表）
+    {
+        ;
+    }
+
+    //传入任务列表容器
+    ClassTaskList* pTaskList = taskPoolObj->GetTaskListByID(taskListIndex);
+    pthread_mutex_t* putMessageLock = pTaskList->GetMessageLockPrt();
+    pthread_mutex_lock(putMessageLock);//加锁,防止Epoll监听线程同时塞入数据（保证同一时间只有一个线程正在处理该任务列表容器）
+    pTaskList->pMessTaskList->push_back(msgPack);
+
+    //try_lock尝试判断pWorkTaskList是否已经空了
+    int resTryLock = pthread_mutex_trylock(&(pTaskList->lock));
+    if (resTryLock == 0)
+    {
+        pTaskList->SwapTaskList();
+        pthread_mutex_unlock(&(pTaskList->lock)); //唤醒前先解锁，否则work线程被阻塞
+        pthread_cond_signal(&(pTaskList->cond));
+    }
+    pthread_mutex_unlock(putMessageLock);
+    return;
 }
 
 //定时器循环阻塞执行

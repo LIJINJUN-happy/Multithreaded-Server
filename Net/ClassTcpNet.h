@@ -35,6 +35,7 @@ public:
     void AddMsgIntoTaskPool(Client* pClient, std::list<MsgPackage*>& limitDataList, std::list<MsgPackage*>& noLimitDataList, int minTaskListIndex);
 
     int GetEpollFd();
+    ClassPthreadMgr* GetPthreadObj();
 };
 
 #endif
