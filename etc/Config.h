@@ -8,6 +8,7 @@ extern "C" {
 #include <lualib.h>
 };
 
+#include <exception>
 #include <sys/epoll.h>
 #include <string>
 #include <atomic>

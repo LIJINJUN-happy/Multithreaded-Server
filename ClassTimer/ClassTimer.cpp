@@ -62,7 +62,7 @@ bool ClassTimer::AddLoopEvent(std::string ev)
         try {
             oper = (void*)(this->tcpObj->GetSockidMap()->at(uid));
         }
-        catch (const out_of_range& erro) {
+        catch (const std::out_of_range& erro) {
             cout << endl << "When AddLoopEvent Out of Range Exception at " << erro.what();
             return false;
         }
@@ -114,7 +114,7 @@ bool ClassTimer::AddOnceEvent(std::string ev)
         try {
             oper = (void*)(this->tcpObj->GetSockidMap()->at(uid));
         }
-        catch (const out_of_range& erro) {
+        catch (const std::out_of_range& erro) {
             cout << endl << "When AddOnceEvent Out of Range Exception at " << erro.what();
             return false;
         }
