@@ -26,6 +26,10 @@ public:
 public:
     int GetListSize();				 //获取用于接受socket信息的任务链表大小
 	void SwapTaskList();			 //互换链表指针指向的容器
+
+public:
+	pthread_mutex_t putMessageLock; //信息添加锁（由于Timer定时器类和Socket都要往人物列表存放信息,避免冲突）
+	pthread_mutex_t* GetMessageLockPrt();
 };
 
 

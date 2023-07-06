@@ -33,33 +33,93 @@ int ClassTimer::GetIntervalTime()
 
 bool ClassTimer::AddLoopEvent(std::string ev)
 {
-    int ttime = 0;
+    std::string msgType = ::Global::BreakDownByString(ev, "|");         //消息类型（Actor or System）
+    std::string events = ::Global::BreakDownByString(ev, "|");		    //事件
+    const std::string uid = ::Global::BreakDownByString(ev, "|");		//消息事件类型为Actor则Uid为用户id  System则是模块名
+    std::string eventType = ::Global::BreakDownByString(ev, "|");	    //消息事件类型(LoopEvent or OnceEvent)
+    std::string paraTime = ::Global::BreakDownByString(ev, "|");	    //时间参数
+    if (eventType != "LoopEvent")
+    {
+        return false;
+    }
+    int ttime = atoi(paraTime.c_str());
     if (ttime <= 0 || ev.size() < 1)
     {
-        LOG.Log() << "参数不正确" << endl;
+        LOG.Log() << " paraTime 参数不正确" << endl;
+        return false;
+    }
+
+    void* oper = nullptr;
+    if (msgType == "Actor")
+    {
+        try {
+            oper = (void*)(this->tcpObj->GetSockidMap()->at(uid));
+        }
+        catch (const out_of_range& erro) {
+            cout << endl << "When AddLoopEvent Out of Range Exception at " << erro.what();
+            return false;
+        }
+    }
+    else if(msgType == "System")
+    {
+        ;
+    }
+    else
+    {
+        LOG.Log() << "msgType 参数不正确" << endl;
         return false;
     }
 
     LoopEvent loopEvent;
     loopEvent.nowTime = 0;
     loopEvent.tarTime = ttime;
-    loopEvent.msgPack = new MsgPackage();
+    loopEvent.msgPack = new MsgPackage(events, oper, (void*)(tcpObj->GetSockfdMap()), (void*)(tcpObj->GetSockidMap()), msgType.c_str());
     this->loopEventList.push_back(loopEvent);
     return true;
 }
 
 bool ClassTimer::AddOnceEvent(std::string ev)
 {
-    int thour = 0;
+    std::string msgType = ::Global::BreakDownByString(ev, "|");         //消息类型（Actor or System）
+    std::string events = ::Global::BreakDownByString(ev, "|");		    //事件
+    const std::string uid = ::Global::BreakDownByString(ev, "|");		//消息事件类型为Actor则Uid为用户id  System则是模块名
+    std::string eventType = ::Global::BreakDownByString(ev, "|");	    //消息事件类型(LoopEvent or OnceEvent)
+    std::string paraTime = ::Global::BreakDownByString(ev, "|");	    //时间参数
+    if (eventType != "OnceEvent")
+    {
+        return false;
+    }
+    int thour = atoi(paraTime.c_str());
     if (thour < 0 || thour >= 24 || ev.size() < 1)
     {
-        LOG.Log() << "参数不正确" << endl;
+        LOG.Log() << " paraTime 参数不正确" << endl;
+        return false;
+    }
+
+    void* oper = nullptr;
+    if (msgType == "Actor")
+    {
+        try {
+            oper = (void*)(this->tcpObj->GetSockidMap()->at(uid));
+        }
+        catch (const out_of_range& erro) {
+            cout << endl << "When AddOnceEvent Out of Range Exception at " << erro.what();
+            return false;
+        }
+    }
+    else if (msgType == "System")
+    {
+        ;
+    }
+    else
+    {
+        LOG.Log() << "msgType 参数不正确" << endl;
         return false;
     }
 
     OnceEvent onceEvent;
     onceEvent.tarHour = thour;
-    onceEvent.msgPack = new MsgPackage();
+    onceEvent.msgPack = new MsgPackage(events, oper, (void*)(tcpObj->GetSockfdMap()), (void*)(tcpObj->GetSockidMap()), msgType.c_str());
     this->onceEventList.push_back(onceEvent);
     return true;
 }
@@ -86,8 +146,7 @@ void ClassTimer::CheckoutOnceEventList()
 
         if ((*index).tarHour == nowHour)
         {
-            //this->pthreadObj->AddMsgIntoTaskPool((*index).event);
-            onceList->erase(index);
+            onceList->pop_front();
             index = (*onceList).begin(); //删除后重新开始赋值遍历（指针会失效）
             continue;
         }
@@ -106,7 +165,6 @@ void ClassTimer::CheckoutLoopEventList()
         int nowt = (*index).nowTime;
         if (nowt >= (*index).tarTime)
         {
-            //this->pthreadObj->AddMsgIntoTaskPool((*index).event);
             (*index).nowTime = 0;//归零重新计算新的一轮循环
         }
         else
@@ -126,6 +184,11 @@ list<OnceEvent> *ClassTimer::GetOnceEventListPtr()
 list<LoopEvent> *ClassTimer::GetLoopEventListPtr()
 {
     return &(this->loopEventList);
+}
+
+void ClassTimer::AddMsgIntoTaskPool(MsgPackage* msgPack)
+{
+    
 }
 
 //定时器循环阻塞执行

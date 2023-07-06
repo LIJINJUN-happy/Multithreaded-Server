@@ -97,6 +97,8 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(list<MsgPackage*>& msgList,int minIndex
 {
     //LOG.Log() << "放入index为："<< minIndex << "的任务列表" << endl;
     ClassTaskList* pTaskList = this->pTaskPool->GetTaskListByID(minIndex);
+    pthread_mutex_t* putMessageLock = pTaskList->GetMessageLockPrt();
+    pthread_mutex_lock(putMessageLock);
     std::copy(msgList.begin(), msgList.end(), std::back_inserter(*(pTaskList->pMessTaskList)));
 
     //try_lock尝试判断pWorkTaskList是否已经空了
@@ -107,6 +109,7 @@ void ClassPthreadMgr::AddMsgIntoTaskPool(list<MsgPackage*>& msgList,int minIndex
         pthread_mutex_unlock(&(pTaskList->lock)); //唤醒前先解锁，否则work线程被阻塞
         pthread_cond_signal(&(pTaskList->cond));
     }
+    pthread_mutex_unlock(putMessageLock);
     return;
 }
 
@@ -220,7 +223,10 @@ void *CheckTaskList(void *args)
 
                 caller = "";
                 arg = stringMsg;
-                uid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();
+                if (msgPtr->CheckMsgType("Actor") == true){ uid = ((Client*)(msgPtr->GetOperatePtr()))->GetClientUid();}
+                else if(msgPtr->CheckMsgType("System") == true) { uid = called; }
+                else { continue; }
+                
                 while (ifSkip == false)
                 {
                     /*LOG.Log() << "caller " << caller << std::endl;

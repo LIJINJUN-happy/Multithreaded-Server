@@ -11,6 +11,7 @@ ClassTaskList::ClassTaskList()
     //初始化锁和变量
     pthread_mutex_init(&(this->lock), NULL);
     pthread_cond_init(&(this->cond), NULL);
+    pthread_mutex_init(&putMessageLock, NULL);
 
     taskList.clear();
     taskList_.clear();
@@ -42,6 +43,11 @@ void ClassTaskList::SwapTaskList()
         pMessTaskList = &taskList_;
         pWorkTaskList = &taskList;
     }
+}
+
+pthread_mutex_t* ClassTaskList::GetMessageLockPrt()
+{
+    return &putMessageLock;
 }
 
 map<int, ClassTaskList*>* ClassTaskPool::GetClassTaskMap()

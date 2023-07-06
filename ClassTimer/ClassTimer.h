@@ -47,6 +47,7 @@ public:
     void CheckoutLoopEventList();
     std::list<OnceEvent> *GetOnceEventListPtr();
     std::list<LoopEvent> *GetLoopEventListPtr();
+    void AddMsgIntoTaskPool(MsgPackage* msgPack);  //把事件塞入任务队列中
 };
 
 #endif

@@ -43,9 +43,16 @@ std::string Global::BreakDownByString(std::string& str, std::string posString)
     {
         return "";
     }
+    else
+    {
+        //cout << "index = " << index << endl;
+    }
 
-    std::string resString(str, 0, index - 1);
-    str.assign(str.begin() + 7, str.end());
+    std::string resString(str, 0, index);
+    if (index != 0)
+    {
+        str.assign(str.begin() + index + 1, str.end());
+    }
     return resString;
 }
 
