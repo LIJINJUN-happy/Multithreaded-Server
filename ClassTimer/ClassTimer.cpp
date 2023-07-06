@@ -143,7 +143,8 @@ void *TimerLooping(void *args)
         temp.tv_usec = 0;
         select(0, NULL, NULL, NULL, &temp);
 
-        if (::TIMER_LIST.size() >= 1)//检测全局定时器任务列表中是否有任务时间需要加载进入定时器
+        //检测全局定时器任务列表中是否有任务时间需要加载进入定时器
+        if (::TIMER_LIST.size() >= 1)
         {
             //上锁（防止取数据的时候有新数据的加入）
             pthread_mutex_lock(&(::TIMER_LIST_LOCK));
@@ -160,15 +161,19 @@ void *TimerLooping(void *args)
                 {
                     ((ClassTimer*)args)->AddOnceEvent(*it);
                 }
+                ::TIMER_LIST.pop_front();
                 it = ::TIMER_LIST.begin();//重新赋值迭代器（删除后迭代器失效）
-                //LOG.Log() << "After Get Out , TIMER_LIST_LOCK Size : " << ::TIMER_LIST_LOCK.size() << std::endl;
+                //LOG.Log() << "After Get Out , TIMER_LIST_LOCK Size : " << ::TIMER_LIST_LOCK.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
             }
 
             //解锁
             pthread_mutex_unlock(&(::TIMER_LIST_LOCK));
         }
 
+        //检测一次性任务定时器列表
         //((ClassTimer *)args)->CheckoutOnceEventList();
+        
+        //检测循环任务定时器列表
         //((ClassTimer *)args)->CheckoutLoopEventList();
     }
     return NULL;
