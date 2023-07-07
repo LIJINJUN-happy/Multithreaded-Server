@@ -61,8 +61,7 @@ void ClassMonitor::CheckoutClientIfOnline()
         }
         else
         {
-            mapIter++; //检测心跳还在的话
-            continue;
+            mapIter++; //检测心跳还在的话检测下一个
         }
     }
 }
