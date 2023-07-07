@@ -3,7 +3,7 @@
 OffLineData::OffLineData()
 {
 	this->offLineDataMap.clear();
-	this->offLineDataMapPtr = &(this->offLineDataMapPtr);
+	this->offLineDataMapPtr = &(this->offLineDataMap);
 }
 
 OffLineData::~OffLineData()
