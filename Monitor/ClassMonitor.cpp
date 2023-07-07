@@ -29,15 +29,16 @@ void ClassMonitor::CheckoutClientIfOnline()
     {
         return;
     }
-    for (auto mapIter : (*pSockfdMap))
+    auto mapIter = pSockfdMap->begin();
+    for (; mapIter != pSockfdMap->end();)
     {
-        if (mapIter.second->CheckoutIfOnLine() == false)
+        if (mapIter->second->CheckoutIfOnLine() == false)
         {
             //移除fdMap内数据
-            LOG.Log() << "客户端 " << mapIter.first << " 心跳间隔过大，服务器主动与之断开连接" << endl;
-            Client* pClient = mapIter.second->GetMyself();
+            LOG.Log() << "客户端 " << mapIter->first << " 心跳间隔过大，服务器主动与之断开连接" << endl;
+            Client* pClient = mapIter->second->GetMyself();
             std::string uid = pClient->GetClientUid();
-            tcpNetObj->CloseClientByFd(mapIter.first);
+            tcpNetObj->CloseClientByFd(mapIter->first);
             //LOG.Log() << "移除fdMap内数据后大小为：" << pSockfdMap->size() << std::endl;
 
             //移除idMap内数据
@@ -55,9 +56,14 @@ void ClassMonitor::CheckoutClientIfOnline()
 
             //析构client指针所指向的内存
             delete pClient;
+
+            mapIter = pSockfdMap->begin();//删除元素有重新赋值迭代器（删除后迭代器失效）
         }
         else
+        {
+            mapIter++; //检测心跳还在的话
             continue;
+        }
     }
 }
 
