@@ -7,6 +7,7 @@ local actorCoroutineMap_ = {}
 local InterfaceFunMap_ = {}
 local function loadInterFace()
 	InterfaceFunMap_["AddScore"] = RANK.ChangeScoreRankInfo
+	InterfaceFunMap_["TestTimer"] = RANK.TestTimer
 end
 
 --[[
@@ -60,5 +61,15 @@ RANK = {}
 --获取信息
 function RANK:ChangeScoreRankInfo(uid, arg)
 	print("-------------------i am in RANK,arg = ",arg)
+
+	--添加定时器事件
+	local res = LuaAddEventIntoTimerList("System", "{\"Moudle\":\"RANK\",\"Protocol\":\"TestTimer\"}" ,"RANK", "LoopEvent", "5")
+
 	return "", "", "ACTOR", "RANK", uid
+end
+
+function RANK:TestTimer(uid, arg)
+	print("Get Timer Message.......")
+	print(uid, arg, "\n")
+	return
 end

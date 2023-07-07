@@ -84,6 +84,7 @@ void LuaBaseVm::Gc()
 void LuaBaseVm::LoadScritpFunction(lua_State* L)
 {
 	lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);//Lua发送协议@ args（socket,jsonStr）
+	lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);//Lua想定时器模块添加Timer事件
 }
 
 
@@ -121,6 +122,11 @@ int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
 	std::string uid = luaL_checkstring(L, 3);		//消息事件类型为Actor则Uid为用户id  System则是模块名
 	std::string eventType = luaL_checkstring(L, 4);	//消息事件类型(LoopEvent or OnceEvent)
 	std::string paraTime = luaL_checkstring(L, 5);	//时间参数
+	//LOG.Log() << "msgType : " << msgType << std::endl;
+	//LOG.Log() << "events : " << events << std::endl;
+	//LOG.Log() << "uid : " << uid << std::endl;
+	//LOG.Log() << "eventType : " << eventType << std::endl;
+	//LOG.Log() << "paraTime : " << paraTime << std::endl;
 
 	//判断用户在不在线
 	if (msgType == "Actor")
@@ -136,7 +142,7 @@ int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
 	pthread_mutex_lock(&(::TIMER_LIST_LOCK));
 	::TIMER_LIST.push_back(msgEvent);
 	pthread_mutex_unlock(&(::TIMER_LIST_LOCK));
-	//LOG.Log() << "After Put In , TIMER_LIST Size : " << ::TIMER_LIST.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
+	LOG.Log() << "After Put In , TIMER_LIST Size : " << ::TIMER_LIST.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
 	lua_pushnumber(L, ::TIMER_LIST.size());
 	return 1;
 }
