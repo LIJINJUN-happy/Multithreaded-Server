@@ -53,7 +53,7 @@ echo
 
 #Mail类文件
 Mail_dir=" $dir/Email/*.cpp "
-echo "LuaVM类文件:$Mail_dir"
+echo "Mail邮件类文件:$Mail_dir"
 echo
 
 #Log类文件
