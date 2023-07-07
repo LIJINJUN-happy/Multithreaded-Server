@@ -16,6 +16,11 @@ main_dir=" $dir/*.cpp"
 echo "主路径下文件:$main_dir"
 echo
 
+#离线数据处理文件
+OFFLine_dir=" $dir/OffLineSystem/*.cpp "
+echo "离线数据处理文件:$OFFLine_dir"
+echo
+
 #数据库文件
 DB_dir=" $dir/ClassDB/*.cpp "
 echo "数据库类文件:$DB_dir"
@@ -56,7 +61,7 @@ Logger_dir=" $dir/Logger/ClassLogger/*.cpp "
 echo "Logger类文件:$Logger_dir"
 echo
 
-all_Dir="$needLink$main_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir$Mail_dir$Logger_dir"
+all_Dir="$needLink$main_dir$OFFLine_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir$Mail_dir$Logger_dir"
 echo "g++执行$all_Dir"
 g++ $all_Dir -o ./cmd/Server.out $needLuaLink
 echo
