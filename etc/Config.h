@@ -40,6 +40,7 @@ extern "C" {
 #include <pthread.h>
 #include <memory>
 #include <algorithm>
+#include <hiredis/hiredis.h>
 
 namespace Config
 {
