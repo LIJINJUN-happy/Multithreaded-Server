@@ -1,6 +1,5 @@
 #include "GlobalVariable.h"
 
-ClassLogger LOG;
 
 //获取当前时间戳
 long Global::GetNowTime()

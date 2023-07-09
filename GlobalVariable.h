@@ -2,7 +2,7 @@
 #ifndef _GLOBALVARIABLE_H_
 #define _GLOBALVARIABLE_H_
 
-#include "Logger/ClassLogger/ClassLogger.h"
+#include "ClassDB/ClassRedis.h"
 
 //logger全局声明
 class ClassLogger;

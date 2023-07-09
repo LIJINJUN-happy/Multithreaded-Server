@@ -2,33 +2,20 @@
 
 OffLineData::OffLineData()
 {
-	this->offLineDataMap.clear();
-	this->offLineDataMapPtr = &(this->offLineDataMap);
 }
 
 OffLineData::~OffLineData()
 {
 }
 
-std::map<std::string, std::string>* OffLineData::GetOffLineDataMapPtr()
-{
-	return this->offLineDataMapPtr;
-}
-
 bool OffLineData::CheckoutActorOffLineData(std::string uid)
 {
-	auto it = offLineDataMap.find(uid);
-	if (it != offLineDataMap.end())
-	{
-		return true;
-	}
 	return false;
 }
 
-std::string& OffLineData::FindoutActorOffLineData(std::string uid)
+std::string OffLineData::FindoutActorOffLineData(std::string uid)
 {
-	auto it = offLineDataMap.find(uid);
-	std::string& data = it->second;
+	std::string data = "";
 	return data;
 }
 
@@ -43,9 +30,6 @@ void OffLineData::AddData(std::string uid)
 
 void OffLineData::UpdateData(std::string uid, std::string jsonData)
 {
-	std::string data = this->FindoutActorOffLineData(uid);
-	data.clear();
-	data.assign(jsonData);
 	return;
 }
 
