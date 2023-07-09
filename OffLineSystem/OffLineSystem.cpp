@@ -25,7 +25,6 @@ void OffLineData::AddData(std::string uid)
 	{
 		return;
 	}
-	this->offLineDataMap[uid] = "";
 }
 
 void OffLineData::UpdateData(std::string uid, std::string jsonData)
