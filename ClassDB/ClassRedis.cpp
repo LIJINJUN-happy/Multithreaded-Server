@@ -1,4 +1,5 @@
 #include "ClassRedis.h"
+ClassLogger LOG;
 
 Redis::Redis()
 {

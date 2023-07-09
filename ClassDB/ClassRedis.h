@@ -2,7 +2,6 @@
 #define _CLASSREDIS_H_
 
 #include "../Logger/ClassLogger/ClassLogger.h"
-ClassLogger LOG;
 
 class Redis
 {
