@@ -1,5 +1,6 @@
 #ifndef _CLASSREDIS_H_
 #define _CLASSREDIS_H_
+//Redis类（用于存取Redis数据）
 
 #include "../Logger/ClassLogger/ClassLogger.h"
 

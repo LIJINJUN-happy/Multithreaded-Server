@@ -288,11 +288,19 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         { 
             result = false; 
         }                                     
-        else                        //登录成功且创建Vm成功后,才可以加入socketIdMap中
+        else                        //登录成功且创建Vm成功后,才可以加入socketIdMap中,并且赋值GLOBAL_UID_SOCKET_MAP 和 GLOBAL_UID_REDISOBJECT_MAP
         { 
             Gate::AddIntoSockIdMap(cliptr, sockidmapPtr);
+
+            //赋值UID -- Socket（fd） 键值对容器
             ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
+
+            //创建RedisObj*
+            Redis* redisObj = new Redis();
+            redisObj->connect();
+            ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
             //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << ::GLOBAL_UID_SOCKET_MAP.size() << endl;
+            //LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP 's Size is " << ::GLOBAL_UID_REDISOBJECT_MAP.size() << endl;
         }         
     }
 
@@ -545,8 +553,18 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
     //移除UID-Socket的键值对容器内的数据
     if (::GLOBAL_UID_SOCKET_MAP.find(uid) != ::GLOBAL_UID_SOCKET_MAP.end())
     {
-        //LOG.Log() << "GLOBAL_UID_SOCKET_MAP [clientFd] == ：" << (::GLOBAL_UID_SOCKET_MAP)[uid] << endl << endl;
         ::GLOBAL_UID_SOCKET_MAP.erase(uid);
+        //LOG.Log() << "GLOBAL_UID_SOCKET_MAP [clientFd] == ：" << (::GLOBAL_UID_SOCKET_MAP)[uid] << endl << endl;
+    }
+
+    //移除UID-Socket的键值对容器内的数据
+    if (::GLOBAL_UID_REDISOBJECT_MAP.find(uid) != ::GLOBAL_UID_REDISOBJECT_MAP.end())
+    {
+        Redis* redisObj = ::GLOBAL_UID_REDISOBJECT_MAP.at(uid);
+        ::GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
+        delete redisObj;
+        redisObj = nullptr;
+        //LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP [clientFd] == ：" << (::GLOBAL_UID_REDISOBJECT_MAP)[uid] << endl << endl;
     }
 
     //析构client指针所指向的内存

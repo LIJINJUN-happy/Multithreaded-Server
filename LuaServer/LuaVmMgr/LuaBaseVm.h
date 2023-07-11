@@ -4,6 +4,7 @@
 #include "../../Net/ClassMsgPackage.h"
 
 extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
 extern std::list<std::string> TIMER_LIST;
 extern pthread_mutex_t TIMER_LIST_LOCK;
 

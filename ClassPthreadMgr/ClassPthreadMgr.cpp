@@ -338,8 +338,14 @@ void *CheckTaskList(void *args)
                     Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
                     luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
                     extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+                    extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
                     GLOBAL_UID_SOCKET_MAP.erase(uid);
+                    Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
+                    GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
+                    delete redisPtr;
+                    redisPtr = nullptr;
                     //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << GLOBAL_UID_SOCKET_MAP.size() << endl;
+                    //LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP 's Size is " << GLOBAL_UID_REDISOBJECT_MAP.size() << endl;
                 }
 
             }

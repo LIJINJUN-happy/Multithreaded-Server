@@ -11,6 +11,8 @@ ClassServer *SERVER_OBJECT = nullptr;					//服务器类对象指针
 std::list<std::string> TIMER_LIST = {};					//定时器容器
 pthread_mutex_t TIMER_LIST_LOCK;						//定时器容器锁（防止塞入或取出任务同时操作）
 
+//Redis容器（Uid -- RedisObject Address）
+std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP = {};
 
 using namespace std;
 int main()

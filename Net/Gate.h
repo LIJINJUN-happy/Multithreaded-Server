@@ -8,6 +8,7 @@ class Client;
 class ClassTcpNet;
 
 extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
 
 namespace Gate
 {

@@ -53,6 +53,15 @@ void ClassMonitor::CheckoutClientIfOnline()
             //移除UID-Socket的键值对容器内的数据
             extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
             GLOBAL_UID_SOCKET_MAP.erase(uid);
+            //LOG.Log() << "移除GLOBAL_UID_SOCKET_MAP内数据后大小为：" << GLOBAL_UID_SOCKET_MAP.size() << std::endl;
+
+            //移除Redis容器数据
+            extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+            Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
+            GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
+            delete redisPtr;
+            redisPtr = nullptr;
+            //LOG.Log() << "移除GLOBAL_UID_REDISOBJECT_MAP内数据后大小为：" << GLOBAL_UID_REDISOBJECT_MAP.size() << std::endl;
 
             //析构client指针所指向的内存
             delete pClient;
@@ -68,12 +77,16 @@ void ClassMonitor::CheckoutClientIfOnline()
 
 int ClassMonitor::CheckoutClientAmount()
 {
+    extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+    extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
     extern ClassServer* SERVER_OBJECT;
     int num = SERVER_OBJECT->GetActorAmount();
     LOG.Log() << "Online Actor Amount Is ：" << num << std::endl;
     LOG.Log() << "FdMap Amount Is ：" << this->tcpNetObj->GetSockfdMap()->size() << std::endl;
     LOG.Log() << "IdMap Amount Is ：" << this->tcpNetObj->GetSockidMap()->size() << std::endl;
     LOG.Log() << "LuaVm Amount Is ：" << this->pthreadObj->GetLuaVmMgrPtr()->GetPersonalVmAmount() << std::endl << endl;
+    LOG.Log() << "GLOBAL_UID_SOCKET_MAP Amount Is ：" << GLOBAL_UID_SOCKET_MAP.size() << std::endl << endl;
+    LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP Amount Is ：" << GLOBAL_UID_REDISOBJECT_MAP.size() << std::endl << endl;
     return num;
 }
 
@@ -102,6 +115,16 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
             {
                 std::string fd = std::to_string(GLOBAL_UID_SOCKET_MAP[uid]);
                 GLOBAL_UID_SOCKET_MAP.erase(uid);
+
+                extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+                auto itRedis = GLOBAL_UID_REDISOBJECT_MAP.find(uid);
+                if (itRedis != GLOBAL_UID_REDISOBJECT_MAP.end())
+                {
+                    Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
+                    GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
+                    delete redisPtr;
+                    redisPtr = nullptr;
+                }
 
                 auto itFdMap = this->tcpNetObj->GetSockfdMap()->find(fd);
                 if (itFdMap != this->tcpNetObj->GetSockfdMap()->end())
