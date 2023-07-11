@@ -557,7 +557,7 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
         //LOG.Log() << "GLOBAL_UID_SOCKET_MAP [clientFd] == ：" << (::GLOBAL_UID_SOCKET_MAP)[uid] << endl << endl;
     }
 
-    //移除UID-Socket的键值对容器内的数据
+    //移除UID-Redis*的键值对容器内的数据
     if (::GLOBAL_UID_REDISOBJECT_MAP.find(uid) != ::GLOBAL_UID_REDISOBJECT_MAP.end())
     {
         Redis* redisObj = ::GLOBAL_UID_REDISOBJECT_MAP.at(uid);
