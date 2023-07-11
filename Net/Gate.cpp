@@ -297,7 +297,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
 
             //创建RedisObj*
             Redis* redisObj = new Redis();
-            redisObj->connect();
+            //redisObj->connect();
             ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
             //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << ::GLOBAL_UID_SOCKET_MAP.size() << endl;
             //LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP 's Size is " << ::GLOBAL_UID_REDISOBJECT_MAP.size() << endl;
