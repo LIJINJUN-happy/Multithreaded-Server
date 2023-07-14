@@ -290,15 +290,16 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         }                                     
         else                        //登录成功且创建Vm成功后,才可以加入socketIdMap中,并且赋值GLOBAL_UID_SOCKET_MAP 和 GLOBAL_UID_REDISOBJECT_MAP
         { 
+            //创建RedisObj*
+            Redis* redisObj = new Redis();
+            //redisObj->connect();
+            ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
+
             Gate::AddIntoSockIdMap(cliptr, sockidmapPtr);
 
             //赋值UID -- Socket（fd） 键值对容器
             ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
 
-            //创建RedisObj*
-            Redis* redisObj = new Redis();
-            //redisObj->connect();
-            ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
             //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << ::GLOBAL_UID_SOCKET_MAP.size() << endl;
             //LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP 's Size is " << ::GLOBAL_UID_REDISOBJECT_MAP.size() << endl;
         }         
