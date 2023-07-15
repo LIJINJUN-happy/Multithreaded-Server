@@ -19,9 +19,9 @@ bool Redis::connect(std::string host, int port)
 	if (this->_connect != NULL && this->_connect->err)
 	{
 		LOG.Log() << "Á¬½ÓRedis Error = " << this->_connect->errstr << std::endl;
-		return 0;
+		return false;
 	}
-	return 1;
+	return true;
 }
 
 std::string Redis::get(std::string key)

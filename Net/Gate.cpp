@@ -292,13 +292,20 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         { 
             //创建RedisObj*
             Redis* redisObj = new Redis();
-            //redisObj->connect();
-            ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
+            //result = redisObj->connect();
+            if (result)
+            {
+                ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
 
-            Gate::AddIntoSockIdMap(cliptr, sockidmapPtr);
+                Gate::AddIntoSockIdMap(cliptr, sockidmapPtr);
 
-            //赋值UID -- Socket（fd） 键值对容器
-            ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
+                ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
+            }
+            else                    //即使登录成功但连接Redis数据库失败也要跳过虚拟机操作(返回false)，且delete释放redisObj的内存
+            {
+                LOG.Log() << "actorID = " << actorID << " ,连接Redis 数据库失败" << std::endl;
+                delete redisObj;
+            }
 
             //LOG.Log() << "GLOBAL_UID_SOCKET_MAP 's Size is " << ::GLOBAL_UID_SOCKET_MAP.size() << endl;
             //LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP 's Size is " << ::GLOBAL_UID_REDISOBJECT_MAP.size() << endl;
