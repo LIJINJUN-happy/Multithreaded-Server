@@ -295,15 +295,25 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
             //result = redisObj->connect();
             if (result)
             {
+                LOG.Log() << "连接Redis数据库成功:" << actorId << std::endl;
+                result = Gate::RedisLoadMysqlDataByLogin(actorId, db);
+            }
+            else 
+            {
+                LOG.Log() << "连接Redis数据库失败:" << actorId << std::endl;
+            }
+
+            if (result)
+            {
                 ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
 
                 Gate::AddIntoSockIdMap(cliptr, sockidmapPtr);
 
                 ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
             }
-            else                    //即使登录成功但连接Redis数据库失败也要跳过虚拟机操作(返回false)，且delete释放redisObj的内存
+            else
             {
-                LOG.Log() << "actorID = " << actorID << " ,连接Redis 数据库失败" << std::endl;
+                LOG.Log() << "actorID = " << actorID << " ,加载Redis 数据失败" << std::endl;
                 delete redisObj;
             }
 
@@ -336,25 +346,36 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr, ClassDataB
         if (path.size() >= 1)
         {
             LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
-            bool resInit = L->Init(path);
-            bool resLoad = false;
+            bool resInit = L->Init(path), resLoad = false;
             if (resInit == true)
             {
-                //加载数据库数据进入Lua中，Lua加载进redis
-                resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr, L->GetLuaStatePtr(), db);
-            }
-
-            if (resLoad == true)
-            {
-                //LOG.Log() << "Personal Moudle Init Success fd : "<< uid << std::endl;
-                luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
+                //加载数据库数据进入Lua中(旧逻辑是登录的时候把数据保存进LuaVM，现在优化为登录的时候把数据保存到Redis，所以暂时屏蔽保留这一步)
+                //resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr, L->GetLuaStatePtr(), db); 
+                resLoad = true;
             }
             else
             {
                 //LOG.Error() << "Personal Moudle Init Fail fd : " << uid << std::endl;
                 delete L;
                 return false;
-                //continue;
+            }
+
+            if (resLoad == true)
+            {
+                //LOG.Log() << "Personal Moudle resLoad Success fd : "<< uid << std::endl;
+                bool resAddLuaBaseVm = luaVmMgrPtr->AddLuaBaseVm(uid, (LuaBaseVm*)L);
+                if (resAddLuaBaseVm == false)
+                {
+                    //LOG.Error() << "Personal Moudle AddLuaBaseVm Fail fd : " << uid << std::endl;
+                    delete L;
+                    return false;
+                }
+            }
+            else
+            {
+                //LOG.Error() << "Personal Moudle resLoad Fail fd : " << uid << std::endl;
+                delete L;
+                return false;
             }
         }
     }
@@ -421,6 +442,11 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
     }
     //LOG.Log() << "LuaVmLoadMysqlDataByLogin res = " << res << std::endl;
     return res;
+}
+
+bool Gate::RedisLoadMysqlDataByLogin(std::string uid, ClassDataBase* db)
+{
+    return true;
 }
 
 void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
