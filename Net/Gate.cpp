@@ -346,12 +346,11 @@ bool Gate::CreateLuaVmAfterLogin(void* cliptr, LuaVmMgr* luaVmMgrPtr, ClassDataB
         if (path.size() >= 1)
         {
             LuaPersonalVm* L = new LuaPersonalVm(Global::PERSONAL, uid);
-            bool resInit = L->Init(path), resLoad = false;
+            bool resInit = L->Init(path), resLoad = true;
             if (resInit == true)
             {
                 //加载数据库数据进入Lua中(旧逻辑是登录的时候把数据保存进LuaVM，现在优化为登录的时候把数据保存到Redis，所以暂时屏蔽保留这一步)
                 //resLoad = Gate::LuaVmLoadMysqlDataByLogin(uid, luaVmMgrPtr, L->GetLuaStatePtr(), db); 
-                resLoad = true;
             }
             else
             {
