@@ -44,6 +44,12 @@ namespace LuaScript
 
 	//add event in timerList
 	int LuaAddEventIntoTimerList(lua_State* L);
+
+	//get Redis data(根据UID从Redis中获取json数据)
+	int LuaGetDataFromRedis(lua_State* L);
+
+	//Lua根据UID设置json数据去Redis中
+	int LuaSetDataToRedis(lua_State* L);
 }
 
 

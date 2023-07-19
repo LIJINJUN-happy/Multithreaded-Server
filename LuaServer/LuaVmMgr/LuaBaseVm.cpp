@@ -83,8 +83,10 @@ void LuaBaseVm::Gc()
 
 void LuaBaseVm::LoadScritpFunction(lua_State* L)
 {
-	lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);//Lua发送协议@ args（socket,jsonStr）
-	lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);//Lua想定时器模块添加Timer事件
+	lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);						//Lua发送协议@ args（socket,jsonStr）
+	lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);	//Lua想定时器模块添加Timer事件
+	lua_register(L, "LuaGetDataFromRedis", LuaScript::LuaGetDataFromRedis);				//Lua根据UID从Redis中获取json数据
+	lua_register(L, "LuaSetDataToRedis", LuaScript::LuaSetDataToRedis);					//Lua根据UID设置json数据去Redis中
 }
 
 
@@ -144,5 +146,40 @@ int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
 	pthread_mutex_unlock(&(::TIMER_LIST_LOCK));
 	LOG.Log() << "After Put In , TIMER_LIST Size : " << ::TIMER_LIST.size() << "  TIMER_LIST_LOCK Address Is " << &(::TIMER_LIST_LOCK) << std::endl;
 	lua_pushnumber(L, ::TIMER_LIST.size());
+	return 1;
+}
+
+int LuaScript::LuaGetDataFromRedis(lua_State* L)
+{
+	std::string uid = luaL_checkstring(L, 1);
+	std::string moudleName = luaL_checkstring(L, 2);
+	auto it = ::GLOBAL_UID_REDISOBJECT_MAP.find(uid);
+	if ( (it == ::GLOBAL_UID_REDISOBJECT_MAP.end()) || (! it.second))
+	{
+		lua_pushstring(L, "");
+		return 1;
+	}
+	
+	Redis* redisObj = it.second;
+	std::string data = redisObj->get(uid);
+	LOG.Log() << "redisObj->get : " << data << std::endl;
+	Json::Reader reader(Json::Features::strictMode());
+	Json::Value parseData;
+	if (reader.parse(data.c_str(), parseData))
+	{
+		Json::Value moudleData = parseData[moudleName.c_str()]; //只取其中模块的数据
+		Json::FastWriter writer;
+		std::string myJsonStr = writer.write(moudleData);
+		LOG.Log() << "myJsonStr : " << myJsonStr << std::endl;
+		lua_pushstring(L, myJsonStr);
+		return 1;
+	}
+
+	lua_pushstring(L, "");
+	return 1;
+}
+
+int LuaScript::LuaSetDataToRedis(lua_State* L)
+{
 	return 1;
 }
