@@ -48,8 +48,11 @@ namespace Gate
 	//登录成功后加入socketIdMap容器
 	void AddIntoSockIdMap(void* cliptr, void* sockmapPtr);
 
-	//用户下线保存数据进入Mysql（redis->mysql）
+	//用户下线保存数据进入Mysql（Lua->mysql）旧保存逻辑（因为旧逻辑是数据在LuaVm上,这样的坏处是服务器崩了数据丢失）
 	bool SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L, ClassDataBase* db);
+
+	//用户下线保存数据进入Mysql（Redis->mysql）新保存逻辑（因为新逻辑是数据在Redis上,这样的好处是服务器崩了数据还在Reids缓存中）
+	bool SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassDataBase* db);
 
 	//下线后移出socketIdMap容器
 	void RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid);

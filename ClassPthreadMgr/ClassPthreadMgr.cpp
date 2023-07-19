@@ -334,11 +334,15 @@ void *CheckTaskList(void *args)
                 //用户下线（放在这里判断是为了让用户在LuaVm处理完下线操作后才进行移除）
                 if (removeActorVmWithLogOut == true)
                 {
-                    Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr);
-                    Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
-                    luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
                     extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
                     extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+
+                    //Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr); //屏蔽旧保存逻辑（读取Lua的数据保存到Mysql中）
+                    bool resSave = Gate::SaveRedisDataIntoDB(uid, luaVmMgrPtr, dbPtr);
+
+                    Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
+                    luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
+
                     GLOBAL_UID_SOCKET_MAP.erase(uid);
                     Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
                     GLOBAL_UID_REDISOBJECT_MAP.erase(uid);

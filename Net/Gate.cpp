@@ -588,6 +588,11 @@ bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_S
     return result;
 }
 
+bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassDataBase* db)
+{
+    return false;
+}
+
 void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
 {
     auto it = ((std::map<string, Client*>*)sockmapPtr)->find(uid);
