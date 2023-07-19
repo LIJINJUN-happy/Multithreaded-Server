@@ -590,7 +590,95 @@ bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_S
 
 bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassDataBase* db)
 {
-    return false;
+    bool result = true;
+    Redis* redisObj = nullptr;
+    if (::GLOBAL_UID_REDISOBJECT_MAP.find(uid) = ::GLOBAL_UID_REDISOBJECT_MAP.end())
+    {
+        LOG.Error() << "Can't Find User :" << uid << std::endl;
+        return result;
+    }
+    else
+    {
+        redisObj = ::GLOBAL_UID_REDISOBJECT_MAP[uid];
+    }
+    std::string adllData = redisObj->get(uid);
+    Json::Reader reader(Json::Features::strictMode());
+    Json::Value parseData;
+    if (! reader.parse(adllAata.c_str(), parseData))
+    {
+        LOG.Error() << "reader.parse Worng" << std::endl;
+        return result;
+    }
+
+    Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
+    std::string dbString = "";
+    for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
+    {
+        if (it->second.first == Global::PERSONAL)
+        {
+            std::string moudle = it->first;
+            for (int index = 0; index < moudle.size(); index++)
+            {
+                moudle[index] = tolower(moudle[index]);
+            }
+
+            //判断数据库是否存在数据（结果决定操作是update还是Insert）
+            dbString = DBCommand::LoadLuaDataFromMysql;
+            dbString.insert(dbString.find('.'), moudle);
+            dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
+            dbString.insert(dbString.find_last_of('.'), moudle);
+            dbString.insert(dbString.find_last_of('=') + 2, uid);
+            bool doCommandResult = db->DoCommand(dbString);
+            if (doCommandResult == false)
+            {
+                LOG.Error() << "DataBase Command Worng With Judege :" << moudle << std::endl;
+                result = false;
+                continue;
+            }
+            else
+            {
+                std::string data = parseData.get(moudle.c_str(), 0).asString(); //根据模块名获取单个模块数据
+
+                int row = db->GetResultRow();
+                LOG.Log() << "Mysql Load Json's row = " << row << std::endl;
+                if (row == 1)   //找到了就是证明有数据（update）
+                {
+                    dbString = DBCommand::SaveLuaDataWithUpdate;
+                    dbString.insert(dbString.find('.') + 1, moudle);
+                    dbString.insert(dbString.find('.', dbString.find('.') + 1), moudle);
+                    dbString.insert(dbString.find('=') + 2, data);
+                    dbString.insert(dbString.find_last_of('.'), moudle);
+                    dbString.insert(dbString.find_last_of('=') + 2, uid);
+                }
+                else if (row == 0)   //找不到就是证明暂无数据（insert）
+                {
+                    dbString = DBCommand::SaveLuaDataWithInsert;
+                    dbString.insert(dbString.find('.') + 1, moudle);
+                    dbString.insert(dbString.find('\'') + 1, uid);
+                    dbString.insert(dbString.find_last_of('\''), data);
+                }
+                else
+                {
+                    result = false;
+                    continue;
+                }
+            }
+
+            LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
+            doCommandResult = db->DoCommand(dbString);
+            if (!doCommandResult)
+            {
+                LOG.Error() << "SaveDbData_ Wrong With  :" << dbString << std::endl;
+                result = false;
+                continue;
+            }
+        }
+    }
+    
+    //删除Redis中的相关缓存（节省空间）
+    redisObj->release(uid);
+
+    return result;
 }
 
 void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)

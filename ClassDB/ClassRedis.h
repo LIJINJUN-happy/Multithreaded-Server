@@ -23,6 +23,9 @@ public:
 	//set«Î«Û
 	void set(std::string key, std::string value);
 
+	//Release Redis Info
+	void release(std::string key) {};
+
 private:
 	redisContext* _connect;
 	redisReply* _reply;
