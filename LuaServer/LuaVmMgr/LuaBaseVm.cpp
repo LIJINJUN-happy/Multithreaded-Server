@@ -202,11 +202,11 @@ int LuaScript::LuaSetDataToRedis(lua_State* L)
 		if (myJsonStr.size() >= 1)
 		{
 			redisObj->get(uid, myJsonStr);
-			lua_pushstring(L, true);
+			lua_pushboolean(L, true);
 			return 1;
 		}
 	}
 
-	lua_pushstring(L, false);
+	lua_pushboolean(L, false);
 	return 1;
 }
