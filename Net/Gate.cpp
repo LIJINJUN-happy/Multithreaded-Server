@@ -296,7 +296,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
             if (result)
             {
                 LOG.Log() << "连接Redis数据库成功:" << actorId << std::endl;
-                result = Gate::RedisLoadMysqlDataByLogin(actorId, db);
+                result = Gate::RedisLoadMysqlDataByLogin(actorId, luaVmMgrPtr, redisObj, db);
             }
             else 
             {
@@ -443,8 +443,54 @@ bool Gate::LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua
     return res;
 }
 
-bool Gate::RedisLoadMysqlDataByLogin(std::string uid, ClassDataBase* db)
+bool Gate::RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Redis* redisObj, ClassDataBase* db)
 {
+    Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
+    std::string dbString = "";
+    for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
+    {
+        if (it->second.first == Global::PERSONAL)
+        {
+            std::string moudle = it->first;
+            for (int index = 0; index < moudle.size(); index++)
+            {
+                moudle[index] = tolower(moudle[index]);
+            }
+
+            dbString = DBCommand::LoadLuaDataFromMysql;
+            dbString.insert(dbString.find('.'), moudle);
+            dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
+            dbString.insert(dbString.find_last_of('.'), moudle);
+            dbString.insert(dbString.find_last_of('=') + 2, uid);
+            //LOG.Log() << "Mysql Load Json's dbString = " << dbString << std::endl;
+
+            bool doCommandResult = db->DoCommand(dbString);
+            if (!doCommandResult)
+            {
+                //LOG.Log() << "RedisLoadMysqlDataByLogin Fail Moudle = " << moudle << std::endl;
+                return false;
+            }
+            else
+            {
+                int row = db->GetResultRow();
+                if (row == 1)
+                {
+                    std::string jsonMysqlDataString = (*(db->GetNextRowInfo()))[0];
+                    //LOG.Log() << "Load Moudle = " << moudle << "  DataString = " << jsonMysqlDataString << std::endl;
+                    redisObj->set(uid, jsonMysqlDataString);
+                }
+                else
+                {
+                    //LOG.Log() << "RedisLoadMysqlDataByLogin Can't Find Info From MoudleDb = " << moudle << std::endl;
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            continue;
+        }
+    }
     return true;
 }
 

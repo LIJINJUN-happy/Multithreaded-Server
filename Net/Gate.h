@@ -43,7 +43,7 @@ namespace Gate
 	bool LuaVmLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L, ClassDataBase* db);
 
 	//创建LuaVm后加载Mysql的数据进Redis数据中保存（mysql->redis）
-	bool RedisLoadMysqlDataByLogin(std::string uid, ClassDataBase* db);
+	bool RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Redis* redisObj, ClassDataBase* db);
 
 	//登录成功后加入socketIdMap容器
 	void AddIntoSockIdMap(void* cliptr, void* sockmapPtr);
