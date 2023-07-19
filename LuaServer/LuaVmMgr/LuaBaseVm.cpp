@@ -154,13 +154,13 @@ int LuaScript::LuaGetDataFromRedis(lua_State* L)
 	std::string uid = luaL_checkstring(L, 1);
 	std::string moudleName = luaL_checkstring(L, 2);
 	auto it = ::GLOBAL_UID_REDISOBJECT_MAP.find(uid);
-	if ( (it == ::GLOBAL_UID_REDISOBJECT_MAP.end()) || (! it.second))
+	if ( (it == ::GLOBAL_UID_REDISOBJECT_MAP.end()) || (! it->second))
 	{
 		lua_pushstring(L, "");
 		return 1;
 	}
 	
-	Redis* redisObj = it.second;
+	Redis* redisObj = it->second;
 	std::string data = redisObj->get(uid);
 	LOG.Log() << "redisObj->get : " << data << std::endl;
 	Json::Reader reader(Json::Features::strictMode());
@@ -171,7 +171,7 @@ int LuaScript::LuaGetDataFromRedis(lua_State* L)
 		Json::FastWriter writer;
 		std::string myJsonStr = writer.write(moudleData);
 		LOG.Log() << "myJsonStr : " << myJsonStr << std::endl;
-		lua_pushstring(L, myJsonStr);
+		lua_pushstring(L, myJsonStr.c_str());
 		return 1;
 	}
 
