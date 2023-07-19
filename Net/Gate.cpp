@@ -592,7 +592,7 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
 {
     bool result = true;
     Redis* redisObj = nullptr;
-    if (::GLOBAL_UID_REDISOBJECT_MAP.find(uid) = ::GLOBAL_UID_REDISOBJECT_MAP.end())
+    if (::GLOBAL_UID_REDISOBJECT_MAP.find(uid) == ::GLOBAL_UID_REDISOBJECT_MAP.end())
     {
         LOG.Error() << "Can't Find User :" << uid << std::endl;
         return result;
@@ -604,7 +604,7 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
     std::string adllData = redisObj->get(uid);
     Json::Reader reader(Json::Features::strictMode());
     Json::Value parseData;
-    if (! reader.parse(adllAata.c_str(), parseData))
+    if (! reader.parse(adllData.c_str(), parseData))
     {
         LOG.Error() << "reader.parse Worng" << std::endl;
         return result;
