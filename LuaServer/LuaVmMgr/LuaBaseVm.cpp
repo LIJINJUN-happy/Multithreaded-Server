@@ -201,7 +201,7 @@ int LuaScript::LuaSetDataToRedis(lua_State* L)
 		LOG.Log() << "myJsonStr : " << myJsonStr << std::endl;
 		if (myJsonStr.size() >= 1)
 		{
-			redisObj->get(uid, myJsonStr);
+			redisObj->set(uid, myJsonStr);
 			lua_pushboolean(L, true);
 			return 1;
 		}
