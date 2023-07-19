@@ -167,11 +167,9 @@ int LuaScript::LuaGetDataFromRedis(lua_State* L)
 	Json::Value parseData;
 	if (reader.parse(data.c_str(), parseData))
 	{
-		Json::Value moudleData = parseData[moudleName.c_str()]; //只取其中模块的数据
-		Json::FastWriter writer;
-		std::string myJsonStr = writer.write(moudleData);
-		LOG.Log() << "myJsonStr : " << myJsonStr << std::endl;
-		lua_pushstring(L, myJsonStr.c_str());
+		std::string moudleData = parseData[moudleName.c_str()].asString(); //只取其中模块的数据
+		LOG.Log() << "moudleData : " << moudleData << std::endl;
+		lua_pushstring(L, moudleData.c_str());
 		return 1;
 	}
 
@@ -181,5 +179,34 @@ int LuaScript::LuaGetDataFromRedis(lua_State* L)
 
 int LuaScript::LuaSetDataToRedis(lua_State* L)
 {
+	std::string uid = luaL_checkstring(L, 1);
+	std::string moudleName = luaL_checkstring(L, 2);
+	std::string moudleData = luaL_checkstring(L, 3);
+	auto it = ::GLOBAL_UID_REDISOBJECT_MAP.find(uid);
+	if ((it == ::GLOBAL_UID_REDISOBJECT_MAP.end()) || (!it->second))
+	{
+		lua_pushboolean(L, false);
+		return 1;
+	}
+
+	Redis* redisObj = it->second;
+	std::string data = redisObj->get(uid);
+	Json::Reader reader(Json::Features::strictMode());
+	Json::Value parseData;
+	if (reader.parse(data.c_str(), parseData))
+	{
+		parseData[moudleName.c_str()] = moudleData;
+		Json::FastWriter writer;
+		std::string myJsonStr = writer.write(parseData);
+		LOG.Log() << "myJsonStr : " << myJsonStr << std::endl;
+		if (myJsonStr.size() >= 1)
+		{
+			redisObj->get(uid, myJsonStr);
+			lua_pushstring(L, true);
+			return 1;
+		}
+	}
+
+	lua_pushstring(L, false);
 	return 1;
 }
