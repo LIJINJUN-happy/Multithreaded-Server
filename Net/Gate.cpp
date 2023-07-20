@@ -669,9 +669,12 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
                 result = false;
                 continue;
             }
-
-            //删除Redis中的相关缓存（节省空间）
-            redisObj->release(uid, moudle);
+            else
+            {
+                //删除Redis中的相关缓存（节省空间）
+                redisObj->release(uid, moudle);
+            }
+            
         }
     }
 
