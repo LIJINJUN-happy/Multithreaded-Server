@@ -24,7 +24,7 @@ public:
 	void set(std::string key, std::string value);
 
 	//Release Redis Info
-	void release(std::string key) {};
+	void release(std::string key, std::string moudle) {};
 
 private:
 	redisContext* _connect;

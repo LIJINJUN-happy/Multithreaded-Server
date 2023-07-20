@@ -477,7 +477,8 @@ bool Gate::RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Red
                 {
                     std::string jsonMysqlDataString = (*(db->GetNextRowInfo()))[0];
                     //LOG.Log() << "Load Moudle = " << moudle << "  DataString = " << jsonMysqlDataString << std::endl;
-                    redisObj->set(uid, jsonMysqlDataString);
+                    moudle = uid + "_" + moudle;
+                    redisObj->set(moudle, jsonMysqlDataString);
                 }
                 else
                 {
@@ -601,14 +602,6 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
     {
         redisObj = ::GLOBAL_UID_REDISOBJECT_MAP[uid];
     }
-    std::string adllData = redisObj->get(uid);
-    Json::Reader reader(Json::Features::strictMode());
-    Json::Value parseData;
-    if (! reader.parse(adllData.c_str(), parseData))
-    {
-        LOG.Error() << "reader.parse Worng" << std::endl;
-        return result;
-    }
 
     Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
     std::string dbString = "";
@@ -637,7 +630,11 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
             }
             else
             {
-                std::string data = parseData.get(moudle.c_str(), 0).asString(); //根据模块名获取单个模块数据
+                std::string data = redisObj->get(uid + "_" + moudle);
+                if (data.size() == 0)
+                {
+                    continue;
+                }
 
                 int row = db->GetResultRow();
                 LOG.Log() << "Mysql Load Json's row = " << row << std::endl;
@@ -672,11 +669,11 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
                 result = false;
                 continue;
             }
+
+            //删除Redis中的相关缓存（节省空间）
+            redisObj->release(uid, moudle);
         }
     }
-    
-    //删除Redis中的相关缓存（节省空间）
-    redisObj->release(uid);
 
     return result;
 }

@@ -120,7 +120,6 @@ end
 
 --show score
 function ACTOR:GetScore(uid, arg)
-	print("The CurScore is ", self.score)
-	return self.score
+	local res = LuaGetDataFromRedis(uid, "actor")
 end
 
