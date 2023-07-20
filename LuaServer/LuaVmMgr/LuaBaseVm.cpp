@@ -191,7 +191,7 @@ int LuaScript::LuaSetDataToRedis(lua_State* L)
 	LOG.Log() << "moudleData : " << moudleData << std::endl;
 	if (moudleData.size() >= 1)
 	{
-		redisObj->set(uid, moudleData);
+		redisObj->set(uid + "_" + moudleName, moudleData);
 		lua_pushboolean(L, true);
 		return 1;
 	}
