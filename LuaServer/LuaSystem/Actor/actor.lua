@@ -66,7 +66,7 @@ function DoInit_(serPath)
 	return true
 end
 
---登录时加载数据进Redis缓存
+--[[登录时加载数据进Redis缓存
 function LoadDbData_(...)
 	local list = table.pack(...)
 	for _,dataString in ipairs(list) do
@@ -86,14 +86,12 @@ function SaveDbData_(uid, moudle)
 	print(uid,moudle)
 	local josnDataString = '{\"name\": \"lijinjun\"}'
 	return josnDataString
-end
+end]]
 
 ----------------------------------------------------Moudle-FUN-------------------------------------------------------
 
 --用户模块
-ACTOR = {
-	["score"] = 0
-}
+ACTOR = {}
 
 --获取信息
 function ACTOR:GetData(uid)
