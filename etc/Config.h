@@ -85,6 +85,10 @@ namespace Config
 
 	//LuaGC 间隔
 	const int LuaVMGcIntervalTime = 250;  //LuaVm GC 间隔
+
+	const std::string RedisHost = "127.0.0.1";
+	const int RedisPort = 3679;
+
 }
 
 #endif

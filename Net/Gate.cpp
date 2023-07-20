@@ -292,7 +292,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         { 
             //创建RedisObj*
             Redis* redisObj = new Redis();
-            //result = redisObj->connect();
+            result = redisObj->connect(Config::RedisHost, Config::RedisPort);
             if (result)
             {
                 LOG.Log() << "连接Redis数据库成功:" << actorId << std::endl;
