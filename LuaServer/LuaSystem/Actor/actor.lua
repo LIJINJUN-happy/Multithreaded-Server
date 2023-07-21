@@ -8,6 +8,7 @@ local InterfaceFunMap_ = {}
 local function loadInterFace()
 	InterfaceFunMap_["AddScore"] = ACTOR.AddScore
 	InterfaceFunMap_["GetScore"] = ACTOR.GetScore
+	InterfaceFunMap_["ChangeName"] = ACTOR.ChangeName
 end
 
 --[[
@@ -99,7 +100,13 @@ function ACTOR:GetData(uid)
 end
 
 --改变名字
-function ACTOR:ChangeName(newName)
+function ACTOR:ChangeName(uid, arg)
+	local res = LuaGetDataFromRedis(uid, "ACTOR")
+	local info = JSON:decode(res)
+	print("获取到的name = ",info.name)
+	info.name = "xieyujun"
+	res = LuaSetDataToRedis(uid, "ACTOR", JSON:encode(info))
+	print("res = ",res)
 end
 
 --添加积分
