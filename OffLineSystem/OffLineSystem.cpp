@@ -10,12 +10,12 @@ OffLineData::~OffLineData()
 
 bool OffLineData::CheckoutActorOffLineData(std::string uid)
 {
-	return false;
+	return redisObj->checkoutData(uid + "_OFFLINE_DATA");
 }
 
 std::string OffLineData::FindoutActorOffLineData(std::string uid)
 {
-	std::string data = "";
+	std::string data = redisObj->get(uid + "_OFFLINE_DATA");
 	return data;
 }
 
@@ -25,11 +25,29 @@ void OffLineData::AddData(std::string uid)
 	{
 		return;
 	}
+
+	std::string jsonData = "{}";
+	redisObj->set(uid + "_OFFLINE_DATA", jsonData);
+	return;
 }
 
 void OffLineData::UpdateData(std::string uid, std::string jsonData)
 {
+	if (this->CheckoutActorOffLineData(uid) != true)
+	{
+		return;
+	}
+
+	redisObj->set(uid + "_OFFLINE_DATA", jsonData);
 	return;
+}
+
+void OffLineData::DoLoad()
+{
+}
+
+void OffLineData::DoSave()
+{
 }
 
 LoginOffLineMsg::LoginOffLineMsg()
@@ -61,14 +79,32 @@ bool LoginOffLineMsg::CheckLoginOffLineData(std::string uid)
 std::string& LoginOffLineMsg::GetLoginOffLineData(std::string uid)
 {
 	auto it = loginOffLineMsgMap.find(uid);
-	std::string& data = it->second;
-	return data;
+	return it->second;;
 }
 
-void LoginOffLineMsg::AddLoginOffLineData(std::string uid, std::string data)
+void LoginOffLineMsg::UpdateLoginOffLineData(std::string uid, std::string data)
 {
 	this->loginOffLineMsgMap[uid] = data;
 	return;
+}
+
+void LoginOffLineMsg::AddLoginOffLineData(std::string uid, std::string newdata)
+{
+	std::string& data = GetLoginOffLineData(uid);
+	if (data.size() > 0)
+	{
+		data += "::";
+	}
+	data += newdata;
+	UpdateLoginOffLineData(uid, data);
+	return;
+}
+
+std::string LoginOffLineMsg::GetData(std::string uid)
+{
+	std::string& data = GetLoginOffLineData(uid);
+	std::string str(Global::BreakDownByString(data, "::"));
+	return str;
 }
 
 OffLineSystem::OffLineSystem()

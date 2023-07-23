@@ -24,6 +24,16 @@ bool Redis::connect(std::string host, int port)
 	return true;
 }
 
+bool Redis::checkoutData(std::string key)
+{
+	this->_reply = (redisReply*)redisCommand(this->_connect, "GET %s", key.c_str());
+	if (this->_reply->type == REDIS_REPLY_NIL)
+	{
+		return false;
+	}
+	return true;
+}
+
 std::string Redis::get(std::string key)
 {
 	this->_reply = (redisReply*)redisCommand(this->_connect, "GET %s", key.c_str());

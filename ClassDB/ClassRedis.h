@@ -17,6 +17,9 @@ public:
 	//创建连接
 	bool connect(std::string host, int port);
 
+	//检测是否存在数据
+	bool checkoutData(std::string key);
+
 	//get请求
 	std::string get(std::string key);
 
