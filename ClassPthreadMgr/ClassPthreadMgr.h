@@ -6,8 +6,10 @@
 typedef struct Task
 {
     ClassTaskList* pTaskList;
+
     std::list<MsgPackage*>** pWorkList;   //任务列表指针的地址（因为假如单纯复制地址则是浅拷贝）
     std::list<MsgPackage*>** pMessList;   //接受socket信息列表指针的地址
+    
     pthread_mutex_t *lock;   //锁地址
     pthread_cond_t *cond;    //条件变量地址
 
@@ -31,8 +33,11 @@ private:
     LuaVmMgr* luaVmMgrPtr;                //Lua管理器地址
 
 public:
-    ClassPthreadMgr(LuaVmMgr*);             //构造函数
-    ~ClassPthreadMgr();                     //析构函数
+    //构造函数
+    ClassPthreadMgr(LuaVmMgr*);
+    
+    //析构函数
+    ~ClassPthreadMgr();
 
     //线程容器操作
     int GetPollingPthreadNum();              //获取线程数量

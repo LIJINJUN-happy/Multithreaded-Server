@@ -33,22 +33,35 @@ class ClassTimer
 private:
     std::list<OnceEvent> onceEventList;  //单次事件容器
     std::list<LoopEvent> loopEventList;  //循环事件列表
+
     int intervalTime;                    //时间间隔
+
     ClassTcpNet* tcpObj;                 //TCP网络对象地址（指针）
     ClassTaskPool* taskPoolObj;
 
 public:
     ClassTimer();
+
     ~ClassTimer();
+
     ClassTimer(int, ClassTcpNet* tcpObj);
+
     int GetIntervalTime();
+
     bool AddOnceEvent(std::string);
+
     bool AddLoopEvent(std::string);
+
     void CheckoutOnceEventList();
+
     void CheckoutLoopEventList();
+
     std::list<OnceEvent> *GetOnceEventListPtr();
+
     std::list<LoopEvent> *GetLoopEventListPtr();
-    void AddMsgIntoTaskPool(MsgPackage* msgPack);  //把事件塞入任务队列中
+
+    //把事件塞入任务队列中
+    void AddMsgIntoTaskPool(MsgPackage* msgPack);
 };
 
 #endif

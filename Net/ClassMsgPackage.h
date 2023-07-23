@@ -9,15 +9,23 @@ class MsgPackage
 {
 public:
 	MsgPackage(std::string cmdString, void* optr, void* mfdptr, void* midptr, const char* type);
+	
 	~MsgPackage();
+
 	MsgPackage() {};
 
 	std::string GetCMD();
+
 	bool CheckMsgType(const char*);
+	
 	void* GetOperatePtr();
+	
 	void* GetsockfdMapPrt();
+	
 	void* GetsockidMapPrt();
+	
 	std::string GetMsgType();
+	
 	//void* GetNetObjectPrt();
 
 private:

@@ -19,20 +19,31 @@ public:
 	
 public:
 	LuaBaseVm();
+
 	LuaBaseVm(int, std::string);
 
 public:
 	virtual ~LuaBaseVm();
+
 	virtual bool Init(std::string path) {};
+
 	virtual bool Init() {};
+
 	lua_State* GetLuaStatePtr();
+
 	int GetLuaVmType();
+
 	long GetLuaVMLastGcTime();
+
 	void SetLuaVMLastGcTime(long time);
 
 public:
-	void LoadScritpFunction(lua_State* L);//加载Lua调用C++的函数
+
+	//加载Lua调用C++的函数
+	void LoadScritpFunction(lua_State* L);
+
 	long CheckGcTimeArrive();
+
 	void Gc();
 };
 

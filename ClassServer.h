@@ -25,27 +25,36 @@ private:
 
 public:
     ClassServer();
+
 	~ClassServer();
+
 	ClassServer(int epoll_fd);
 
 public:
 	int GetServerStatus();
+
 	void SetServerStatus(int status);
 
 	int GetServerConnectCondition();
+
 	void SetServerConnectCondition(int condition);
 
 	int GetActorAmount();
+
 	void ChangeClientAmount(int val);
+
 	void SetActorAmount(int val);
 
 	int GetEpollFd();
+
 	void SetEpollFd(int fd);
 
 	int GetMinTaskListIndex();
+
 	void SetMinTaskListIndex(int index);
 
 	void* GetNoLimitDataListPtr();
+
 	void SetNoLimitDataListPtr(void * ptr);
 
 

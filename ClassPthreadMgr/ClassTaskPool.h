@@ -24,11 +24,18 @@ public:
 	std::list<MsgPackage*>* pWorkTaskList;	//指向work线程处理的taskList
 
 public:
-    int GetListSize();				 //获取用于接受socket信息的任务链表大小
-	void SwapTaskList();			 //互换链表指针指向的容器
+
+	//获取用于接受socket信息的任务链表大小
+    int GetListSize();
+	
+	//互换链表指针指向的容器
+	void SwapTaskList();
 
 public:
-	pthread_mutex_t putMessageLock; //信息添加锁（由于Timer定时器类和Socket都要往人物列表存放信息,避免冲突）
+
+	//信息添加锁（由于Timer定时器类和Socket都要往人物列表存放信息,避免冲突）
+	pthread_mutex_t putMessageLock;
+
 	pthread_mutex_t* GetMessageLockPrt();
 };
 
@@ -38,8 +45,12 @@ public:
 class ClassTaskPool
 {
 public:
-	std::map<int,ClassTaskList*> * GetClassTaskMap(); //获取任务容器的地址
-	ClassTaskList * GetTaskListByID(int index);		  //根据index获取某任务链表类对象的地址
+
+	//获取任务容器的地址
+	std::map<int,ClassTaskList*> * GetClassTaskMap();
+
+	//根据index获取某任务链表类对象的地址
+	ClassTaskList * GetTaskListByID(int index);
 
 public:
 	ClassTaskPool();

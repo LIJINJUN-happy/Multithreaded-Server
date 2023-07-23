@@ -15,23 +15,37 @@ private:
 
 public:
 	LuaVmMgr();
+
 	LuaVmMgr(Global::LuaMoudleFilesInfo*);
+
 	~LuaVmMgr();
 
 public:
 	bool CheckLuaVmIsExistByIndex(std::string strIndex);
+
 	LuaBaseVm* GetLuaVmByIndex(std::string strIndex);
+
 	LuaBaseVm* GetLuaVmByIndex(long long uid);
+
 	int GetLuaVmTypeByIndex(std::string strIndex);
+
 	int GetLuaVmTypeByIndex(long long uid);
+
 	std::map<std::string, LuaBaseVm*>* GetLuaVmMapPtr();
+
 	bool AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr);
+
 	bool DeleteLuaBaseVm(std::string strIndex);
 
 public:
-	bool InitPublicMoudle();	//初始化公共类模块
+
+	//初始化公共类模块
+	bool InitPublicMoudle();
+
 	Global::LuaMoudleFilesInfo* GetLuaMoudleFilesInfoPtr();
+
 	std::string GetPathByStringFromFilesInfo(std::string str);
+
 	int GetPersonalVmAmount();
 };
 

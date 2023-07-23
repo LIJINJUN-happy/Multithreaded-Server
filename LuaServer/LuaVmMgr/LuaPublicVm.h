@@ -12,10 +12,12 @@ private:
 
 public:
 	virtual bool Init(std::string path);
+
 	pthread_mutex_t* GetPublickVmMutex();
 
 public:
 	LuaPublicVm(int, std::string);
+
 	~LuaPublicVm();
 };
 

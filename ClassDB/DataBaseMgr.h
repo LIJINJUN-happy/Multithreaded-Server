@@ -8,11 +8,17 @@ class DataBaseMgr
 {
 public:
 	DataBaseMgr();
+
 	~DataBaseMgr();
+
 	void Start();
+
 	void Close();
+
 	std::array<ClassDataBase*, Config::pollingPthreadNum>* GetDBArryPtr();
+
 	ClassDataBase* GetDBByIndex(int index);
+
 	int GetDBCount();
 
 private:

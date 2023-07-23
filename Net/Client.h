@@ -27,29 +27,45 @@ private:
     std::string emailAddress;//用于注册账号的邮箱
 
 public:
+
     Client();
+
     ~Client();
+
     Client(int clientFd, std::string clientUid, std::string clientIp);
+    
     Client* GetMyself();
+    
     std::string GetClientUid();
+
     void SetClientUid(std::string id);
+
     int GetClientFd();
 
     void UpdateHeartBeatTime();
+
     bool CheckoutIfOnLine();
 
     void UpdateMessageResidue(std::string newString);
+
     std::string GetMessageResidue();
 
     void UpdateWorkPthreadIndex(int newIndex);
+
     int GetWorkPthreadIndex();
+
     void UpdateClientTaskNum(int cmdTaskNum);
+
     int GetClientTaskNum();
 
     void SetRegisterCode(int code);
+
     void SetRegisterCodeTime(long time);
+
     bool JudgeRegisterCode(int compareCode);
+
     void SetEmailAddress(std::string address);
+
     std::string GetEmailAddress();
 
 };
