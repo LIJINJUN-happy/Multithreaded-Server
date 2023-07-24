@@ -314,6 +314,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
             else
             {
                 LOG.Log() << "actorID = " << actorId << " ,加载Redis 数据失败" << std::endl;
+                luaVmMgrPtr->DeleteLuaBaseVm(actorId);
                 delete redisObj;
             }
 
