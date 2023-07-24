@@ -29,14 +29,6 @@ public:
 private:
 	Redis* redisObj;	//redis对象（加载和存储离线数据）
 
-public:
-
-	//从Mysql加载离线数据进Redis
-	void DoLoad();
-
-	//从Redis取出离线数据存储进Mysql
-	void DoSave();
-
 } OffLineData;
 //--------------------------END------离线数据类(即使用户不在线,也可以从这里取出数据)
 

@@ -42,14 +42,6 @@ void OffLineData::UpdateData(std::string uid, std::string jsonData)
 	return;
 }
 
-void OffLineData::DoLoad()
-{
-}
-
-void OffLineData::DoSave()
-{
-}
-
 LoginOffLineMsg::LoginOffLineMsg()
 {
 	this->loginOffLineMsgMap.clear();
