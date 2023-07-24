@@ -48,6 +48,10 @@ int main()
 	//数据库链接
 	DataBaseMgr* dbMgr = new DataBaseMgr();
 	dbMgr->Start();
+	if (dbMgr->DoLoadOffLineData() == false)
+	{
+		return -1;
+	}
 	LOG.Log() << "\033[35mHost = "<< Config::host <<" Port = "<< Config::port << "\033[0m\n";
 	LOG.Log() << "\033[35mDB模块连接数据库成功！\033[0m\n" << endl;
 
