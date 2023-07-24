@@ -73,7 +73,7 @@ public:
 	//新增登录待处理数据
 	void AddLoginOffLineData(std::string uid, std::string data);
 
-	//返回并删除待处理数据中的第一条数据
+	//返回并删除待处理数据中的第一条数据(数据之间用：：符号分隔开来)
 	std::string GetData(std::string uid);
 
 } LoginOffLineMsg;

@@ -90,13 +90,20 @@ void LoginOffLineMsg::UpdateLoginOffLineData(std::string uid, std::string data)
 
 void LoginOffLineMsg::AddLoginOffLineData(std::string uid, std::string newdata)
 {
-	std::string& data = GetLoginOffLineData(uid);
-	if (data.size() > 0)
+	if (CheckLoginOffLineData(uid) == false)
 	{
-		data += "::";
+		this->loginOffLineMsgMap[uid] = newdata;
 	}
-	data += newdata;
-	UpdateLoginOffLineData(uid, data);
+	else
+	{
+		std::string& data = GetLoginOffLineData(uid);
+		if (data.size() > 0)
+		{
+			data += "::";
+		}
+		data += newdata;
+		UpdateLoginOffLineData(uid, data);
+	}
 	return;
 }
 
@@ -104,6 +111,12 @@ std::string LoginOffLineMsg::GetData(std::string uid)
 {
 	std::string& data = GetLoginOffLineData(uid);
 	std::string str(Global::BreakDownByString(data, "::"));
+
+	//假如没有要处理的数据就直接删除掉元素
+	if (data.size() == 0 || ((data.size() == 2) && (data == "::")))
+	{
+		this->loginOffLineMsgMap.erase(uid);
+	}
 	return str;
 }
 
