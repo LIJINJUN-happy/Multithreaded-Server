@@ -42,7 +42,31 @@ std::string Redis::get(std::string key)
 	return str;
 }
 
+const int Redis::getKeysMatchingLen(std::string key)
+{
+	this->_reply = (redisReply*)redisCommand(this->_connect, "KEYS %s", key.c_str());
+	int len = this->_reply->elements;
+	return len;
+}
+
+std::string Redis::getKeysMatchingResultWithIndex(int index)
+{
+	return std::string(_reply->element[index]->str);
+}
+
 void Redis::set(std::string key, std::string value)
 {
 	redisCommand(this->_connect, "SET %s %s", key.c_str(), value.c_str());
+}
+
+void Redis::release(std::string key, std::string moudle)
+{
+	key += "_";
+	key += moudle;
+	redisCommand(this->_connect, "DEL %s", );
+}
+
+void Redis::freeRedis()
+{
+	freeReplyObject(this->_reply);//释放redisCommand执行后返回的的redisReply所占用的内存
 }

@@ -32,7 +32,7 @@ namespace DBCommand
 	const std::string loadOffLine = "SELECT * FROM offlinedata.offlinedata";
 
 	//存入离线数据(第一次存入)
-	const std::string saveOffLineWithInsert = "INSERT INTO offlinedata.offlinedata VALUES(_)";
+	const std::string saveOffLineWithInsert = "INSERT INTO offlinedata.offlinedata VALUES('_','_')";
 
 	//存入离线数据(更新)
 	const std::string saveOffLineWithUpdate = "UPDATE offlinedata.offlinedata SET offlinedata.script='_' WHERE offlinedata.actorId='_'";

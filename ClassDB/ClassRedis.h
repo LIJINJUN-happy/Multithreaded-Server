@@ -23,11 +23,20 @@ public:
 	//get请求
 	std::string get(std::string key);
 
+	//keys请求--返回数组长度（REDIS_REPLY_ARRAY）
+	const int getKeysMatchingLen(std::string key);
+
+	//获取keys指令返回的数据
+	std::string getKeysMatchingResultWithIndex(int index);
+
 	//set请求
 	void set(std::string key, std::string value);
 
 	//Release Redis Info
-	void release(std::string key, std::string moudle) {};
+	void release(std::string key, std::string moudle);
+
+	//主动释放内村
+	void freeRedis();
 
 private:
 	redisContext* _connect;
