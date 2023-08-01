@@ -168,13 +168,14 @@ void DataBaseMgr::SaveOffLineData()
 			for (auto x: keysList)
 			{
 				saveOffLineString.clear();
-				uid.clear();
-				uid = x.substr(0, key.size() - 13); //-13是因为"_OFFLINE_DATA"长度为13，只取uid
 
 				data.clear();
 				data = redisObj->get(x);
 				if (data.size() > 0)
 				{
+					uid.clear();
+					uid = x.substr(0, x.size() - 13); //-13是因为"_OFFLINE_DATA"长度为13，只取uid
+
 					saveOffLineString = DBCommand::checkOffLineWithSelect;
 					saveOffLineString.replace(saveOffLineString.find('_'), 1, uid);
 					LOG.Log() << "OffLineData Docommand Find  = " << saveOffLineString << std::endl;
