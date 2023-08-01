@@ -9,8 +9,7 @@ using std::vector;
 void Gate::ServerQuit(int signum)
 {
     LOG.Log() << "收到信号信息 = " << signum << std::endl;
-    extern DataBaseMgr DATABASEMGR;
-    DATABASEMGR.SaveOffLineData();
+    ::DATABASEMGR.SaveOffLineData();
     exit(0);
 }
 

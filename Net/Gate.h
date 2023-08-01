@@ -6,9 +6,11 @@
 //预声明
 class Client;
 class ClassTcpNet;
+class DatabaseMgr;
 
 extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
 extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+extern DataBaseMgr DATABASEMGR;
 
 namespace Gate
 {
