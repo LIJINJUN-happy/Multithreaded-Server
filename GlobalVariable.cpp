@@ -20,6 +20,7 @@ tm* Global::GetNowTimeWithFormat()
 /*(ctrl + \ )*/
 void Global::ServerQuit(int signum)
 {
+    LOG.Log() << "收到信号信息 = " << signum << std::endl;
     exit(0);
 }
 
