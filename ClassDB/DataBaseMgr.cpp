@@ -141,7 +141,7 @@ void DataBaseMgr::SaveOffLineData()
 		delete redisObj;
 		redisObj = nullptr;
 
-		return false;
+		return ;
 	}
 
 	this->doLoadOffLineData = new ClassDataBase();
@@ -200,7 +200,6 @@ void DataBaseMgr::SaveOffLineData()
 						else
 						{
 							LOG.Error() << "SaveOffLineData Wrong With  :" << saveOffLineString << std::endl;
-							result = false;
 							continue;
 						}
 
@@ -220,13 +219,13 @@ void DataBaseMgr::SaveOffLineData()
 		delete redisObj;
 		redisObj = nullptr;
 
-		return true;
+		return ;
 	}
 
 	delete redisObj;
 	redisObj = nullptr;
 
-	return false;
+	return ;
 }
 
 bool DataBaseMgr::DoLoadLoginOffLineMsg()

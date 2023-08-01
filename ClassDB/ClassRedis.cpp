@@ -63,7 +63,7 @@ void Redis::release(std::string key, std::string moudle)
 {
 	key += "_";
 	key += moudle;
-	redisCommand(this->_connect, "DEL %s", key);
+	redisCommand(this->_connect, "DEL %s", key.c_str());
 }
 
 void Redis::freeRedis()
