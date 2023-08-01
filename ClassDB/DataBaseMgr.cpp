@@ -149,7 +149,7 @@ void DataBaseMgr::SaveOffLineData()
 	if (doLoadOffLineData)
 	{
 		const int len = redisObj->getKeysMatchingLen("*_OFFLINE_DATA*");
-		LOG.Log() << "OffLineData Len = " << len << std::endl;
+		//LOG.Log() << "OffLineData Len = " << len << std::endl;
 		if (len > 0)
 		{
 			std::vector<std::string> keysList{};
@@ -178,7 +178,7 @@ void DataBaseMgr::SaveOffLineData()
 
 					saveOffLineString = DBCommand::checkOffLineWithSelect;
 					saveOffLineString.replace(saveOffLineString.find('_'), 1, uid);
-					LOG.Log() << "OffLineData Docommand Find  = " << saveOffLineString << std::endl;
+					//LOG.Log() << "OffLineData Docommand Find  = " << saveOffLineString << std::endl;
 
 					if (doLoadOffLineData->DoCommand(saveOffLineString))
 					{
@@ -199,7 +199,7 @@ void DataBaseMgr::SaveOffLineData()
 							saveOffLineString.replace(saveOffLineString.find('_'), 1, uid);
 							saveOffLineString.replace(saveOffLineString.find_last_of('_'), 1, data);
 						}
-						LOG.Log() << "OffLineData Docommand Update Or Insert  = " << saveOffLineString << std::endl;
+						//LOG.Log() << "OffLineData Docommand Update Or Insert  = " << saveOffLineString << std::endl;
 
 						if (doLoadOffLineData->DoCommand(saveOffLineString))
 						{
