@@ -157,7 +157,6 @@ void DataBaseMgr::SaveOffLineData()
 			for (int i = 0; i < len; i++)
 			{
 				key = redisObj->getKeysMatchingResultWithIndex(i);
-				key = key.substr(0, key.size() - 13); //-13是因为"_OFFLINE_DATA"长度为13，只取uid
 				keysList.push_back(key);
 				key.clear();
 			}
@@ -165,15 +164,19 @@ void DataBaseMgr::SaveOffLineData()
 
 			std::string saveOffLineString = "";
 			std::string data = "";
+			std::string uid = "";
 			for (auto x: keysList)
 			{
 				saveOffLineString.clear();
+				uid.clear();
+				uid = x.substr(0, key.size() - 13); //-13是因为"_OFFLINE_DATA"长度为13，只取uid
+
 				data.clear();
 				data = redisObj->get(x);
 				if (data.size() > 0)
 				{
 					saveOffLineString = DBCommand::checkOffLineWithSelect;
-					saveOffLineString.replace(saveOffLineString.find('_'), 1, x);
+					saveOffLineString.replace(saveOffLineString.find('_'), 1, uid);
 					LOG.Log() << "OffLineData Docommand Find  = " << saveOffLineString << std::endl;
 
 					if (doLoadOffLineData->DoCommand(saveOffLineString))
@@ -185,21 +188,21 @@ void DataBaseMgr::SaveOffLineData()
 						{
 							saveOffLineString = DBCommand::saveOffLineWithUpdate;
 							saveOffLineString.replace(saveOffLineString.find('_'), 1, data);
-							saveOffLineString.replace(saveOffLineString.find_last_of('_'), 1, x);
+							saveOffLineString.replace(saveOffLineString.find_last_of('_'), 1, uid);
 
 						}
 						//找不到就是证明暂无数据（insert）
 						else if (row == 0)
 						{
 							saveOffLineString = DBCommand::saveOffLineWithInsert;
-							saveOffLineString.replace(saveOffLineString.find('_'), 1, x);
+							saveOffLineString.replace(saveOffLineString.find('_'), 1, uid);
 							saveOffLineString.replace(saveOffLineString.find_last_of('_'), 1, data);
 						}
 						LOG.Log() << "OffLineData Docommand Update Or Insert  = " << saveOffLineString << std::endl;
 
 						if (doLoadOffLineData->DoCommand(saveOffLineString))
 						{
-							redisObj->release(x, "OFFLINE_DATA");
+							redisObj->release(uid, "OFFLINE_DATA");
 						}
 						else
 						{
@@ -210,7 +213,7 @@ void DataBaseMgr::SaveOffLineData()
 					}
 					else
 					{
-						LOG.Error() << "DataBase Command Worng With SaveOffLineData UID :" << x << std::endl;
+						LOG.Error() << "DataBase Command Worng With SaveOffLineData UID :" << uid << std::endl;
 						continue;
 					}
 				}
