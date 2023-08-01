@@ -14,6 +14,9 @@ pthread_mutex_t TIMER_LIST_LOCK;						//定时器容器锁（防止塞入或取�
 //Redis容器（Uid -- RedisObject Address）
 std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP = {};
 
+//数据库管理对象
+DataBaseMgr* DATABASEMGR;
+
 using namespace std;
 int main()
 {
@@ -51,6 +54,10 @@ int main()
 	if (dbMgr->DoLoadOffLineData() == false)
 	{
 		return -1;
+	}
+	else
+	{
+		DATABASEMGR = dbMgr;
 	}
 	LOG.Log() << "\033[35mHost = "<< Config::host <<" Port = "<< Config::port << "\033[0m\n";
 	LOG.Log() << "\033[35mDB模块连接数据库成功！\033[0m\n" << endl;
