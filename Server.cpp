@@ -137,6 +137,7 @@ int main()
 
 
 	//监视循环
+	Gate::SignalReady();
 	ClassMonitor *monitorObj = new ClassMonitor(tcpNetObj, pthreadObj);
 	monitorObj->BeginCheck();
 

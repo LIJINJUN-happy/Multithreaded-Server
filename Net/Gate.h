@@ -12,6 +12,11 @@ extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
 
 namespace Gate
 {
+	//信号处理
+	void ServerQuit(int signum); /*(ctrl + \ )*/
+
+	void SignalReady();          //信号处理准备工作
+
 	//转换为char*然后send（弃用）
 	void TransformationAndSend(std::string msg);
 

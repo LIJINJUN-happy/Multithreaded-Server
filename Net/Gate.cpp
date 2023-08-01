@@ -5,6 +5,25 @@ using std::endl;
 using std::string;
 using std::vector;
 
+/*(ctrl + \ )*/
+void Gate::ServerQuit(int signum)
+{
+    LOG.Log() << "收到信号信息 = " << signum << std::endl;
+    exit(0);
+}
+
+//信号处理准备工作
+void Gate::SignalReady()
+{
+    // signal(SIGINT, process_exit);
+    // signal(SIGFPE, process_exit);
+    // signal(SIGILL, process_exit);
+    // signal(SIGABRT, process_exit);
+    // signal(SIGSEGV, process_exit);
+    // signal(SIGTERM, process_exit);
+    signal(SIGQUIT, ServerQuit);
+}
+
 //转换为char*然后send
 void Gate::TransformationAndSend(string msg)
 {

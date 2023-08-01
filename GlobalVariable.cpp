@@ -17,25 +17,6 @@ tm* Global::GetNowTimeWithFormat()
     return localtm;
 }
 
-/*(ctrl + \ )*/
-void Global::ServerQuit(int signum)
-{
-    LOG.Log() << "收到信号信息 = " << signum << std::endl;
-    exit(0);
-}
-
-//信号处理准备工作
-void Global::SignalReady()
-{
-    // signal(SIGINT, process_exit);
-    // signal(SIGFPE, process_exit);
-    // signal(SIGILL, process_exit);
-    // signal(SIGABRT, process_exit);
-    // signal(SIGSEGV, process_exit);
-    // signal(SIGTERM, process_exit);
-    signal(SIGQUIT, ServerQuit);
-}
-
 std::string Global::BreakDownByString(std::string& str, std::string posString)
 {
     auto index = str.find(posString);
