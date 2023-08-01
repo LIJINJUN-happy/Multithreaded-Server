@@ -15,7 +15,7 @@ pthread_mutex_t TIMER_LIST_LOCK;						//定时器容器锁（防止塞入或取�
 std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP = {};
 
 //数据库管理对象
-DataBaseMgr* DATABASEMGR;
+DataBaseMgr DATABASEMGR;
 
 using namespace std;
 int main()
@@ -49,15 +49,10 @@ int main()
 
 
 	//数据库链接
-	DataBaseMgr* dbMgr = new DataBaseMgr();
-	dbMgr->Start();
-	if (dbMgr->DoLoadOffLineData() == false)
+	DATABASEMGR.Start();
+	if (DATABASEMGR.DoLoadOffLineData() == false)
 	{
 		return -1;
-	}
-	else
-	{
-		DATABASEMGR = dbMgr;
 	}
 	LOG.Log() << "\033[35mHost = "<< Config::host <<" Port = "<< Config::port << "\033[0m\n";
 	LOG.Log() << "\033[35mDB模块连接数据库成功！\033[0m\n" << endl;
@@ -89,7 +84,7 @@ int main()
 	{
 		//每个工作线程对应一个任务链表,避免了多个工作线程争抢一个任务链表的情况
 		Task* task = pthreadObj->GetTaskArgs(i);
-		task->dbPtr = dbMgr->GetDBByIndex(i);
+		task->dbPtr = DATABASEMGR.GetDBByIndex(i);
 		pthread_t tid = 0;
 		int resulCreatePthread = pthread_create(&tid, NULL, CheckTaskList, task);
 		if (resulCreatePthread == 0)
