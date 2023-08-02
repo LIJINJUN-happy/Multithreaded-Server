@@ -133,7 +133,7 @@ bool DataBaseMgr::DoLoadOffLineData()
 
 void DataBaseMgr::SaveOffLineData()
 {
-	LOG.Log() << "Begin To SaveOffLineData................" << std::endl;
+	LOG.Log() << "\033[36mBegin To SaveOffLineData................\033[0m" << std::endl;
 	this->redisObj = new Redis();
 	if (redisObj->connect(Config::RedisHost, Config::RedisPort) == false)
 	{
@@ -219,6 +219,8 @@ void DataBaseMgr::SaveOffLineData()
 					}
 				}
 			}
+
+			LOG.Log() << "\033[36mSaveOffLineData Finished\033[0m" << std::endl << std::endl;
 		}
 
 		delete (this->doLoadOffLineData);
