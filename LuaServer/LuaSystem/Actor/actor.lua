@@ -103,7 +103,7 @@ end
 function ACTOR:ChangeName(uid, arg)
 	local res = LuaGetDataFromRedis(uid, "ACTOR")
 	local info = JSON:decode(res)
-	print("获取到的name = ",info.name)
+	--print("获取到的name = ",info.name)
 	info.name = "xieyujun"
 	res = LuaSetDataToRedis(uid, "ACTOR", JSON:encode(info))
 	print("res = ",res)
