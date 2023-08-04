@@ -57,10 +57,13 @@ void ClassMonitor::CheckoutClientIfOnline()
 
             //移除Redis容器数据
             extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
-            Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
-            GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
-            delete redisPtr;
-            redisPtr = nullptr;
+            if (GLOBAL_UID_REDISOBJECT_MAP.find(uid) != GLOBAL_UID_REDISOBJECT_MAP.end())
+            {
+                Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
+                GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
+                delete redisPtr;
+                redisPtr = nullptr;
+            }
             //LOG.Log() << "移除GLOBAL_UID_REDISOBJECT_MAP内数据后大小为：" << GLOBAL_UID_REDISOBJECT_MAP.size() << std::endl;
 
             //析构client指针所指向的内存
