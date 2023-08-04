@@ -164,7 +164,7 @@ int LuaScript::LuaGetDataFromRedis(lua_State* L)
 	{
 		for (int i = 0; i < moudleName.size(); i++)
 		{
-			moudleName[i] = ::std::tolower(moudleName[i])
+			moudleName[i] = ::std::tolower(moudleName[i]);
 		}
 	}
 	else
@@ -203,7 +203,7 @@ int LuaScript::LuaSetDataToRedis(lua_State* L)
 	{
 		for (int i = 0; i < moudleName.size(); i++)
 		{
-			moudleName[i] = ::std::tolower(moudleName[i])
+			moudleName[i] = ::std::tolower(moudleName[i]);
 		}
 	}
 	else
