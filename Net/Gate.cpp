@@ -497,7 +497,7 @@ bool Gate::RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Red
                 if (row == 1)
                 {
                     std::string jsonMysqlDataString = (*(db->GetNextRowInfo()))[0];
-                    LOG.Log() << "Load Moudle = " << moudle << "  DataString = " << jsonMysqlDataString << std::endl;
+                    LOG.Log() << "Load Moudle = " << moudle << "  DataString = " << jsonMysqlDataString << std::endl << std::endl;
                     moudle = uid + "_" + moudle;
                     redisObj->set(moudle, jsonMysqlDataString);
                 }

@@ -50,7 +50,7 @@ namespace Config
 	const long serOpenTime = 0;					//开服时间
 
 	//线程配置
-	const int pollingPthreadNum = 3; //轮询任务列表线程数量
+	const int pollingPthreadNum = 1; //轮询任务列表线程数量
 
 	//监听以及epoll配置
 	const int maxConnect = 256;								//最大同时连接列表值（listen 第二参数）
