@@ -63,5 +63,5 @@ echo
 
 all_Dir="$needLink$main_dir$OFFLine_dir$DB_dir$pthread_dir$timer_dir$Net_dir$Monitor_dir$LuaServer_dir$Mail_dir$Logger_dir"
 echo "g++执行$all_Dir"
-g++ $all_Dir -o ./cmd/Server.out $needLuaLink
+g++ $all_Dir -o ./cmd/Server.out -g $needLuaLink
 echo
