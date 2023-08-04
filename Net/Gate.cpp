@@ -265,8 +265,8 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
     {
         int row = db->GetResultRow();
         int count = db->GetResultCount();
-        LOG.Log() << "row = " << row << std::endl;
-        LOG.Log() << "count = " << count << std::endl;
+        //LOG.Log() << "row = " << row << std::endl;
+        //LOG.Log() << "count = " << count << std::endl;
         if (row <= 0 || count <= 0)
         {
             LOG.Log() << "Login Fail With Password not right !" << std::endl;
@@ -274,9 +274,9 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
         }
         else if(row == 1 && count == 1)
         {
-            LOG.Log() << "Login Success !" << std::endl;
+            //LOG.Log() << "Login Success !" << std::endl;
             std::string actorID = (*(db->GetNextRowInfo()))[0];
-            LOG.Log() << "actorID = " << actorID << std::endl;
+            //LOG.Log() << "actorID = " << actorID << std::endl;
             return actorID;
         }
     }

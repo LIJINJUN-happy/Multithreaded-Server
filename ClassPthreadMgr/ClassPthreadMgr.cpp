@@ -182,7 +182,7 @@ void *CheckTaskList(void *args)
         MsgPackage* msgPtr = *(pWorkList->begin());
         pWorkList->erase(pWorkList->begin());
         stringMsg = msgPtr->GetCMD();
-        //LOG.Log() << "stringMsg = " << stringMsg << std::endl;
+        LOG.Log() << "stringMsg = " << stringMsg << std::endl;
             
         //执行任务
         if (stringMsg.size() >= 1)
