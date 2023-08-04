@@ -160,9 +160,21 @@ int LuaScript::LuaGetDataFromRedis(lua_State* L)
 		return 1;
 	}
 	
+	if (moudleName.size() >= 1)
+	{
+		for (int i = 0; i < moudleName.size(); i++)
+		{
+			moudleName[i] = ::std::tolower(moudleName[i])
+		}
+	}
+	else
+	{
+		return 1;
+	}
+
 	Redis* redisObj = it->second;
 	std::string data = redisObj->get(uid + "_" + moudleName);
-	//LOG.Log() << "redisObj->get : " << data << std::endl;
+	LOG.Log() << "redisObj->get : "<< uid + "_" + moudleName + " = " << data << std::endl;
 
 	if (data.size() != 0)
 	{
@@ -187,8 +199,20 @@ int LuaScript::LuaSetDataToRedis(lua_State* L)
 		return 1;
 	}
 
+	if (moudleName.size() >= 1)
+	{
+		for (int i = 0; i < moudleName.size(); i++)
+		{
+			moudleName[i] = ::std::tolower(moudleName[i])
+		}
+	}
+	else
+	{
+		return 1;
+	}
+	LOG.Log() << "redisObj->set : " << uid + "_" + moudleName + " = " << moudleData << std::endl;
+
 	Redis* redisObj = it->second;
-	//LOG.Log() << "moudleData : " << moudleData << std::endl;
 	if (moudleData.size() >= 1)
 	{
 		redisObj->set(uid + "_" + moudleName, moudleData);
