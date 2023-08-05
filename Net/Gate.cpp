@@ -254,7 +254,7 @@ std::string Gate::CheckoutAccountPassword(std::string account, std::string pw, C
     std::string dbString = DBCommand::CheckoutPassword;
     dbString.insert(dbString.find('=') + 2, account);
     dbString.insert(dbString.find_last_of('=') + 2, pw);
-    LOG.Log() << "dbString = " << dbString << std::endl;
+    //LOG.Log() << "dbString = " << dbString << std::endl;
     bool res = db->DoCommand(dbString);
     if (res != true)
     {
@@ -483,7 +483,7 @@ bool Gate::RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Red
             dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
             dbString.insert(dbString.find_last_of('.'), moudle);
             dbString.insert(dbString.find_last_of('=') + 2, uid);
-            LOG.Log() << "Mysql Load Json's dbString = " << dbString << std::endl;
+            //LOG.Log() << "Mysql Load Json's dbString = " << dbString << std::endl;
 
             bool doCommandResult = db->DoCommand(dbString);
             if (!doCommandResult)
@@ -497,7 +497,7 @@ bool Gate::RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Red
                 if (row == 1)
                 {
                     std::string jsonMysqlDataString = (*(db->GetNextRowInfo()))[0];
-                    LOG.Log() << "Load Moudle = " << moudle << "  DataString = " << jsonMysqlDataString << std::endl << std::endl;
+                    //LOG.Log() << "Load Moudle = " << moudle << "  DataString = " << jsonMysqlDataString << std::endl << std::endl;
                     moudle = uid + "_" + moudle;
                     redisObj->set(moudle, jsonMysqlDataString);
                 }
