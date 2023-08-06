@@ -36,7 +36,7 @@ public:
 
 	Val& operator[](std::string& key);
 
-	int size();
+	size_t size();
 };
 
 #endif
@@ -116,7 +116,7 @@ inline Val& SafeMap<Val>::operator[](std::string& key)
 }
 
 template<class Val>
-inline int SafeMap<Val>::size()
+inline size_t SafeMap<Val>::size()
 {
 	return this->safeMap.size();
 }
