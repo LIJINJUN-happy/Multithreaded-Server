@@ -100,7 +100,7 @@ int LuaScript::LuaSendMessage(lua_State* L)
 	std::string uid = luaL_checkstring(L, 1);
 	auto it = ::GLOBAL_UID_SOCKET_MAP.find(uid);
 	std::string jsonStr = luaL_checkstring(L, 2);
-	if (it == ::GLOBAL_UID_SOCKET_MAP.end())
+	if (::GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid) == false)
 	{
 		lua_pushnumber(L, 0);
 		return 1;
@@ -134,7 +134,7 @@ int LuaScript::LuaAddEventIntoTimerList(lua_State* L)
 	if (msgType == "Actor")
 	{
 		auto it = ::GLOBAL_UID_SOCKET_MAP.find(uid);
-		if (it == ::GLOBAL_UID_SOCKET_MAP.end())
+		if (::GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid) == false)
 		{
 			lua_pushnumber(L, 0);
 			return 1;
