@@ -343,7 +343,7 @@ void *CheckTaskList(void *args)
                     Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
                     luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
 
-                    if (GLOBAL_UID_SOCKET_MAP.find(uid) != GLOBAL_UID_SOCKET_MAP.end())
+                    if (GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid))
                     {
                         GLOBAL_UID_SOCKET_MAP.erase(uid);
                     }

@@ -54,7 +54,7 @@ void ClassMonitor::CheckoutClientIfOnline()
 
             //移除UID-Socket的键值对容器内的数据
             extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
-            if (GLOBAL_UID_SOCKET_MAP.find(uid) != GLOBAL_UID_SOCKET_MAP.end())
+            if (GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid))
             {
                 GLOBAL_UID_SOCKET_MAP.erase(uid);
             }
@@ -119,7 +119,7 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
 
             //判断fdMap是否还有残留
             extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
-            if (GLOBAL_UID_SOCKET_MAP.find(uid) != GLOBAL_UID_SOCKET_MAP.end())
+            if (GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid))
             {
                 std::string fd = std::to_string(GLOBAL_UID_SOCKET_MAP[uid]);
                 GLOBAL_UID_SOCKET_MAP.erase(uid);

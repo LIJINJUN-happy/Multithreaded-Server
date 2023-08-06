@@ -750,7 +750,7 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
     }
 
     //移除UID-Socket的键值对容器内的数据
-    if (::GLOBAL_UID_SOCKET_MAP.find(uid) != ::GLOBAL_UID_SOCKET_MAP.end())
+    if (::GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid))
     {
         ::GLOBAL_UID_SOCKET_MAP.erase(uid);
         //LOG.Log() << "GLOBAL_UID_SOCKET_MAP [clientFd] == ：" << (::GLOBAL_UID_SOCKET_MAP)[uid] << endl << endl;
