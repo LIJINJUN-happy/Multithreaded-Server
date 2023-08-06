@@ -24,11 +24,11 @@ public:
 
 	bool CheckoutIfExist(std::string key);
 
-	std::iterator<std::string, Val> find(std::string key);
+	std::map<std::string, Val>::iterator find(std::string key);
 
-	std::iterator<std::string, Val> begin();
+	std::map<std::string, Val>::iterator begin();
 
-	std::iterator<std::string, Val> end();
+	std::map<std::string, Val>::iterator end();
 
 	Val at(std::string key);
 
@@ -84,21 +84,21 @@ inline bool SafeMap<Val>::CheckoutIfExist(std::string key)
 }
 
 template<class Val>
-inline std::iterator<std::string, Val> SafeMap<Val>::find(std::string key)
+inline std::map<std::string, Val>::iterator SafeMap<Val>::find(std::string key)
 {
-	return std::iterator<std::string, Val>(this->safeMap.find(key));
+	return this->safeMap.find(key);
 }
 
 template<class Val>
-inline std::iterator<std::string, Val> SafeMap<Val>::begin()
+inline std::map<std::string, Val>::iterator SafeMap<Val>::begin()
 {
-	return std::iterator<std::string, Val>(this->safeMap.begin());
+	return this->safeMap.begin();
 }
 
 template<class Val>
-inline std::iterator<std::string, Val> SafeMap<Val>::end()
+inline std::map<std::string, Val>::iterator SafeMap<Val>::end()
 {
-	return std::iterator<std::string, Val>(this->safeMap.end());
+	return this->safeMap.end();
 }
 
 template<class Val>
