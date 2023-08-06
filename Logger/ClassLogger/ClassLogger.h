@@ -1,7 +1,7 @@
 #ifndef _CLASSLOGGER_H_
 #define _CLASSLOGGER_H_
 
-#include "../../etc/Config.h"
+#include "../../etc/SafeMap.h"
 #include "../../ClassDB/DBCommand.h"
 
 class ClassLogger
