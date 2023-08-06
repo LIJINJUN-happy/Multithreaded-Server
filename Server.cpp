@@ -4,7 +4,7 @@
 #include "./Monitor/ClassMonitor.h"		 //自定义监视头文件
 
 //全局变量
-std::map<std::string, int> GLOBAL_UID_SOCKET_MAP = {};	//UID - SOCKET 键值对容器
+SafeMap<int> GLOBAL_UID_SOCKET_MAP = {};	//UID - SOCKET 键值对容器
 ClassServer *SERVER_OBJECT = nullptr;					//服务器类对象指针
 
 //lua虚拟机所注册的定时任务,放在这里,然后定时器从这里取出

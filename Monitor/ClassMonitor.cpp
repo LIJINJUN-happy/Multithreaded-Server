@@ -53,7 +53,7 @@ void ClassMonitor::CheckoutClientIfOnline()
             //LOG.Log() << "移除LuaVm内数据后大小为：" << luaVmptr->GetLuaVmMapPtr()->size() << std::endl;
 
             //移除UID-Socket的键值对容器内的数据
-            extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+            extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
             if (GLOBAL_UID_SOCKET_MAP.find(uid) != GLOBAL_UID_SOCKET_MAP.end())
             {
                 GLOBAL_UID_SOCKET_MAP.erase(uid);
@@ -85,7 +85,7 @@ void ClassMonitor::CheckoutClientIfOnline()
 
 int ClassMonitor::CheckoutClientAmount()
 {
-    extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+    extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
     extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
     extern ClassServer* SERVER_OBJECT;
     int num = SERVER_OBJECT->GetActorAmount();
@@ -118,7 +118,7 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
             this->pthreadObj->GetLuaVmMgrPtr()->DeleteLuaBaseVm(uid);
 
             //判断fdMap是否还有残留
-            extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+            extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
             if (GLOBAL_UID_SOCKET_MAP.find(uid) != GLOBAL_UID_SOCKET_MAP.end())
             {
                 std::string fd = std::to_string(GLOBAL_UID_SOCKET_MAP[uid]);

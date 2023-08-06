@@ -334,7 +334,7 @@ void *CheckTaskList(void *args)
                 //用户下线（放在这里判断是为了让用户在LuaVm处理完下线操作后才进行移除）
                 if (removeActorVmWithLogOut == true)
                 {
-                    extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
+                    extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
                     extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
 
                     //Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr); //屏蔽旧保存逻辑（读取Lua的数据保存到Mysql中）
