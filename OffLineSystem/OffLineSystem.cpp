@@ -107,7 +107,10 @@ std::string LoginOffLineMsg::GetData(std::string uid)
 	//假如没有要处理的数据就直接删除掉元素
 	if (data.size() == 0 || ((data.size() == 2) && (data == "::")))
 	{
-		this->loginOffLineMsgMap.erase(uid);
+		if (loginOffLineMsgMap.find(uid) != loginOffLineMsgMap.end())
+		{
+			loginOffLineMsgMap.erase(uid);
+		}
 	}
 	return str;
 }

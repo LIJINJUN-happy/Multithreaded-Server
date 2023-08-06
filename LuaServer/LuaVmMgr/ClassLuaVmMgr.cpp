@@ -77,9 +77,12 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
     {
         //在LuaMap中删除前,先找到vm对象将其析构
         LuaBaseVm* vmPtr = ptr->second;
-        this->luaVmMap.erase(strIndex);
-        delete vmPtr;
-        vmPtr = nullptr;
+        if (this->luaVmMap.find(strIndex) != this->luaVmMap.end())
+        {
+            this->luaVmMap.erase(strIndex);
+            delete vmPtr;
+            vmPtr = nullptr;
+        }
         //LOG.Log() << "LuaVmMap Delete Success " << std::endl;
         //LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;

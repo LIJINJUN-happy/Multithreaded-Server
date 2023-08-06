@@ -42,8 +42,10 @@ void ClassMonitor::CheckoutClientIfOnline()
             //LOG.Log() << "移除fdMap内数据后大小为：" << pSockfdMap->size() << std::endl;
 
             //移除idMap内数据
-            if(pSockidMap->find(uid) != pSockidMap->end())
+            if (pSockidMap->find(uid) != pSockidMap->end())
+            {
                 pSockidMap->erase(uid);
+            }
             //LOG.Log() << "移除fdMap内数据后大小为：" << pSockidMap->size() << std::endl;
 
             //移除LuaVm
@@ -52,7 +54,10 @@ void ClassMonitor::CheckoutClientIfOnline()
 
             //移除UID-Socket的键值对容器内的数据
             extern std::map<std::string, int> GLOBAL_UID_SOCKET_MAP;
-            GLOBAL_UID_SOCKET_MAP.erase(uid);
+            if (GLOBAL_UID_SOCKET_MAP.find(uid) != GLOBAL_UID_SOCKET_MAP.end())
+            {
+                GLOBAL_UID_SOCKET_MAP.erase(uid);
+            }
             //LOG.Log() << "移除GLOBAL_UID_SOCKET_MAP内数据后大小为：" << GLOBAL_UID_SOCKET_MAP.size() << std::endl;
 
             //移除Redis容器数据

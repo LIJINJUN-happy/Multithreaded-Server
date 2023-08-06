@@ -704,11 +704,12 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
 
 void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
 {
-    auto it = ((std::map<string, Client*>*)sockmapPtr)->find(uid);
-    if (it != ((std::map<string, Client*>*)sockmapPtr)->end())
+    auto ptr = ((std::map<string, Client*>*)sockmapPtr);
+    auto it = ptr->find(uid);
+    if (it != ptr->end())
     {
-        ((std::map<string, Client*>*)sockmapPtr)->erase(uid);
-        Client* clientp = ((Client*)cliptr)->GetMyself();
+        ptr->erase(uid);
+        Client* clientp = ((Client*)cliptr);
         delete clientp;//释放Client*内存
         //LOG.Log() << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
     }
@@ -738,7 +739,10 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
         //LOG.Log() << "clientFd == ：" << clientFd << endl;
         close(clientFd);
         std::string fd = std::to_string(clientFd);
-        pSockfdMap->erase(fd);
+        if (pSockfdMap->find(fd) != pSockfdMap->end())
+        {
+            pSockfdMap->erase(fd);
+        }
         epoll_ctl(classServerPtr->GetEpollFd(), EPOLL_CTL_DEL, clientFd, NULL);
         classServerPtr->ChangeClientAmount(-1);
     }

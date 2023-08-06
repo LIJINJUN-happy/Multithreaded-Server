@@ -269,7 +269,10 @@ void ClassTcpNet::CloseClientByFd(string fd)
     int clientFd = atoi(fd.c_str());
     close(clientFd);
     epoll_ctl(this->epollfd, EPOLL_CTL_DEL, clientFd, NULL);
-    this->pSockfdMap.erase(fd);
+    if(this->pSockfdMap.find(fd) != this->pSockfdMap.end())
+    {
+        this->pSockfdMap.erase(fd);
+    }
     extern ClassServer* SERVER_OBJECT;
     SERVER_OBJECT->ChangeClientAmount(-1);
     //LOG.Log() << "当前SockfdMap人数为：" << pSockfdMap.size() << endl;
@@ -305,7 +308,7 @@ void ClassTcpNet::RemoveClientByUid(std::string uid)
         return;
     }
 
-    Client* pClient = this->pSockidMap[uid]->GetMyself();
+    Client* pClient = this->pSockidMap[uid];
     delete pClient;
     pClient = nullptr;
     this->pSockidMap.erase(uid);
