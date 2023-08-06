@@ -518,11 +518,13 @@ bool Gate::RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Red
 
 void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
 {
-    std::string actorUid = ((Client*)cliptr)->GetClientUid();
-    auto it = ((std::map<string, Client*>*)sockmapPtr)->find(actorUid);
-    if (it == ((std::map<string, Client*>*)sockmapPtr)->end())
+    Client* clientPtr = ((Client*)cliptr);
+    std::string actorUid = clientPtr->GetClientUid();
+    auto ptr = ((std::map<string, Client*>*)sockmapPtr);
+    auto it = ptr->find(actorUid);
+    if (it == ptr->end())
     {
-        ((std::map<string, Client*>*)sockmapPtr)->insert(std::make_pair(actorUid, (Client*)cliptr));
+        (*ptr)[actorUid] = clientPtr;
         //LOG.Log() << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
     }
 }
