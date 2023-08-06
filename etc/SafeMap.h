@@ -24,7 +24,15 @@ public:
 
 	bool CheckoutIfExist(std::string key);
 
+	std::iterator<std::string, Val> find(std::string key);
 
+	std::iterator<std::string, Val> begin();
+
+	std::iterator<std::string, Val> end();
+
+	Val at(std::string key);
+
+	Val& operator[](std::string& key);
 };
 
 #endif
@@ -72,3 +80,34 @@ inline bool SafeMap<Val>::CheckoutIfExist(std::string key)
 
 	return false;
 }
+
+template<class Val>
+inline std::iterator<std::string, Val> SafeMap<Val>::find(std::string key)
+{
+	return std::iterator<std::string, Val>(this->safeMap.find(key));
+}
+
+template<class Val>
+inline std::iterator<std::string, Val> SafeMap<Val>::begin()
+{
+	return std::iterator<std::string, Val>(this->safeMap.begin());
+}
+
+template<class Val>
+inline std::iterator<std::string, Val> SafeMap<Val>::end()
+{
+	return std::iterator<std::string, Val>(this->safeMap.end());
+}
+
+template<class Val>
+inline Val SafeMap<Val>::at(std::string key)
+{
+	return Val(this->safeMap.at(key));
+}
+
+template<class Val>
+inline Val& SafeMap<Val>::operator[](std::string& key)
+{
+	return this->safeMap[key];
+}
+
