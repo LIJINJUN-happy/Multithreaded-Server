@@ -3,6 +3,8 @@
 
 #include "./Config.h"
 
+using std::iterator;
+
 template <class Val>
 class SafeMap
 {
@@ -24,11 +26,11 @@ public:
 
 	bool CheckoutIfExist(std::string key);
 
-	std::map<std::string, Val>::iterator find(std::string key);
+	std::map<std::string, Val>::iterator& find(std::string key);
 
-	std::map<std::string, Val>::iterator begin();
+	std::map<std::string, Val>::iterator& begin();
 
-	std::map<std::string, Val>::iterator end();
+	std::map<std::string, Val>::iterator& end();
 
 	Val at(std::string key);
 
@@ -84,19 +86,19 @@ inline bool SafeMap<Val>::CheckoutIfExist(std::string key)
 }
 
 template<class Val>
-inline std::map<std::string, Val>::iterator SafeMap<Val>::find(std::string key)
+inline std::map<std::string, Val>::iterator& SafeMap<Val>::find(std::string key)
 {
 	return this->safeMap.find(key);
 }
 
 template<class Val>
-inline std::map<std::string, Val>::iterator SafeMap<Val>::begin()
+inline std::map<std::string, Val>::iterator& SafeMap<Val>::begin()
 {
 	return this->safeMap.begin();
 }
 
 template<class Val>
-inline std::map<std::string, Val>::iterator SafeMap<Val>::end()
+inline std::map<std::string, Val>::iterator& SafeMap<Val>::end()
 {
 	return this->safeMap.end();
 }
