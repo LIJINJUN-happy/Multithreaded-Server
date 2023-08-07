@@ -9,7 +9,7 @@ class ClassTcpNet
 {
 private:
     std::map<std::string, Client*> pSockfdMap;  //套接字的容器（存放客户端套接字描述符）
-    std::map<std::string, Client*> pSockidMap;  //用户UID的容器（存放客户端UID，注册登录完才可加载Client*进去）
+    SafeMap<Client*> pSockidMap;                //用户UID的容器（存放客户端UID，注册登录完才可加载Client*进去）
     ClassPthreadMgr *pthreadObj;                //自定义线程类对象的指针（用来传递任务进入任务列表）
    
     int serverSock;                             //服务端监听套接字描述符
@@ -38,7 +38,7 @@ public:
     std::map<std::string, Client*>* GetSockfdMap();
     
     //返回UID容器地址
-    std::map<std::string, Client*>* GetSockidMap();
+    SafeMap<Client*>* GetSockidMap();
     
     //根据fd关闭与某客户端套接字相关的任何信息
     void CloseClientByFd(std::string);

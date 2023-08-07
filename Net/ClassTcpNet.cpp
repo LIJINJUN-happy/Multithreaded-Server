@@ -258,7 +258,7 @@ map<string, Client*> *ClassTcpNet::GetSockfdMap()
     return &(this->pSockfdMap);
 }
 
-std::map<std::string, Client*>* ClassTcpNet::GetSockidMap()
+SafeMap<Client*>* ClassTcpNet::GetSockidMap()
 {
     return &(this->pSockidMap);
 }
@@ -280,38 +280,33 @@ void ClassTcpNet::CloseClientByFd(string fd)
 
 bool ClassTcpNet::CheckIsExistByUid(std::string uid)
 {
-    auto it = this->pSockidMap.find(uid);
-    if (it == pSockidMap.end())
-    {
-        return false;
-    }
-    return true;
+    return pSockidMap.CheckoutIfExist(uid);
 }
 
 void ClassTcpNet::AddClientIntoUidMap(std::string uid, Client* clientPtr)
 {
-    if (pSockidMap.find(uid) != pSockidMap.end())
+    if (pSockidMap.CheckoutIfExist(uid))
     {
         LOG.Log() << "Actor Has Existed,Need Not To Add " << std::endl;
         return;
     }
         
-    this->pSockidMap[uid] = clientPtr;
+    this->pSockidMap.insert(uid, clientPtr);
     return;
 }
 
 void ClassTcpNet::RemoveClientByUid(std::string uid)
 {
-    if (pSockidMap.find(uid) == pSockidMap.end())
+    if (pSockidMap.CheckoutIfExist(uid))
     {
         LOG.Log() << "Actor Has Not Existed,Need Not To Remove " << std::endl;
         return;
     }
 
-    Client* pClient = this->pSockidMap[uid];
+    Client* pClient = this->pSockidMap.at(uid);
+    this->pSockidMap.erase(uid);
     delete pClient;
     pClient = nullptr;
-    this->pSockidMap.erase(uid);
     //LOG.Log() << "当前pSockidMap人数为：" << pSockidMap.size() << endl;
     return;
 }

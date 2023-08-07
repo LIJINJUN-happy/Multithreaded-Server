@@ -23,7 +23,7 @@ ClassMonitor::~ClassMonitor()
 void ClassMonitor::CheckoutClientIfOnline()
 {
     std::map<string, Client*> *pSockfdMap = this->tcpNetObj->GetSockfdMap();
-    std::map<string, Client*>* pSockidMap = this->tcpNetObj->GetSockidMap();
+    SafeMap<Client*>* pSockidMap = this->tcpNetObj->GetSockidMap();
     LuaVmMgr* luaVmptr =  this->pthreadObj->GetLuaVmMgrPtr();
     if (pSockfdMap->size() <= 0)
     {
@@ -42,7 +42,7 @@ void ClassMonitor::CheckoutClientIfOnline()
             //LOG.Log() << "移除fdMap内数据后大小为：" << pSockfdMap->size() << std::endl;
 
             //移除idMap内数据
-            if (pSockidMap->find(uid) != pSockidMap->end())
+            if (pSockidMap->CheckoutIfExist(uid))
             {
                 pSockidMap->erase(uid);
             }
@@ -101,6 +101,7 @@ int ClassMonitor::CheckoutClientAmount()
 
 void ClassMonitor::CheckoutLuaVmWithActorMap()
 {
+    /*
     int type = 0;
     std::string uid = "";
     LuaVmMgr* pLuaVmMap = this->pthreadObj->GetLuaVmMgrPtr();
@@ -146,7 +147,7 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
             }
         }
         uid.clear();
-    }
+    }*/
 }
 
 void ClassMonitor::CheckoutServerCondition(int num, std::array<int,4>& alist, std::array<std::string,4>& slist)

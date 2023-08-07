@@ -517,11 +517,10 @@ void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
 {
     Client* clientPtr = ((Client*)cliptr);
     std::string actorUid = clientPtr->GetClientUid();
-    auto ptr = ((std::map<string, Client*>*)sockmapPtr);
-    auto it = ptr->find(actorUid);
-    if (it == ptr->end())
+    auto ptr = ( SafeMap<Client*>*)sockmapPtr);
+    if (ptr->CheckoutIfExist(actorUid) == false)
     {
-        (*ptr)[actorUid] = clientPtr;
+        ptr->update(actorUid, clientPtr);
         //LOG.Log() << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
     }
 }
@@ -703,27 +702,27 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
 
 void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
 {
-    auto ptr = ((std::map<string, Client*>*)sockmapPtr);
-    if (ptr->find(uid) != ptr->end())
+    auto ptr = (SafeMap<Client*>*)sockmapPtr);
+    if (ptr->CheckoutIfExist(uid))
     {
         ptr->erase(uid);
         Client* clientp = ((Client*)cliptr);
         delete clientp;//释放Client*内存
-        //LOG.Log() << "当前pSockidMap人数为：" << ((std::map<string, Client*>*)sockmapPtr)->size() << endl;
+        //LOG.Log() << "当前pSockidMap人数为：" << ptr->size() << endl;
     }
 }
 
 void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidmapPtr, void* sockfdmapPtr, ClassServer* classServerPtr)
 {
     std::map<string, Client*>* pSockfdMap = (std::map<string, Client*>*)sockfdmapPtr;
-    std::map<string, Client*>* pSockidMap = (std::map<string, Client*>*)sockidmapPtr;
+    SafeMap<Client*>* pSockidMap = (SafeMap<Client*>*)sockidmapPtr;
     Client* pClient = nullptr;
 
     //移除idMap内旧数据
-    if (pSockidMap->find(uid) != pSockidMap->end())
+    if (pSockidMap->CheckoutIfExist(uid))
     {
         //LOG.Log() << "有旧数据残留,删除旧数据：" << uid << endl;
-        pClient = (*pSockidMap)[uid];
+        pClient = pSockidMap->at(uid);
         pSockidMap->erase(uid);
     }
 
