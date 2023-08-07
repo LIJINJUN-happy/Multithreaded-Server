@@ -312,7 +312,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
             result = redisObj->connect(Config::RedisHost, Config::RedisPort);
             if (result)
             {
-                LOG.Log() << "连接Redis数据库成功:" << actorId << std::endl;
+                //LOG.Log() << "连接Redis数据库成功:" << actorId << std::endl;
                 result = Gate::RedisLoadMysqlDataByLogin(actorId, luaVmMgrPtr, redisObj, db);
             }
             else 
@@ -572,7 +572,7 @@ bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_S
             else
             {
                 int row = db->GetResultRow();
-                LOG.Log() << "Mysql Load Lua Json's row = " << row << std::endl;
+                //LOG.Log() << "Mysql Load Lua Json's row = " << row << std::endl;
                 if (row == 1)   //找到了就是证明有数据（update）
                 {
                     dbString = DBCommand::SaveLuaDataWithUpdate;
@@ -596,7 +596,7 @@ bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_S
                 }
             }
 
-            LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
+            //LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
             doCommandResult = db->DoCommand(dbString);
             if (!doCommandResult)
             {
@@ -657,7 +657,7 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
                 }
 
                 int row = db->GetResultRow();
-                LOG.Log() << "Mysql Load Json's row = " << row << std::endl;
+                //LOG.Log() << "Mysql Load Json's row = " << row << std::endl;
                 if (row == 1)   //找到了就是证明有数据（update）
                 {
                     dbString = DBCommand::SaveLuaDataWithUpdate;
@@ -681,7 +681,7 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
                 }
             }
 
-            LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
+           // LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
             doCommandResult = db->DoCommand(dbString);
             if (!doCommandResult)
             {
@@ -704,8 +704,7 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
 void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
 {
     auto ptr = ((std::map<string, Client*>*)sockmapPtr);
-    auto it = ptr->find(uid);
-    if (it != ptr->end())
+    if (ptr->find(uid) != ptr->end())
     {
         ptr->erase(uid);
         Client* clientp = ((Client*)cliptr);

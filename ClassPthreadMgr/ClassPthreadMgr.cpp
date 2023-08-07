@@ -340,7 +340,7 @@ void *CheckTaskList(void *args)
                     //Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr); //屏蔽旧保存逻辑（读取Lua的数据保存到Mysql中）
                     bool resSave = Gate::SaveRedisDataIntoDB(uid, luaVmMgrPtr, dbPtr);
 
-                    Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(),msgPtr->GetsockidMapPrt(),uid);//先移除SocketMap中的Client*
+                    Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(), msgPtr->GetsockidMapPrt(), uid);//先移除SocketMap中的Client*
                     luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
 
                     if (GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid))
@@ -375,7 +375,13 @@ void *CheckTaskList(void *args)
                 if (taskNum <= 0)
                 {
                     clientPtr->UpdateWorkPthreadIndex(-1);  //恢复被操作的线程索引
-                    luaVmMgrPtr->GetLuaVmByIndex(uid)->Gc();//任务数量为0且到了间隔时间的时候GC
+
+                    //任务数量为0且到了间隔时间的时候GC
+                    auto luaBasePte = luaVmMgrPtr->GetLuaVmByIndex(uid);
+                    if (luaBasePte)
+                    {
+                        luaBasePte->Gc();
+                    }
                 }
             }
             else

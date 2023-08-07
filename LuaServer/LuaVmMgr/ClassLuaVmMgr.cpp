@@ -31,8 +31,7 @@ LuaBaseVm* LuaVmMgr::GetLuaVmByIndex(std::string strIndex)
 {
     if (CheckLuaVmIsExistByIndex(strIndex) == true)
     {
-        LuaBaseVm* p = luaVmMap[strIndex];
-        return p;
+        return luaVmMap.at(strIndex);
     }
     return nullptr;
 }
