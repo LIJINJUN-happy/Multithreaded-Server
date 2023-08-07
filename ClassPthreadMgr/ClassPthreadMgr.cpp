@@ -340,8 +340,8 @@ void *CheckTaskList(void *args)
                     //Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr); //屏蔽旧保存逻辑（读取Lua的数据保存到Mysql中）
                     bool resSave = Gate::SaveRedisDataIntoDB(uid, luaVmMgrPtr, dbPtr);
 
-                    Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(), msgPtr->GetsockidMapPrt(), uid);//先移除SocketMap中的Client*
-                    luaVmMgrPtr->DeleteLuaBaseVm(uid);                                               //再移除LuaVmMap中的Vm*
+                    Gate::RemoveFromSockIdMap(msgPtr->GetOperatePtr(), msgPtr->GetsockidMapPrt(), uid); //先移除SocketMap中的Client*
+                    luaVmMgrPtr->DeleteLuaBaseVm(uid);                                                  //再移除LuaVmMap中的Vm*
 
                     if (GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid))
                     {

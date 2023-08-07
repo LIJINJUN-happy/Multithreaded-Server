@@ -84,7 +84,7 @@ void LuaBaseVm::Gc()
 void LuaBaseVm::LoadScritpFunction(lua_State* L)
 {
 	lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);						//Lua发送协议@ args（socket,jsonStr）
-	lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);	//Lua想定时器模块添加Timer事件
+	lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);	//Lua向定时器模块添加Timer事件
 	lua_register(L, "LuaGetDataFromRedis", LuaScript::LuaGetDataFromRedis);				//Lua根据UID从Redis中获取json数据
 	lua_register(L, "LuaSetDataToRedis", LuaScript::LuaSetDataToRedis);					//Lua根据UID设置json数据去Redis中
 }
