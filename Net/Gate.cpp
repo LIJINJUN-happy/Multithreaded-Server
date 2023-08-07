@@ -517,7 +517,7 @@ void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
 {
     Client* clientPtr = ((Client*)cliptr);
     std::string actorUid = clientPtr->GetClientUid();
-    auto ptr = ( SafeMap<Client*>*)sockmapPtr);
+    auto ptr = (SafeMap<Client*>*)sockmapPtr;
     if (ptr->CheckoutIfExist(actorUid) == false)
     {
         ptr->update(actorUid, clientPtr);
@@ -702,7 +702,7 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
 
 void Gate::RemoveFromSockIdMap(void* cliptr, void* sockmapPtr, std::string uid)
 {
-    auto ptr = (SafeMap<Client*>*)sockmapPtr);
+    auto ptr = (SafeMap<Client*>*)sockmapPtr;
     if (ptr->CheckoutIfExist(uid))
     {
         ptr->erase(uid);
