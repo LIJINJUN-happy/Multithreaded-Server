@@ -89,12 +89,12 @@ int ClassMonitor::CheckoutClientAmount()
     extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
     extern ClassServer* SERVER_OBJECT;
     int num = SERVER_OBJECT->GetActorAmount();
-    LOG.Log() << "Online Actor Amount Is ：" << num << std::endl;
+    LOG.Log() << "\nOnline Actor Amount Is ：" << num << std::endl;
     LOG.Log() << "FdMap Amount Is ：" << this->tcpNetObj->GetSockfdMap()->size() << std::endl;
     LOG.Log() << "IdMap Amount Is ：" << this->tcpNetObj->GetSockidMap()->size() << std::endl;
-    LOG.Log() << "LuaVm Amount Is ：" << this->pthreadObj->GetLuaVmMgrPtr()->GetPersonalVmAmount() << std::endl << endl;
-    LOG.Log() << "GLOBAL_UID_SOCKET_MAP Amount Is ：" << GLOBAL_UID_SOCKET_MAP.size() << std::endl << endl;
-    LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP Amount Is ：" << GLOBAL_UID_REDISOBJECT_MAP.size() << std::endl << endl;
+    LOG.Log() << "LuaVm Amount Is ：" << this->pthreadObj->GetLuaVmMgrPtr()->GetPersonalVmAmount() << std::endl;
+    LOG.Log() << "GLOBAL_UID_SOCKET_MAP Amount Is ：" << GLOBAL_UID_SOCKET_MAP.size() << std::endl;
+    LOG.Log() << "GLOBAL_UID_REDISOBJECT_MAP Amount Is ：" << GLOBAL_UID_REDISOBJECT_MAP.size() << std::endl;
     return num;
 }
 
@@ -162,7 +162,7 @@ void ClassMonitor::CheckoutServerCondition(int num, std::array<int,4>& alist, st
             extern ClassServer* SERVER_OBJECT;
             SERVER_OBJECT->SetServerConnectCondition(condition);
             LOG.Log() << "ServerCondition Is ：" << condition << std::endl;
-            LOG.Log() << "服务器状况 ：" << slist[index] << std::endl;
+            LOG.Log() << "服务器状况 ：" << slist[index] << std::endl << std::endl;
             return;
         }
     }
