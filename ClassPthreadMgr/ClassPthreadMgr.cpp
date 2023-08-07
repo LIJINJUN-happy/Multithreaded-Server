@@ -365,8 +365,8 @@ void *CheckTaskList(void *args)
         if ((msgPtr->CheckMsgType("Actor") == true) && uid.size() > 0)
         {
             void* sockmapPtr = msgPtr->GetsockidMapPrt();
-            auto it = ((map<string, Client*>*)sockmapPtr)->find(uid);
-            if (it != ((map<string, Client*>*)sockmapPtr)->end())//防止掉线了,clientPtr指向无效对象，所以需要判断一下
+            auto smPtr = (map<string, Client*>*)sockmapPtr;
+            if (smPtr->find(uid) != smPtr->end())//防止掉线了,clientPtr指向无效对象，所以需要判断一下
             {
                 Client* clientPtr = (Client*)(msgPtr->GetOperatePtr());
                 clientPtr->UpdateClientTaskNum(-1);

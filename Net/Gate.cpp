@@ -298,9 +298,6 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         //检测是否有残旧数据需要删除（有可能之前掉线了, 导致没有正常下线, 以至于数据还残存）
         CheckoutReLogin(actorId, luaVmMgrPtr, sockidmapPtr, sockfdmapPtr, classServerPtr);
 
-        //result = true;
-        //string key = std::to_string(fd);
-        //Client* pClient = (*((std::map<std::string, Client*>*)fdMapPtr))[key]->GetMyself();
         ((Client*)cliptr)->SetClientUid(actorId);                                           //设置Uid（因为验证账号密码成功后，会根据玩家的UID创建Vm虚拟机，以Uid作为VmMap的索引）
         bool resCreateLuaVm = Gate::CreateLuaVmAfterLogin(cliptr, luaVmMgrPtr, db);         //登录成功则尝试创建虚拟机
         

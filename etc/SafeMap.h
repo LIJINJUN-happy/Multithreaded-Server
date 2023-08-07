@@ -20,6 +20,9 @@ private:
 	pthread_mutex_t SAFE_MAP_LOCK;   
 
 public:
+
+	void update(std::string& key, Val val);
+
 	void insert(std::string key,Val val);
 
 	void erase(std::string key);
@@ -37,6 +40,7 @@ public:
 	Val& operator[](std::string& key);
 
 	size_t size();
+
 };
 
 #endif
@@ -113,6 +117,13 @@ template<class Val>
 inline Val& SafeMap<Val>::operator[](std::string& key)
 {
 	return this->safeMap[key];
+}
+
+template<class Val>
+inline void SafeMap<Val>::update(std::string& key, Val val)
+{
+	this->safeMap[key] = val;
+	return;
 }
 
 template<class Val>
