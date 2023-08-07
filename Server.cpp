@@ -112,6 +112,7 @@ int main()
 	{
 		int epoll_fd = tcpNetObj->GetEpollFd();
 		SERVER_OBJECT->SetEpollFd(epoll_fd);
+		SERVER_OBJECT->SetLuaMoudleFilesInfoPtr(luaMoudleFilesInfoPtr);
 	}
 	else
 	{

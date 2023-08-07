@@ -4,12 +4,17 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
+extern ClassServer* SERVER_OBJECT;
 
 /*(ctrl + \ )*/
 void Gate::ServerQuit(int signum)
 {
     //LOG.Log() << "收到信号信息 = " << signum << std::endl;
-    ::DATABASEMGR.SaveOffLineData(); //保存离线数据
+
+    ::DATABASEMGR.SaveOffLineData();            //保存离线数据
+    
+    ::SERVER_OBJECT->SaveAllClientData();       //关服主动保存每个玩家数据进数据库
+    
     exit(0);
 }
 
@@ -527,6 +532,11 @@ void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
 
 bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L, ClassDataBase* db)
 {
+    if (Config::DataSaveType != Config::Data_Save_Type::LOGOUT_SAVE)
+    {
+        return true;
+    }
+
     Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
     std::string dbString = "";
     bool result = true;
@@ -610,6 +620,11 @@ bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_S
 
 bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassDataBase* db)
 {
+    if (Config::DataSaveType != Config::Data_Save_Type::LOGOUT_SAVE)
+    {
+        return true;
+    }
+
     bool result = true;
     Redis* redisObj = nullptr;
     if (::GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid) == false)

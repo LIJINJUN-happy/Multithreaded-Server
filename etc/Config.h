@@ -48,6 +48,13 @@ namespace Config
 	const std::string servName = "LIJINJUN_SER";//服务器名称
 	const int servID = 1997;					//服务器ID
 	const long serOpenTime = 0;					//开服时间
+	const int DataSaveType = 0;					//数据保存方式
+	enum Data_Save_Type
+	{
+		LOGOUT_SAVE = 0,		//下线就保存
+		SERVER_DOWN_SAVE = 1,	//关服的时候才保存进金数据
+		INTERVAL_SAVE = 2		//定时间隔保存
+	};
 
 	//线程配置
 	const int pollingPthreadNum = 4;			//轮询任务列表线程数量

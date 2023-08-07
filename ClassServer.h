@@ -23,6 +23,8 @@ private:
 	int minTaskListIndex;							//所有执行线程所对应的任务链中,存放最少任务List的索引
 	void *noLimitDataListPtr;						//无限制接受socket信息容器指针
 
+	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr;
+
 public:
     ClassServer();
 
@@ -57,7 +59,9 @@ public:
 
 	void SetNoLimitDataListPtr(void * ptr);
 
+	void SaveAllClientData();
 
+	void SetLuaMoudleFilesInfoPtr(Global::LuaMoudleFilesInfo* ptr);
 };
 
 
