@@ -154,7 +154,7 @@ int LuaScript::LuaGetDataFromRedis(lua_State* L)
 	std::string uid = luaL_checkstring(L, 1);
 	std::string moudleName = luaL_checkstring(L, 2);
 	auto it = ::GLOBAL_UID_REDISOBJECT_MAP.find(uid);
-	if ( (it == ::GLOBAL_UID_REDISOBJECT_MAP.end()) || (! it->second))
+	if ( (::GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid) == false) || (! it->second))
 	{
 		lua_pushstring(L, "");
 		return 1;
@@ -193,7 +193,7 @@ int LuaScript::LuaSetDataToRedis(lua_State* L)
 	std::string moudleName = luaL_checkstring(L, 2);
 	std::string moudleData = luaL_checkstring(L, 3);
 	auto it = ::GLOBAL_UID_REDISOBJECT_MAP.find(uid);
-	if ((it == ::GLOBAL_UID_REDISOBJECT_MAP.end()) || (!it->second))
+	if ((::GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid) == false) || (!it->second))
 	{
 		lua_pushboolean(L, false);
 		return 1;

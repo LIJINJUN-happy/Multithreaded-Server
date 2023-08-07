@@ -322,11 +322,11 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
 
             if (result)
             {
-                ::GLOBAL_UID_REDISOBJECT_MAP[actorId] = redisObj;
+                ::GLOBAL_UID_REDISOBJECT_MAP.update(actorId, redisObj);
 
                 Gate::AddIntoSockIdMap(cliptr, sockidmapPtr);
 
-                ::GLOBAL_UID_SOCKET_MAP[actorId] = fd;
+                ::GLOBAL_UID_SOCKET_MAP.update(actorId, fd);
             }
             else
             {
@@ -612,14 +612,14 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
 {
     bool result = true;
     Redis* redisObj = nullptr;
-    if (::GLOBAL_UID_REDISOBJECT_MAP.find(uid) == ::GLOBAL_UID_REDISOBJECT_MAP.end())
+    if (::GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid) == false)
     {
         LOG.Error() << "Can't Find User :" << uid << std::endl;
         return result;
     }
     else
     {
-        redisObj = ::GLOBAL_UID_REDISOBJECT_MAP[uid];
+        redisObj = ::GLOBAL_UID_REDISOBJECT_MAP.at(uid);
     }
 
     Global::LuaMoudleFilesInfo* filesInfoPtr = luaVmMgrPtr->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
@@ -752,7 +752,7 @@ void Gate::CheckoutReLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, void* sockidm
     }
 
     //移除UID-Redis*的键值对容器内的数据
-    if (::GLOBAL_UID_REDISOBJECT_MAP.find(uid) != ::GLOBAL_UID_REDISOBJECT_MAP.end())
+    if (::GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid))
     {
         Redis* redisObj = ::GLOBAL_UID_REDISOBJECT_MAP.at(uid);
         ::GLOBAL_UID_REDISOBJECT_MAP.erase(uid);

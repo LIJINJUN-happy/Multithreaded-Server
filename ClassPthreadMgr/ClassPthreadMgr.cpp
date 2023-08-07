@@ -335,7 +335,7 @@ void *CheckTaskList(void *args)
                 if (removeActorVmWithLogOut == true)
                 {
                     extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
-                    extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+                    extern SafeMap<Redis*> GLOBAL_UID_REDISOBJECT_MAP;
 
                     //Gate::SaveLuaScriptDataIntoDB(uid, luaVmMgrPtr, luaVmMgrPtr->GetLuaVmByIndex(uid)->GetLuaStatePtr(), dbPtr); //屏蔽旧保存逻辑（读取Lua的数据保存到Mysql中）
                     bool resSave = Gate::SaveRedisDataIntoDB(uid, luaVmMgrPtr, dbPtr);
@@ -347,7 +347,7 @@ void *CheckTaskList(void *args)
                     {
                         GLOBAL_UID_SOCKET_MAP.erase(uid);
                     }
-                    if (GLOBAL_UID_REDISOBJECT_MAP.find(uid) != GLOBAL_UID_REDISOBJECT_MAP.end())
+                    if (GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid))
                     {
                         Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
                         GLOBAL_UID_REDISOBJECT_MAP.erase(uid);

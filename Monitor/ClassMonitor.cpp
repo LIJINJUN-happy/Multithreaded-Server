@@ -61,8 +61,8 @@ void ClassMonitor::CheckoutClientIfOnline()
             //LOG.Log() << "移除GLOBAL_UID_SOCKET_MAP内数据后大小为：" << GLOBAL_UID_SOCKET_MAP.size() << std::endl;
 
             //移除Redis容器数据
-            extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
-            if (GLOBAL_UID_REDISOBJECT_MAP.find(uid) != GLOBAL_UID_REDISOBJECT_MAP.end())
+            extern SafeMap<Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+            if (GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid))
             {
                 Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
                 GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
@@ -86,7 +86,7 @@ void ClassMonitor::CheckoutClientIfOnline()
 int ClassMonitor::CheckoutClientAmount()
 {
     extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
-    extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+    extern SafeMap<Redis*> GLOBAL_UID_REDISOBJECT_MAP;
     extern ClassServer* SERVER_OBJECT;
     int num = SERVER_OBJECT->GetActorAmount();
     LOG.Log() << std::endl;

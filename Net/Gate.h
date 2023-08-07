@@ -9,7 +9,7 @@ class ClassTcpNet;
 class DatabaseMgr;
 
 extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
-extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+extern SafeMap<Redis*> GLOBAL_UID_REDISOBJECT_MAP;
 extern DataBaseMgr DATABASEMGR;
 
 namespace Gate

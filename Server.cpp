@@ -4,7 +4,7 @@
 #include "./Monitor/ClassMonitor.h"		 //自定义监视头文件
 
 //全局变量
-SafeMap<int> GLOBAL_UID_SOCKET_MAP = {};	//UID - SOCKET 键值对容器
+SafeMap<int> GLOBAL_UID_SOCKET_MAP = {};				//UID - SOCKET 键值对容器
 ClassServer *SERVER_OBJECT = nullptr;					//服务器类对象指针
 
 //lua虚拟机所注册的定时任务,放在这里,然后定时器从这里取出
@@ -12,7 +12,7 @@ std::list<std::string> TIMER_LIST = {};					//定时器容器
 pthread_mutex_t TIMER_LIST_LOCK;						//定时器容器锁（防止塞入或取出任务同时操作）
 
 //Redis容器（Uid -- RedisObject Address）
-std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP = {};
+SafeMap<Redis*> GLOBAL_UID_REDISOBJECT_MAP = {};
 
 //数据库管理对象
 DataBaseMgr DATABASEMGR;
