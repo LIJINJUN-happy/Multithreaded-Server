@@ -101,11 +101,10 @@ int ClassMonitor::CheckoutClientAmount()
 
 void ClassMonitor::CheckoutLuaVmWithActorMap()
 {
-    /*
     int type = 0;
     std::string uid = "";
     LuaVmMgr* pLuaVmMap = this->pthreadObj->GetLuaVmMgrPtr();
-    for (auto mapIter : (*(pLuaVmMap->GetLuaVmMapPtr())))
+    for (auto mapIter : (pLuaVmMap->GetLuaVmMapPtr()->safeMap))
     {
         //共有LuaVm忽略
         type = mapIter.second->GetLuaVmType();
@@ -123,12 +122,11 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
             extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
             if (GLOBAL_UID_SOCKET_MAP.CheckoutIfExist(uid))
             {
-                std::string fd = std::to_string(GLOBAL_UID_SOCKET_MAP[uid]);
+                std::string fd = std::to_string(GLOBAL_UID_SOCKET_MAP.at(uid));
                 GLOBAL_UID_SOCKET_MAP.erase(uid);
 
-                extern std::map<std::string, Redis*> GLOBAL_UID_REDISOBJECT_MAP;
-                auto itRedis = GLOBAL_UID_REDISOBJECT_MAP.find(uid);
-                if (itRedis != GLOBAL_UID_REDISOBJECT_MAP.end())
+                extern SafeMap<Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+                if (GLOBAL_UID_REDISOBJECT_MAP.CheckoutIfExist(uid))
                 {
                     Redis* redisPtr = GLOBAL_UID_REDISOBJECT_MAP.at(uid);
                     GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
@@ -147,7 +145,7 @@ void ClassMonitor::CheckoutLuaVmWithActorMap()
             }
         }
         uid.clear();
-    }*/
+    }
 }
 
 void ClassMonitor::CheckoutServerCondition(int num, std::array<int,4>& alist, std::array<std::string,4>& slist)
