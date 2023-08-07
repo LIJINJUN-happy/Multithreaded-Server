@@ -13,13 +13,18 @@ public:
 	
 	~SafeMap();
 
-private:
+public:
+
 	std::map<std::string, Val> safeMap;
+
+private:
 
 	//锁，多线程下，因为C++map是非线程安全的，所以当进行写的时候我们需要加上锁，在同一时间仅限一个线程进行删除和插入，查询不需要枷锁
 	pthread_mutex_t SAFE_MAP_LOCK;   
 
 public:
+
+	void clear();
 
 	void update(std::string& key, Val val);
 
@@ -117,6 +122,13 @@ template<class Val>
 inline Val& SafeMap<Val>::operator[](std::string& key)
 {
 	return this->safeMap[key];
+}
+
+template<class Val>
+inline void SafeMap<Val>::clear()
+{
+	this->safeMap->clear();
+	return;
 }
 
 template<class Val>

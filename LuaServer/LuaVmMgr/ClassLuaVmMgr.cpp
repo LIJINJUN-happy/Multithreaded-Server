@@ -24,20 +24,14 @@ LuaVmMgr::~LuaVmMgr()
 
 bool LuaVmMgr::CheckLuaVmIsExistByIndex(std::string strIndex)
 {
-    if (this->luaVmMap.find(strIndex) != this->luaVmMap.end())
-    {
-        return true;
-    }
-    return false;
+    return luaVmMap.CheckoutIfExist(strIndex);
 }
 
 LuaBaseVm* LuaVmMgr::GetLuaVmByIndex(std::string strIndex)
 {
-    std::map<std::string, LuaBaseVm*>::iterator ptr;   
-    ptr = luaVmMap.find(strIndex);
-    if (ptr != luaVmMap.end())
+    if (CheckLuaVmIsExistByIndex(strIndex) == true)
     {
-        LuaBaseVm* p = this->luaVmMap[strIndex];
+        LuaBaseVm* p = luaVmMap[strIndex];
         return p;
     }
     return nullptr;
@@ -50,18 +44,16 @@ LuaBaseVm* LuaVmMgr::GetLuaVmByIndex(long long uid)
     return p;
 }
 
-std::map<std::string, LuaBaseVm*>* LuaVmMgr::GetLuaVmMapPtr()
+SafeMap<LuaBaseVm*>* LuaVmMgr::GetLuaVmMapPtr()
 {
-    return this->luaVmMapPtr;
+    return luaVmMapPtr;
 }
 
 bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
 {
-    std::map<std::string, LuaBaseVm*>::iterator ptr;
-    ptr = luaVmMap.find(strIndex);
-    if (ptr == luaVmMap.end())
+    if (luaVmMap.CheckoutIfExist(strIndex) == false)
     {
-        this->luaVmMap[strIndex] = vmPtr;
+        this->luaVmMap.insert(strIndex, vmPtr);
         //LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
     }
@@ -71,18 +63,14 @@ bool LuaVmMgr::AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr)
 
 bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
 {
-    std::map<std::string, LuaBaseVm*>::iterator ptr;
-    ptr = luaVmMap.find(strIndex);
-    if (ptr != luaVmMap.end())
+   
+    if (luaVmMap.CheckoutIfExist(strIndex))
     {
-        //在LuaMap中删除前,先找到vm对象将其析构
+        auto ptr = luaVmMap.find(strIndex);
         LuaBaseVm* vmPtr = ptr->second;
-        if (this->luaVmMap.find(strIndex) != this->luaVmMap.end())
-        {
-            this->luaVmMap.erase(strIndex);
-            delete vmPtr;
-            vmPtr = nullptr;
-        }
+        this->luaVmMap.erase(strIndex);
+        delete vmPtr;
+        vmPtr = nullptr;
         //LOG.Log() << "LuaVmMap Delete Success " << std::endl;
         //LOG.Log() << "LuaVmMap.size() = " << luaVmMap.size() << std::endl;
         return true;
@@ -145,7 +133,7 @@ std::string LuaVmMgr::GetPathByStringFromFilesInfo(std::string str)
 int LuaVmMgr::GetPersonalVmAmount()
 {
     int num = 0;
-    for (auto x : *(this->luaVmMapPtr))
+    for (auto x : (luaVmMapPtr->safeMap))
     {
         if (x.second->GetLuaVmType() == Global::PERSONAL)
         {

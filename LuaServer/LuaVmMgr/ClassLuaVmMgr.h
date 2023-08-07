@@ -8,8 +8,8 @@
 class LuaVmMgr 
 {
 private:
-	std::map<std::string, LuaBaseVm*> luaVmMap;
-	std::map<std::string, LuaBaseVm*>* luaVmMapPtr;
+	SafeMap<LuaBaseVm*> luaVmMap;
+	SafeMap<LuaBaseVm*>* luaVmMapPtr;
 
 	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr;
 
@@ -31,7 +31,7 @@ public:
 
 	int GetLuaVmTypeByIndex(long long uid);
 
-	std::map<std::string, LuaBaseVm*>* GetLuaVmMapPtr();
+	SafeMap<LuaBaseVm*>* GetLuaVmMapPtr();
 
 	bool AddLuaBaseVm(std::string strIndex, LuaBaseVm* vmPtr);
 
