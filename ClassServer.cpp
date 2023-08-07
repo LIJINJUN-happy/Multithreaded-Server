@@ -14,6 +14,7 @@ ClassServer::ClassServer()
 	this->minTaskListIndex = 1;
 	this->noLimitDataListPtr = nullptr;
 	this->luaMoudleFilesInfoPtr = nullptr;
+	this->isServerDowning = false;
 }
 
 ClassServer::~ClassServer()
@@ -35,6 +36,7 @@ ClassServer::ClassServer(int epoll_fd)
 	this->minTaskListIndex = 1;
 	this->noLimitDataListPtr = nullptr;
 	this->luaMoudleFilesInfoPtr = nullptr;
+	this->isServerDowning = false;
 }
 
 int ClassServer::GetServerStatus()
@@ -122,7 +124,23 @@ void ClassServer::SaveAllClientData()
 	
 }
 
+void ClassServer::SaveAllPublicData()
+{
+
+}
+
 void ClassServer::SetLuaMoudleFilesInfoPtr(Global::LuaMoudleFilesInfo* ptr)
 {
 	this->luaMoudleFilesInfoPtr = ptr;
+}
+
+void ClassServer::SetIsServerDowning(bool isStop)
+{
+	this->isServerDowning = isStop;
+	return;
+}
+
+bool* ClassServer::GetIsServerDowning()
+{
+	return &isServerDowning;
 }

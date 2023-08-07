@@ -104,20 +104,22 @@ void ClassTcpNet::Init()
 //开始进入epoll循环监视
 void ClassTcpNet::StartEpoll()
 {
-    extern ClassServer* SERVER_OBJECT;
-    char dataBuff[Config::maxReadDataSize] = "";
     list<MsgPackage*> noLimitDataList;
     list<MsgPackage*> limitDataList;
+    char dataBuff[Config::maxReadDataSize] = "";
+
+    extern ClassServer* SERVER_OBJECT;
     SERVER_OBJECT->SetNoLimitDataListPtr((void*)(&noLimitDataList));
+    bool* isServerDowning = SERVER_OBJECT->GetIsServerDowning();//是否收到关服指令
+
     const int eventsSize = Config::maxEpollEvent;
     struct epoll_event eventServer;
     eventServer.data.fd = this->serverSock;
     eventServer.events = EPOLLIN | EPOLLET;
-    //开始监听服务端的sockfd监听套接字
-    epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);
+    epoll_ctl(this->epollfd, EPOLL_CTL_ADD, this->serverSock, &eventServer);//监听服务端的sockfd监听套接字
 
     //利用epoll_wait搭配while循环来获取监听结果
-    while (true)
+    while ( !(*isServerDowning) )
     {
         int minTaskListIndex = pthreadObj->CheckMinTaskList();
         SERVER_OBJECT->SetMinTaskListIndex(minTaskListIndex);

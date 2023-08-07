@@ -11,9 +11,13 @@ void Gate::ServerQuit(int signum)
 {
     //LOG.Log() << "收到信号信息 = " << signum << std::endl;
 
+    ::SERVER_OBJECT->SetIsServerDowning(true);  //停止接受客户端连接以及任何协议内容
+
     ::DATABASEMGR.SaveOffLineData();            //保存离线数据
     
-    ::SERVER_OBJECT->SaveAllClientData();       //关服主动保存每个玩家数据进数据库
+    ::SERVER_OBJECT->SaveAllClientData();       //关服主动保存每个客户端数据进数据库
+
+    ::SERVER_OBJECT->SaveAllPublicData();       //关服保存每个公共模块数据进数据库
     
     exit(0);
 }

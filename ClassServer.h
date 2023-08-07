@@ -24,6 +24,7 @@ private:
 	void *noLimitDataListPtr;						//无限制接受socket信息容器指针
 
 	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr;
+	bool isServerDowning;							//是否正在关闭服务器（停止登录以及接受协议）
 
 public:
     ClassServer();
@@ -61,7 +62,13 @@ public:
 
 	void SaveAllClientData();
 
+	void SaveAllPublicData();
+
 	void SetLuaMoudleFilesInfoPtr(Global::LuaMoudleFilesInfo* ptr);
+
+	void SetIsServerDowning(bool isStop);
+
+	bool* GetIsServerDowning();
 };
 
 
