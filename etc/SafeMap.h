@@ -127,7 +127,7 @@ inline Val& SafeMap<Val>::operator[](std::string& key)
 template<class Val>
 inline void SafeMap<Val>::clear()
 {
-	this->safeMap->clear();
+	this->safeMap.clear();
 	return;
 }
 
