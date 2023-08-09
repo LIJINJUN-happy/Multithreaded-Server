@@ -34,10 +34,10 @@ bool Redis::checkoutData(std::string key)
 		freeReplyObject(this->_reply);
 		return false;
 	}
-	else if(this->_reply->type == REDIS_REPLY_STRING)
+	/*else if (this->_reply->type == REDIS_REPLY_STRING)
 	{
-		//LOG.Log() << "this->_reply->type == REDIS_REPLY_STRING " << std::endl;
-	}
+		LOG.Log() << "this->_reply->type == REDIS_REPLY_STRING " << std::endl;
+	}*/
 	freeReplyObject(this->_reply);
 	return true;
 }

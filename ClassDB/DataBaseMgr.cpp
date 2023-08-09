@@ -140,7 +140,7 @@ bool DataBaseMgr::DoLoadOffLineData()
 
 void DataBaseMgr::SaveOffLineData()
 {
-	LOG.Log() << "\033[36mBegin To SaveOffLineData................\033[0m" << std::endl;
+	LOG.Log() << "\033[36mBegin To Save OffLine's Data................\033[0m" << std::endl;
 	this->redisObj = new Redis();
 	if (redisObj->connect(Config::RedisHost, Config::RedisPort) == false)
 	{
@@ -227,7 +227,7 @@ void DataBaseMgr::SaveOffLineData()
 				}
 			}
 
-			LOG.Log() << "\033[36mSaveOffLineData Finished\033[0m" << std::endl << std::endl;
+			LOG.Log() << "\033[36mSave OffLine's Data Finished\033[0m" << std::endl << std::endl;
 		}
 
 		delete (this->doLoadOffLineData);
@@ -256,12 +256,12 @@ void DataBaseMgr::SaveLoginOffLineMsg()
 
 void DataBaseMgr::SaveAllClientData()
 {
-	LOG.Log() << "\033[36mBegin To SaveAllClientData................\033[0m" << std::endl;
+	LOG.Log() << "\033[36mBegin To Save All Client's Data................\033[0m" << std::endl;
 
 	doSaveData = new ClassDataBase();
 	if (!doSaveData)
 	{
-		LOG.Error() << "SaveAllClientData Command Worng With doSaveData new fail" << std::endl;
+		LOG.Error() << "Save All Client Data Command Worng With doSaveData new fail" << std::endl;
 		return;
 	}
 
@@ -354,7 +354,7 @@ void DataBaseMgr::SaveAllClientData()
 		ptr++;
 	}
 
-	LOG.Log() << "\033[36mSaveAllClientData Finished\033[0m" << std::endl << std::endl;
+	LOG.Log() << "\033[36mSave All Client's Data Finished\033[0m" << std::endl << std::endl;
 	return ;
 }
 
