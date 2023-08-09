@@ -257,6 +257,9 @@ void DataBaseMgr::SaveLoginOffLineMsg()
 
 void DataBaseMgr::SaveAllClientData()
 {
+	LOG.Log() << std::endl;
+	LOG.Log() << "\033[36mBegin To SaveAllClientData................\033[0m" << std::endl;
+
 	doSaveData = new ClassDataBase();
 	if (!doSaveData)
 	{
@@ -352,6 +355,8 @@ void DataBaseMgr::SaveAllClientData()
 
 		ptr++;
 	}
+
+	LOG.Log() << "\033[36mSaveAllClientData Finished\033[0m" << std::endl << std::endl;
 	return ;
 }
 
