@@ -47,8 +47,9 @@ namespace Config
 	//服务器信息
 	const std::string servName = "LIJINJUN_SER";//服务器名称
 	const int servID = 1997;					//服务器ID
+	const bool clearCacheWithServerDown = false;//关服时候保存完数据是否顺便清空Redis缓存
 	const long serOpenTime = 0;					//开服时间
-	const int DataSaveType = 0;					//数据保存方式
+	const int DataSaveType = 1;					//数据保存方式
 	enum Data_Save_Type
 	{
 		LOGOUT_SAVE = 0,		//下线就保存
