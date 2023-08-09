@@ -30,14 +30,9 @@ bool Redis::checkoutData(std::string key)
 	//LOG.Log() << "Redis CheckoutData : " << key << "Type = " << _reply->type << std::endl;
 	if (this->_reply->type == REDIS_REPLY_NIL)
 	{
-		//LOG.Log() << "this->_reply->type == REDIS_REPLY_NIL " << std::endl;
 		freeReplyObject(this->_reply);
 		return false;
 	}
-	/*else if (this->_reply->type == REDIS_REPLY_STRING)
-	{
-		LOG.Log() << "this->_reply->type == REDIS_REPLY_STRING " << std::endl;
-	}*/
 	freeReplyObject(this->_reply);
 	return true;
 }
