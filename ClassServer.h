@@ -4,8 +4,6 @@
 
 #include "OffLineSystem/OffLineSystem.h"
 
-class Global::LuaMoudleFilesInfo;
-
 class ClassServer
 {
 private:
