@@ -275,7 +275,7 @@ void DataBaseMgr::SaveAllClientData()
 	{
 		uid = ptr->first;
 		redisSaveDataObj = ptr->second;
-		redisSaveDataObj = ::GLOBAL_UID_REDISOBJECT_MAP.at(uid);
+		//redisSaveDataObj = ::GLOBAL_UID_REDISOBJECT_MAP.at(uid);
 
 		for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
 		{
