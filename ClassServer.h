@@ -4,6 +4,8 @@
 
 #include "OffLineSystem/OffLineSystem.h"
 
+class Global::LuaMoudleFilesInfo;
+
 class ClassServer
 {
 private:
@@ -60,11 +62,9 @@ public:
 
 	void SetNoLimitDataListPtr(void * ptr);
 
-	void SaveAllClientData();
-
-	void SaveAllPublicData();
-
 	void SetLuaMoudleFilesInfoPtr(Global::LuaMoudleFilesInfo* ptr);
+
+	Global::LuaMoudleFilesInfo* GetLuaMoudleFilesInfoPtr();
 
 	void SetIsServerDowning(bool isStop);
 

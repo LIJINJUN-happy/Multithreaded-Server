@@ -54,6 +54,21 @@ public:
 	//保存登录待处理数据的数据
 	void SaveLoginOffLineMsg();
 
+
+/**********************************************************************************************************/
+
+public:
+
+	//保存所有用户数据(Client's Data redis->mysql)
+	void SaveAllClientData();
+
+	//保存所有公共模块的数据(Public Moudle's Data redis->mysql)
+	void SaveAllPublicData();
+
+private:
+	ClassDataBase* doSaveData;
+	Redis* redisSaveDataObj;
+
 };
 
 #endif

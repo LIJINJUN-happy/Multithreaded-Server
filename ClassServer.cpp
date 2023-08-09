@@ -119,24 +119,19 @@ void ClassServer::SetMinTaskListIndex(int index)
 	return;
 }
 
-void ClassServer::SaveAllClientData()
-{
-	
-}
-
-void ClassServer::SaveAllPublicData()
-{
-
-}
-
 void ClassServer::SetLuaMoudleFilesInfoPtr(Global::LuaMoudleFilesInfo* ptr)
 {
 	this->luaMoudleFilesInfoPtr = ptr;
 }
 
+Global::LuaMoudleFilesInfo* ClassServer::GetLuaMoudleFilesInfoPtr()
+{
+	return luaMoudleFilesInfoPtr;
+}
+
 void ClassServer::SetIsServerDowning(bool isStop)
 {
-	this->isServerDowning = isStop;
+	isServerDowning = isStop;
 	return;
 }
 

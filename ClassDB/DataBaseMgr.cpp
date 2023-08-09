@@ -5,6 +5,10 @@ using std::endl;
 using std::string;
 using std::array;
 
+extern ClassServer* SERVER_OBJECT;
+extern SafeMap<Redis*> GLOBAL_UID_REDISOBJECT_MAP;
+extern SafeMap<int> GLOBAL_UID_SOCKET_MAP;
+
 DataBaseMgr::DataBaseMgr()
 {
 	this->count = Config::pollingPthreadNum;
@@ -13,6 +17,9 @@ DataBaseMgr::DataBaseMgr()
 
 	this->doLoadLoginOffLineMsg = nullptr;
 	this->doLoadOffLineData = nullptr;
+
+	this->doSaveData = nullptr;
+	this->redisSaveDataObj = nullptr;
 }
 
 DataBaseMgr::~DataBaseMgr()
@@ -133,6 +140,7 @@ bool DataBaseMgr::DoLoadOffLineData()
 
 void DataBaseMgr::SaveOffLineData()
 {
+	LOG.Log() << std::endl;
 	LOG.Log() << "\033[36mBegin To SaveOffLineData................\033[0m" << std::endl;
 	this->redisObj = new Redis();
 	if (redisObj->connect(Config::RedisHost, Config::RedisPort) == false)
@@ -245,5 +253,110 @@ bool DataBaseMgr::DoLoadLoginOffLineMsg()
 
 void DataBaseMgr::SaveLoginOffLineMsg()
 {
+}
+
+void DataBaseMgr::SaveAllClientData()
+{
+	doSaveData = new ClassDataBase();
+	if (!doSaveData)
+	{
+		LOG.Error() << "SaveAllClientData Command Worng With doSaveData new fail" << std::endl;
+		return;
+	}
+
+	std::string uid = "";
+	std::string dbString = "";
+	redisSaveDataObj = nullptr;
+	Global::LuaMoudleFilesInfo* filesInfoPtr = SERVER_OBJECT->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
+
+	std::map<std::string, Redis*>::iterator ptr = GLOBAL_UID_REDISOBJECT_MAP.begin();
+	for (ptr; ptr != GLOBAL_UID_REDISOBJECT_MAP.end();)
+	{
+		uid = ptr->first;
+		redisSaveDataObj = ptr->second;
+		redisSaveDataObj = ::GLOBAL_UID_REDISOBJECT_MAP.at(uid);
+
+		for (auto it = filesInfoPtr->GetMoudleInfo()->begin(); it != filesInfoPtr->GetMoudleInfo()->end(); it++)
+		{
+			if (it->second.first == Global::PERSONAL)
+			{
+				std::string moudle = it->first;
+				for (int index = 0; index < moudle.size(); index++)
+				{
+					moudle[index] = tolower(moudle[index]);
+				}
+
+				//判断数据库是否存在数据（结果决定操作是update还是Insert）
+				dbString = DBCommand::LoadLuaDataFromMysql;
+				dbString.insert(dbString.find('.'), moudle);
+				dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
+				dbString.insert(dbString.find_last_of('.'), moudle);
+				dbString.insert(dbString.find_last_of('=') + 2, uid);
+				bool doCommandResult = doSaveData->DoCommand(dbString);
+				if (doCommandResult == false)
+				{
+					LOG.Error() << "DataBase Command Worng With SaveAllClientData :" << moudle << std::endl;
+					continue;
+				}
+				else
+				{
+					std::string data = redisSaveDataObj->get(uid + "_" + moudle);
+					if (data.size() == 0)
+					{
+						continue;
+					}
+
+					int row = doSaveData->GetResultRow();
+					//LOG.Log() << "Mysql Load Json's row = " << row << std::endl;
+					if (row == 1)   //找到了就是证明有数据（update）
+					{
+						dbString = DBCommand::SaveLuaDataWithUpdate;
+						dbString.insert(dbString.find('.') + 1, moudle);
+						dbString.insert(dbString.find('.', dbString.find('.') + 1), moudle);
+						dbString.insert(dbString.find('=') + 2, data);
+						dbString.insert(dbString.find_last_of('.'), moudle);
+						dbString.insert(dbString.find_last_of('=') + 2, uid);
+					}
+					else if (row == 0)   //找不到就是证明暂无数据（insert）
+					{
+						dbString = DBCommand::SaveLuaDataWithInsert;
+						dbString.insert(dbString.find('.') + 1, moudle);
+						dbString.insert(dbString.find('\'') + 1, uid);
+						dbString.insert(dbString.find_last_of('\''), data);
+					}
+					else
+					{
+						continue;
+					}
+				}
+
+				// LOG.Log() << "Mysql Load Lua Json's dbString = " << dbString << std::endl;
+				doCommandResult = doSaveData->DoCommand(dbString);
+				if (!doCommandResult)
+				{
+					LOG.Error() << "SaveAllClientData Wrong With  :" << dbString << std::endl;
+					continue;
+				}
+				else
+				{
+					//删除Redis中的相关缓存（节省空间）
+					redisSaveDataObj->release(uid, moudle);
+				}
+
+			}
+		}
+
+		GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
+		delete redisSaveDataObj;
+		redisSaveDataObj = nullptr;
+
+		ptr++;
+	}
+	return ;
+}
+
+void DataBaseMgr::SaveAllPublicData()
+{
+
 }
 
