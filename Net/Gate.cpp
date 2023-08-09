@@ -15,9 +15,9 @@ void Gate::ServerQuit(int signum)
 
     ::DATABASEMGR.SaveOffLineData();            //保存离线数据
     
-    ::DATABASEMGR->SaveAllClientData();         //关服主动保存每个客户端数据进数据库
+    ::DATABASEMGR.SaveAllClientData();         //关服主动保存每个客户端数据进数据库
 
-    ::DATABASEMGR->SaveAllPublicData();         //关服保存每个公共模块数据进数据库
+    ::DATABASEMGR.SaveAllPublicData();         //关服保存每个公共模块数据进数据库
     
     exit(0);
 }
