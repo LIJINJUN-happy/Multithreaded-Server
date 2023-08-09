@@ -26,11 +26,15 @@ bool Redis::connect(std::string host, int port)
 
 bool Redis::checkoutData(std::string key)
 {
+	//LOG.Log() << "Redis checkoutData : " << key << std::endl;
 	this->_reply = (redisReply*)redisCommand(this->_connect, "GET %s", key.c_str());
 	if (this->_reply->type == REDIS_REPLY_NIL)
 	{
+		//LOG.Log() << "this->_reply->type == REDIS_REPLY_NIL " << std::endl;
+		freeReplyObject(this->_reply);
 		return false;
 	}
+	freeReplyObject(this->_reply);
 	return true;
 }
 
