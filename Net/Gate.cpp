@@ -484,6 +484,13 @@ bool Gate::RedisLoadMysqlDataByLogin(std::string uid, LuaVmMgr* luaVmMgrPtr, Red
                 moudle[index] = tolower(moudle[index]);
             }
 
+            //判断是否已经在缓存有数据了，有则直接跳过不需要要再从数据库中取出了
+            if (redisObj->checkoutData(uid + "_" + moudle) == true)
+            {
+                //LOG.Log() << "Mysql Load Check Data In Redis = " << uid + "_" + moudle << std::endl;
+                continue;
+            }
+
             dbString = DBCommand::LoadLuaDataFromMysql;
             dbString.insert(dbString.find('.'), moudle);
             dbString.insert(dbString.find('.', dbString.find('.') + 1) + 1, moudle);
