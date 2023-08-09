@@ -716,8 +716,11 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
             }
             else
             {
-                //删除Redis中的相关缓存（节省空间）
-                redisObj->release(uid, moudle);
+                //删除Redis中的相关缓存（节省空间）,模式为下线保存数据则保存完毕后清理缓存
+                if (Config::DataSaveType == Config::Data_Save_Type::LOGOUT_SAVE)
+                {
+                    redisObj->release(uid, moudle);
+                }
             }
             
         }
