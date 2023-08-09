@@ -53,7 +53,7 @@ namespace Config
 	enum Data_Save_Type
 	{
 		LOGOUT_SAVE = 0,		//下线就保存
-		SERVER_DOWN_SAVE = 1,	//关服的时候才保存进金数据
+		SERVER_DOWN_SAVE = 1,	//关服的时候才保存进数据库
 		INTERVAL_SAVE = 2		//定时间隔保存
 	};
 
@@ -94,9 +94,10 @@ namespace Config
 	//LuaGC 间隔
 	const int LuaVMGcIntervalTime = 250;		//LuaVm GC 间隔
 
-	const std::string RedisHost = "127.0.0.1";
-	const int RedisPort = 6379;
-
+	//Redis
+	const std::string RedisHost = "127.0.0.1";	//主机地址
+	const int RedisPort = 6379;					//端口
+	const long long intervalSaveDataTime = 0;	//间隔保存的时间间隔大小（DataSaveType == Data_Save_Type：：INTERVAL_SAVE 的时候生效）
 }
 
 #endif
