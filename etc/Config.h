@@ -97,7 +97,7 @@ namespace Config
 	//Redis
 	const std::string redisHost = "127.0.0.1";	//主机地址
 	const int redisPort = 6379;					//端口
-	const long long intervalSaveDataTime = 0;	//间隔保存的时间间隔大小（dataSaveType == data_Save_Type：：INTERVAL_SAVE 的时候生效）
+	const long long intervalSaveDataTime = 3600;//间隔保存的时间间隔大小,单位：秒（dataSaveType == data_Save_Type：：INTERVAL_SAVE 的时候生效）
 }
 
 #endif
