@@ -66,24 +66,24 @@ inline SafeMap<Val>::~SafeMap()
 template<class Val>
 inline void SafeMap<Val>::insert(std::string key, Val val)
 {
-	if (CheckoutIfExist(key) == false)
-	{
+	//if (CheckoutIfExist(key) == false)
+	//{
 		pthread_mutex_lock(&SAFE_MAP_LOCK);		//上锁
 		this->safeMap[key] = val;
 		pthread_mutex_unlock(&SAFE_MAP_LOCK);	//解锁
-	}
+	//}
 	return;
 }
 
 template<class Val>
 inline void SafeMap<Val>::erase(std::string key)
 {
-	if (CheckoutIfExist(key))
-	{
+	//if (CheckoutIfExist(key))
+	//{
 		pthread_mutex_lock(&SAFE_MAP_LOCK);		//上锁
 		this->safeMap.erase(key);
 		pthread_mutex_unlock(&SAFE_MAP_LOCK);	//解锁
-	}
+	//}
 	return;
 }
 
