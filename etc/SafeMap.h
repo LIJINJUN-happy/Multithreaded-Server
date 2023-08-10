@@ -4,7 +4,6 @@
 #include "../Logger/ClassLogger/ClassLogger.h"
 
 using std::iterator;
-ClassLogger LOG;
 
 template <class Val>
 class SafeMap
@@ -75,11 +74,11 @@ inline void SafeMap<Val>::insert(std::string key, Val val)
 	}
 	catch (std::exception& err)
 	{
-		LOG.Log() << err.what() << std::endl;
+		std::cout << err.what() << std::endl;
 	}
 	catch (...)
 	{
-		LOG.Log() << "Some Err With Safe Insert Key : " << key << ", val :"<< &val << std::endl;
+		std::cout << "Some Err With Safe Insert Key : " << key << ", val :"<< &val << std::endl;
 	}
 
 	return;
@@ -96,11 +95,11 @@ inline void SafeMap<Val>::erase(std::string key)
 	}
 	catch (std::exception& err)
 	{
-		LOG.Log() << err.what() << std::endl;
+		std::cout << err.what() << std::endl;
 	}
 	catch (...)
 	{
-		LOG.Log() << "Some Err With Safe Erase Key : "<< key << std::endl;
+		std::cout << "Some Err With Safe Erase Key : "<< key << std::endl;
 	}
 	return;
 }
