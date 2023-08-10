@@ -1,9 +1,10 @@
 #ifndef _SAFEMAP_H_
 #define _SAFEMAP_H_
 
-#include "./Config.h"
+#include "../Logger/ClassLogger/ClassLogger.h"
 
 using std::iterator;
+ClassLogger LOG;
 
 template <class Val>
 class SafeMap
