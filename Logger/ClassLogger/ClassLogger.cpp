@@ -53,7 +53,7 @@ std::ofstream& ClassLogger::Error()
 
 void ClassLogger::Init()
 {
-	std::string path = Config::LoadCodePathString;
+	std::string path = Config::loadCodePathString;
 	path += "Logger/LogInfo/main_Erro.txt";
 	this->ErrWriter.open(path.c_str(), std::fstream::app | std::fstream::out);
 	if (!this->ErrWriter.is_open())
@@ -63,7 +63,7 @@ void ClassLogger::Init()
 	}
 	path.clear();
 
-	path = Config::LoadCodePathString;
+	path = Config::loadCodePathString;
 	path += "Logger/LogInfo/main_Logger.txt";
 	this->logWriter.open(path.c_str(),std::fstream::app|std::fstream::out);
 	if (!logWriter.is_open())

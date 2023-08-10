@@ -49,8 +49,8 @@ namespace Config
 	const int servID = 1997;					//服务器ID
 	const bool clearCacheWithServerDown = false;//关服时候保存完数据是否顺便清空Redis缓存
 	const long serOpenTime = 0;					//开服时间
-	const int DataSaveType = 1;					//数据保存方式
-	enum Data_Save_Type
+	const int dataSaveType = 1;					//数据保存方式
+	enum data_Save_Type
 	{
 		LOGOUT_SAVE = 0,		//下线就保存
 		SERVER_DOWN_SAVE = 1,	//关服的时候才保存进数据库
@@ -78,26 +78,26 @@ namespace Config
 	// const char *unix_socket = NULL;			//一般为NULL
 
 	//监视检测配置
-	const int HeartbeatIntervalTime = 100;		//允许距离上次心跳最大时间
-	const int CheckoutIntervalTime = 30;		//监视线程多久检测一次心跳以及线程状态
+	const int heartbeatIntervalTime = 100;		//允许距离上次心跳最大时间
+	const int checkoutIntervalTime = 30;		//监视线程多久检测一次心跳以及线程状态
 
 	//定时器线程配置
 	const int timerIntervalTime = 5;			//计时器精度秒数
 
 	//项目代码目录（部署时必须修改对应正确项目路径）
-	const std::string LoadCodePathString = "/home/lijinjun/公共/debug_env/";
+	const std::string loadCodePathString = "/home/lijinjun/公共/debug_env/";
 
 	//验证码信息
 	const int registerCodeSize = 6;				//验证码长度
 	const long registerCodeOutTimeInterval = 60;//验证码有效秒数
 
 	//LuaGC 间隔
-	const int LuaVMGcIntervalTime = 250;		//LuaVm GC 间隔
+	const int luaVMGcIntervalTime = 250;		//LuaVm GC 间隔
 
 	//Redis
-	const std::string RedisHost = "127.0.0.1";	//主机地址
-	const int RedisPort = 6379;					//端口
-	const long long intervalSaveDataTime = 0;	//间隔保存的时间间隔大小（DataSaveType == Data_Save_Type：：INTERVAL_SAVE 的时候生效）
+	const std::string redisHost = "127.0.0.1";	//主机地址
+	const int redisPort = 6379;					//端口
+	const long long intervalSaveDataTime = 0;	//间隔保存的时间间隔大小（dataSaveType == data_Save_Type：：INTERVAL_SAVE 的时候生效）
 }
 
 #endif

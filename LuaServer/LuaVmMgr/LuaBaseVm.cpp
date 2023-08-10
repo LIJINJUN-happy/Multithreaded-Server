@@ -60,7 +60,7 @@ long LuaBaseVm::CheckGcTimeArrive()
 {
 	long nowTime = Global::GetNowTime();
 	long lastTime = this->GetLuaVMLastGcTime();
-	long needFlushTime = lastTime + Config::LuaVMGcIntervalTime;
+	long needFlushTime = lastTime + Config::luaVMGcIntervalTime;
 	if (nowTime >= needFlushTime)
 		return nowTime;
 	return 0;

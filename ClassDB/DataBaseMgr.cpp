@@ -80,7 +80,7 @@ int DataBaseMgr::GetDBCount()
 bool DataBaseMgr::DoLoadOffLineData()
 {
 	this->redisObj = new Redis();
-	if (redisObj->connect(Config::RedisHost, Config::RedisPort) == false)
+	if (redisObj->connect(Config::redisHost, Config::redisPort) == false)
 	{
 		LOG.Log() << "Wrong With Redis DoLoadOffLineData" << std::endl;
 		
@@ -142,7 +142,7 @@ void DataBaseMgr::SaveOffLineData()
 {
 	LOG.Log() << "\033[36mBegin To Save OffLine's Data................\033[0m" << std::endl;
 	this->redisObj = new Redis();
-	if (redisObj->connect(Config::RedisHost, Config::RedisPort) == false)
+	if (redisObj->connect(Config::redisHost, Config::redisPort) == false)
 	{
 		LOG.Log() << "Wrong With Redis SaveOffLineData" << std::endl;
 
@@ -271,7 +271,7 @@ void DataBaseMgr::SaveAllClientData()
 	Global::LuaMoudleFilesInfo* filesInfoPtr = SERVER_OBJECT->GetLuaMoudleFilesInfoPtr(); //根据文件加载情分类况加载DB数据
 
 	std::map<std::string, Redis*>::iterator ptr = GLOBAL_UID_REDISOBJECT_MAP.begin();
-	for (ptr; ptr != GLOBAL_UID_REDISOBJECT_MAP.end();)
+	for (ptr; ptr != GLOBAL_UID_REDISOBJECT_MAP.end(); ptr++)
 	{
 		uid = ptr->first;
 		redisSaveDataObj = ptr->second;
@@ -350,8 +350,6 @@ void DataBaseMgr::SaveAllClientData()
 		GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
 		delete redisSaveDataObj;
 		redisSaveDataObj = nullptr;
-
-		ptr++;
 	}
 
 	LOG.Log() << "\033[36mSave All Client's Data Finished\033[0m" << std::endl << std::endl;

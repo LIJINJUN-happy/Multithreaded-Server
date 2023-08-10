@@ -48,7 +48,7 @@ void Global::LuaMoudleFilesInfo::LoadLuaMoudleFiles()
     this->moudleInfo.clear();
     using std::fstream;
     std::fstream loader;
-    std::string loadPath = Config::LoadCodePathString + "LuaServer/MoudleFilesLoad.txt";
+    std::string loadPath = Config::loadCodePathString + "LuaServer/MoudleFilesLoad.txt";
     loader.open(loadPath.c_str());
     assert(loader.is_open());
     std::string loadString;
@@ -84,7 +84,7 @@ bool Global::LuaMoudleFilesInfo::addOneLuaMoudle(std::string& loadString,int typ
     }
     std::string moudleName(loadString, 0, commaCharIndex);
     std::string loadPathString(loadString, commaCharIndex + 1, loadString.npos);
-    loadPathString.insert(0, Config::LoadCodePathString);
+    loadPathString.insert(0, Config::loadCodePathString);
     if (access(loadPathString.c_str(), F_OK) != 0)
     {
         LOG.Log() << "文件不存在："<< loadPathString << std::endl;

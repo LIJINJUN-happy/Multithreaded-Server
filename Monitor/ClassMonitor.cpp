@@ -188,6 +188,6 @@ void ClassMonitor::BeginCheck()
         //服務器狀況
         this->CheckoutServerCondition(totalActor, actorAmountList, serverConditionList);
 
-        usleep((Config::CheckoutIntervalTime)*1000000);
+        usleep((Config::checkoutIntervalTime)*1000000);
     }
 }

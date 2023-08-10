@@ -318,7 +318,7 @@ bool Gate::Login(std::string account, std::string pw, ClassDataBase* db, void* c
         { 
             //创建RedisObj*
             Redis* redisObj = new Redis();
-            result = redisObj->connect(Config::RedisHost, Config::RedisPort);
+            result = redisObj->connect(Config::redisHost, Config::redisPort);
             if (result)
             {
                 //LOG.Log() << "连接Redis数据库成功:" << actorId << std::endl;
@@ -543,7 +543,7 @@ void Gate::AddIntoSockIdMap(void* cliptr, void* sockmapPtr)
 
 bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_State* L, ClassDataBase* db)
 {
-    if (Config::DataSaveType != Config::Data_Save_Type::LOGOUT_SAVE)
+    if (Config::dataSaveType != Config::data_Save_Type::LOGOUT_SAVE)
     {
         return true;
     }
@@ -631,7 +631,7 @@ bool Gate::SaveLuaScriptDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, lua_S
 
 bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassDataBase* db)
 {
-    if (Config::DataSaveType != Config::Data_Save_Type::LOGOUT_SAVE)
+    if (Config::dataSaveType != Config::data_Save_Type::LOGOUT_SAVE)
     {
         return true;
     }
@@ -717,7 +717,7 @@ bool Gate::SaveRedisDataIntoDB(std::string uid, LuaVmMgr* luaVmMgrPtr, ClassData
             else
             {
                 //删除Redis中的相关缓存（节省空间）,模式为下线保存数据则保存完毕后清理缓存
-                if (Config::DataSaveType == Config::Data_Save_Type::LOGOUT_SAVE)
+                if (Config::dataSaveType == Config::data_Save_Type::LOGOUT_SAVE)
                 {
                     redisObj->release(uid, moudle);
                 }
