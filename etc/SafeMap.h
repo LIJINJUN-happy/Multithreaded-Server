@@ -76,10 +76,12 @@ inline void SafeMap<Val>::insert(std::string key, Val val)
 template<class Val>
 inline void SafeMap<Val>::erase(std::string key)
 {
-	pthread_mutex_lock(&SAFE_MAP_LOCK);		//上锁
-	this->safeMap.erase(key);
-	pthread_mutex_unlock(&SAFE_MAP_LOCK);	//解锁
-
+	if (CheckoutIfExist(key))
+	{
+		pthread_mutex_lock(&SAFE_MAP_LOCK);		//上锁
+		this->safeMap.erase(key);
+		pthread_mutex_unlock(&SAFE_MAP_LOCK);	//解锁
+	}
 	return;
 }
 
