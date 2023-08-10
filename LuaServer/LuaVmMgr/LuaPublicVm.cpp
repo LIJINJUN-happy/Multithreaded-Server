@@ -20,13 +20,13 @@ bool LuaPublicVm::Init(std::string path)
 	lua_getglobal(L, "DoInit_");
 	lua_pushstring(L, Config::loadCodePathString.c_str());
 	lua_pcall(L, 1, 1, 0);
-	if (lua_isstring(L,-1))
+	if (lua_isstring(L, -1))
 	{
 		LOG.Log() << "Public Moudle Init Failed :" << std::endl;
 		LOG.Log() << lua_tostring(L,-1) << std::endl;
 		return false;
 	}
-	else if(lua_isboolean(L,-1) && lua_toboolean(L, -1) == 1)
+	else if (lua_isboolean(L, -1) && lua_toboolean(L, -1) == 1)
 	{
 		//LOG.Log() << "Lua Moudle DoInit_ Finish !" << std::endl;
 		lua_settop(L, 0);//clear
