@@ -9,7 +9,7 @@ bool LuaPersonalVm::Init(std::string path)
 	luaL_openlibs(L);
 	
 	/*载入定义在C++的函数,设置为Lua的全局函数*/
-	this->LoadScritpFunction(L); 
+	this->LoadScritpFunction(L, Global::PERSONAL); 
 
 	int resLoad = luaL_loadfile(L, path.c_str());
 	if (resLoad || lua_pcall(L, 0, 0, 0))

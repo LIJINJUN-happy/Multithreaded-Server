@@ -81,14 +81,34 @@ void LuaBaseVm::Gc()
 	return;
 }
 
-void LuaBaseVm::LoadScritpFunction(lua_State* L)
+void LuaBaseVm::LoadScritpFunction(lua_State* L, int type)
 {
-	lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);						//Lua发送协议@ args（socket,jsonStr）
-	lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);	//Lua向定时器模块添加Timer事件
-	lua_register(L, "LuaGetDataFromRedis", LuaScript::LuaGetDataFromRedis);				//Lua根据UID从Redis中获取json数据
-	lua_register(L, "LuaSetDataToRedis", LuaScript::LuaSetDataToRedis);					//Lua根据UID设置json数据去Redis中
-	lua_register(L, "LuaSetPublicDataToRedis", LuaScript::LuaSetPublicDataToRedis);		//Lua根据Key设置公共模块的json数据去Redis中
-	lua_register(L, "LuaGetPublicDataFromRedis", LuaScript::LuaGetPublicDataFromRedis);	//Lua根据Key在Redis中获取公共模块的json数据
+	if (type != Global::PERSONAL && type != Global::PUBLIC)
+	{
+		LOG.Log() << "LoadScritpFunction Type 类型不正确" << endl;
+		return;
+	}
+
+	//个人类型的Lua虚拟机所加载的函数
+	if (type == Global::PERSONAL)
+	{
+		lua_register(L, "LuaGetDataFromRedis", LuaScript::LuaGetDataFromRedis);				//Lua根据UID从Redis中获取json数据
+		lua_register(L, "LuaSetDataToRedis", LuaScript::LuaSetDataToRedis);					//Lua根据UID设置json数据去Redis中
+	}
+
+	//共有类型的Lua虚拟机所加载的函数
+	if (type == Global::PUBLIC)
+	{
+		lua_register(L, "LuaSetPublicDataToRedis", LuaScript::LuaSetPublicDataToRedis);		//Lua根据Key设置公共模块的json数据去Redis中
+		lua_register(L, "LuaGetPublicDataFromRedis", LuaScript::LuaGetPublicDataFromRedis);	//Lua根据Key在Redis中获取公共模块的json数据
+	}
+
+	//个人类型/共有类型 都加载的Lua虚拟机函数
+	if ((type == Global::PERSONAL) || (type == Global::PUBLIC))
+	{
+		lua_register(L, "LuaSendMessage", LuaScript::LuaSendMessage);						//Lua发送协议@ args（socket,jsonStr）
+		lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);	//Lua向定时器模块添加Timer事件
+	}
 }
 
 

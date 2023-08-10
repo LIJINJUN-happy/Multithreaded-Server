@@ -39,8 +39,8 @@ public:
 
 public:
 
-	//加载Lua调用C++的函数
-	void LoadScritpFunction(lua_State* L);
+	//加载Lua调用C++的函数(type的作用是用去区分Lua虚拟机类型,加载指定的Lua和C++交互的函数)
+	void LoadScritpFunction(lua_State* L, int type);
 
 	long CheckGcTimeArrive();
 
