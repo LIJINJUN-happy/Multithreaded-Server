@@ -87,6 +87,8 @@ void LuaBaseVm::LoadScritpFunction(lua_State* L)
 	lua_register(L, "LuaAddEventIntoTimerList", LuaScript::LuaAddEventIntoTimerList);	//Lua向定时器模块添加Timer事件
 	lua_register(L, "LuaGetDataFromRedis", LuaScript::LuaGetDataFromRedis);				//Lua根据UID从Redis中获取json数据
 	lua_register(L, "LuaSetDataToRedis", LuaScript::LuaSetDataToRedis);					//Lua根据UID设置json数据去Redis中
+	lua_register(L, "LuaSetPublicDataToRedis", LuaScript::LuaSetPublicDataToRedis);		//Lua根据Key设置公共模块的json数据去Redis中
+	lua_register(L, "LuaGetPublicDataFromRedis", LuaScript::LuaGetPublicDataFromRedis);	//Lua根据Key在Redis中获取公共模块的json数据
 }
 
 
@@ -222,4 +224,14 @@ int LuaScript::LuaSetDataToRedis(lua_State* L)
 
 	lua_pushboolean(L, false);
 	return 1;
+}
+
+int LuaScript::LuaGetPublicDataFromRedis(lua_State* L)
+{
+	return 0;
+}
+
+int LuaScript::LuaSetPublicDataToRedis(lua_State* L)
+{
+	return 0;
 }

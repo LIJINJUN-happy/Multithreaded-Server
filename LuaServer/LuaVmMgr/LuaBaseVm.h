@@ -61,6 +61,12 @@ namespace LuaScript
 
 	//Lua根据UID设置json数据去Redis中
 	int LuaSetDataToRedis(lua_State* L);
+
+	//Lua根据Key在Redis中获取公共模块的json数据
+	int LuaGetPublicDataFromRedis(lua_State* L);
+
+	//Lua根据Key设置公共模块的json数据去Redis中
+	int LuaSetPublicDataToRedis(lua_State* L);
 }
 
 
