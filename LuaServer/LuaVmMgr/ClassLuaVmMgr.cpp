@@ -81,11 +81,11 @@ bool LuaVmMgr::DeleteLuaBaseVm(std::string strIndex)
 bool LuaVmMgr::InitPublicMoudle()
 {
     Global::LuaMoudleFilesInfo* p = this->GetLuaMoudleFilesInfoPtr();
-    for (auto it=p->GetMoudleInfo()->begin();it!= p->GetMoudleInfo()->end();it++)
+    for (auto it = p->GetMoudleInfo()->begin(); it != p->GetMoudleInfo()->end(); it++)
     {
         if (it->second.first == Global::PERSONAL)
             continue;
-        else
+        else if(it->second.first == Global::PUBLIC)
         {
             LuaPublicVm* L = new LuaPublicVm(Global::PUBLIC,it->first);//基类指针指向派生类公共虚拟机对象（可多态调用）
             bool resInit = L->Init(it->second.second);               //初始化虚拟机(由于声明了virtual 这里调用LuaPublicVm的Init)
