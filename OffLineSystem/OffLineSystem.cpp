@@ -91,12 +91,14 @@ void LoginOffLineMsg::AddLoginOffLineData(std::string uid, std::string newdata)
 	else
 	{
 		LoginData* data = GetLoginOffLineData(uid);
+		pthread_mutex_lock(&(data->LoginDataLock)); //上锁
 		if (data->dataString.size() > 0)
 		{
 			data->dataString += "::";
 		}
 		data->dataString += newdata;
-		UpdateLoginOffLineData(uid, data);
+		//UpdateLoginOffLineData(uid, data);
+		pthread_mutex_unlock(&(data->LoginDataLock)); //解锁
 	}
 	return;
 }
@@ -104,7 +106,10 @@ void LoginOffLineMsg::AddLoginOffLineData(std::string uid, std::string newdata)
 std::string LoginOffLineMsg::GetData(std::string uid)
 {
 	LoginData* data = GetLoginOffLineData(uid);
+
+	pthread_mutex_lock(&(data->LoginDataLock));		 //上锁
 	std::string str(Global::BreakDownByString(data->dataString, "::"));
+	pthread_mutex_unlock(&(data->LoginDataLock));	//解锁
 
 	//假如没有要处理的数据就直接删除掉元素
 	if (data->dataString.size() == 0 || ((data->dataString.size() == 2) && (data->dataString == "::")))
