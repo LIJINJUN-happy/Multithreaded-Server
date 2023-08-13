@@ -53,7 +53,7 @@ LoginOffLineMsg::~LoginOffLineMsg()
 	return;
 }
 
-std::map<std::string, std::string>* LoginOffLineMsg::GetLoginOffLineMsgMapPtr()
+std::map<std::string, LoginData*>* LoginOffLineMsg::GetLoginOffLineMsgMapPtr()
 {
 	return this->loginOffLineMsgMapPtr;
 }
@@ -68,13 +68,13 @@ bool LoginOffLineMsg::CheckLoginOffLineData(std::string uid)
 	return false;
 }
 
-std::string& LoginOffLineMsg::GetLoginOffLineData(std::string uid)
+LoginData* LoginOffLineMsg::GetLoginOffLineData(std::string uid)
 {
 	auto it = loginOffLineMsgMap.find(uid);
-	return it->second;;
+	return it->second;
 }
 
-void LoginOffLineMsg::UpdateLoginOffLineData(std::string uid, std::string data)
+void LoginOffLineMsg::UpdateLoginOffLineData(std::string uid, LoginData* data)
 {
 	this->loginOffLineMsgMap[uid] = data;
 	return;
@@ -84,16 +84,18 @@ void LoginOffLineMsg::AddLoginOffLineData(std::string uid, std::string newdata)
 {
 	if (CheckLoginOffLineData(uid) == false)
 	{
-		this->loginOffLineMsgMap[uid] = newdata;
+		LoginData* data = new LoginData();
+		data->dataString = newdata;
+		this->loginOffLineMsgMap[uid] = data;
 	}
 	else
 	{
-		std::string& data = GetLoginOffLineData(uid);
-		if (data.size() > 0)
+		LoginData* data = GetLoginOffLineData(uid);
+		if (data->dataString.size() > 0)
 		{
-			data += "::";
+			data->dataString += "::";
 		}
-		data += newdata;
+		data->dataString += newdata;
 		UpdateLoginOffLineData(uid, data);
 	}
 	return;
@@ -101,11 +103,11 @@ void LoginOffLineMsg::AddLoginOffLineData(std::string uid, std::string newdata)
 
 std::string LoginOffLineMsg::GetData(std::string uid)
 {
-	std::string& data = GetLoginOffLineData(uid);
-	std::string str(Global::BreakDownByString(data, "::"));
+	LoginData* data = GetLoginOffLineData(uid);
+	std::string str(Global::BreakDownByString(data->dataString, "::"));
 
 	//假如没有要处理的数据就直接删除掉元素
-	if (data.size() == 0 || ((data.size() == 2) && (data == "::")))
+	if (data->dataString.size() == 0 || ((data->dataString.size() == 2) && (data->dataString == "::")))
 	{
 		if (loginOffLineMsgMap.find(uid) != loginOffLineMsgMap.end())
 		{

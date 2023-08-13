@@ -37,12 +37,28 @@ private:
 
 
 //--------------------------BEGIN------登录待处理数据（用户登录的时候来这里查看）
+
+struct LoginData
+{
+public:
+	pthread_mutex_t LoginDataLock;	//锁（防止同时取或增添事件）
+	std::string dataString = "";				//事件
+
+	LoginData() {
+		pthread_mutex_init(&LoginDataLock, NULL);	//初始化定时器容器锁
+	};
+
+	~LoginData(){};
+};
+
+
 typedef struct LoginOffLineMsg
 {
+
 private:
 
-	std::map<std::string, std::string> loginOffLineMsgMap;		//UID---待处理数据字符串
-	std::map<std::string, std::string>* loginOffLineMsgMapPtr;
+	std::map<std::string, LoginData*> loginOffLineMsgMap;		//UID---待处理数据字符串
+	std::map<std::string, LoginData*>* loginOffLineMsgMapPtr;
 
 public:
 
@@ -51,16 +67,16 @@ public:
 	~LoginOffLineMsg();
 
 	//返回容器地址
-	std::map<std::string, std::string>* GetLoginOffLineMsgMapPtr();
+	std::map<std::string, LoginData*>* GetLoginOffLineMsgMapPtr();
 
 	//判断该用户是否有数据需要在登录后处理（用户不在线的是会存放至此,等上线的时候再处理）
 	bool CheckLoginOffLineData(std::string uid);
 
 	//获取该用户登录所需处理数据的引用
-	std::string& GetLoginOffLineData(std::string uid);
+	LoginData* GetLoginOffLineData(std::string uid);
 
 	//刷新登录待处理数据
-	void UpdateLoginOffLineData(std::string uid, std::string data);	
+	void UpdateLoginOffLineData(std::string uid, LoginData* data);
 
 	//新增登录待处理数据
 	void AddLoginOffLineData(std::string uid, std::string data);
