@@ -33,7 +33,7 @@ public:
 
 public:
 
-	//信息添加锁（由于Timer定时器类和Socket都要往人物列表存放信息,避免冲突）
+	//信息添加锁（由于Timer定时器类和Socket都要往任务列表存放信息,避免冲突）
 	pthread_mutex_t putMessageLock;
 
 	pthread_mutex_t* GetMessageLockPrt();
