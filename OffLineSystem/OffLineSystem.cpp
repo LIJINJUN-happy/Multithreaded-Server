@@ -41,7 +41,7 @@ void OffLineData::UpdateData(std::string uid, std::string jsonData)
 	redisObj->set(uid + "_OFFLINE_DATA", jsonData);
 	return;
 }
-
+/*
 LoginOffLineMsg::LoginOffLineMsg()
 {
 	this->loginOffLineMsgMap.clear();
@@ -120,11 +120,11 @@ std::string LoginOffLineMsg::GetData(std::string uid)
 		}
 	}
 	return str;
-}
+}*/
 
 OffLineSystem::OffLineSystem()
 {
-	this->LoginOffLineMsgPtr = new LoginOffLineMsg();
+	//this->LoginOffLineMsgPtr = new LoginOffLineMsg();
 	this->OffLineDataPtr = new OffLineData();
 }
 
@@ -138,7 +138,7 @@ OffLineData* OffLineSystem::GetOffLineDataPtr()
 	return this->OffLineDataPtr;
 }
 
-LoginOffLineMsg* OffLineSystem::GetLoginOffLineMsgPtr()
+/*LoginOffLineMsg* OffLineSystem::GetLoginOffLineMsgPtr()
 {
 	return this->LoginOffLineMsgPtr;
-}
+}*/

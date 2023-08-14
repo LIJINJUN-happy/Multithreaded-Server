@@ -37,7 +37,7 @@ private:
 
 
 //--------------------------BEGIN------登录待处理数据（用户登录的时候来这里查看）
-
+/*
 struct LoginData
 {
 public:
@@ -86,7 +86,7 @@ public:
 
 } LoginOffLineMsg;
 //--------------------------END------登录待处理数据（用户登录的时候来这里查看）
-
+*/
 
 
 
@@ -106,11 +106,11 @@ public:
 	OffLineData* GetOffLineDataPtr();
 
 	//获取登录待处理数据管理对象地址
-	LoginOffLineMsg* GetLoginOffLineMsgPtr();
+	//LoginOffLineMsg* GetLoginOffLineMsgPtr();
 
 private:
 	OffLineData* OffLineDataPtr;
-	LoginOffLineMsg* LoginOffLineMsgPtr;
+	//LoginOffLineMsg* LoginOffLineMsgPtr;
 };
 //--------------------------END------离线系统
 
