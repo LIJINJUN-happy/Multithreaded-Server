@@ -52,14 +52,13 @@ epoll_ctl 开始监视套接字（如服务端的监听套接字，客户端返�
 获取套接字描述符 （事件列表[i].data.fd） 以及事件 （事件列表[i].event），然后进行判断，假如fd是服务器以及event是（EPOLLIN）便进行 accept 函数接受客户端的连接，
 否者fd就是客户端的描述符，然后我们可以同理根据事件来处理客户端的事情。
 大概流程如下：
-while（）
-{
-	（有数据变化的套接字数量）num = epoll_wait
 	
-	for（num）
+while（）{
+	（有数据变化的套接字数量）num = epoll_wait
+ 	for（num）
 	{
 		who's fd = [i].data.fd
 		dowhat = [i].event
 		.....
 	}
-}
+ }
