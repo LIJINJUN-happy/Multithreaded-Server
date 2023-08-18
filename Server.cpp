@@ -61,6 +61,7 @@ int main()
 	//创建Lua文件模块类（用来索引以及判断模块类型）
 	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr = new Global::LuaMoudleFilesInfo();
 	luaMoudleFilesInfoPtr->LoadLuaMoudleFiles();
+	DATABASEMGR.SetLuaMoudleFilesInfoPtr(luaMoudleFilesInfoPtr);
 
 
 	//创建Lua模块管理系统（所有lua模块存放处）
@@ -74,6 +75,13 @@ int main()
 	}
 	else
 	{
+		//创建并初始化好公共模块后，加载各个公共模块数据
+		bool loadData = DATABASEMGR.LoadAllPublicData();
+		if (loadData == false)
+		{
+			LOG.Log() << "\033[31mLua公共模块加载数据失败！\033[0m" << endl;
+			return -1;
+		}
 		LOG.Log() << "\033[35mLua模块管理系统加载模块成功！\033[0m\n" << endl;
 	}
 

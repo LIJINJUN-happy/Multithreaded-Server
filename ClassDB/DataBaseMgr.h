@@ -56,9 +56,27 @@ public:
 	//保存所有公共模块的数据(Public Moudle's Data redis->mysql)
 	void SaveAllPublicData();
 
+	//加载所有公共模块的数据(Public Moudle's Data mysql->redis)
+	bool LoadAllPublicData();
+
 private:
 	ClassDataBase* doSaveData;
 	Redis* redisSaveDataObj;
+
+	ClassDataBase* doLoadData;
+	Redis* redisLoadDataObj;
+
+
+/************************************************************************************************************/
+
+private:
+	Global::LuaMoudleFilesInfo* luaMoudleFilesInfoPtr; //Lua文件模块类（用来索引以及判断模块类型）
+
+public:
+
+	Global::LuaMoudleFilesInfo* GetLuaMoudleFilesInfoPtr();
+
+	void SetLuaMoudleFilesInfoPtr(Global::LuaMoudleFilesInfo* ptr);
 
 };
 

@@ -20,6 +20,11 @@ DataBaseMgr::DataBaseMgr()
 
 	this->doSaveData = nullptr;
 	this->redisSaveDataObj = nullptr;
+
+	this->doLoadData = nullptr;
+	this->redisLoadDataObj = nullptr;
+
+	this->luaMoudleFilesInfoPtr = nullptr;
 }
 
 DataBaseMgr::~DataBaseMgr()
@@ -340,16 +345,101 @@ void DataBaseMgr::SaveAllClientData()
 		}
 
 		GLOBAL_UID_REDISOBJECT_MAP.erase(uid);
-		delete redisSaveDataObj;
-		redisSaveDataObj = nullptr;
+		if (redisSaveDataObj)
+		{
+			delete redisSaveDataObj;
+			redisSaveDataObj = nullptr;
+		}
 	}
 
 	LOG.Log() << "\033[36mSave All Client's Data Finished\033[0m" << std::endl << std::endl;
+	if (doSaveData)
+	{
+		delete doSaveData;
+		doSaveData = nullptr;
+	}
 	return ;
 }
 
 void DataBaseMgr::SaveAllPublicData()
 {
+	doSaveData = new ClassDataBase();
+	redisSaveDataObj = new Redis();
 
+	auto it = luaMoudleFilesInfoPtr->GetMoudleInfo();
+	std::string moudleName = "";
+
+	for (auto x : *it)
+	{
+		moudleName.clear();
+		if (x.second.first == Global::PUBLIC)
+		{
+			moudleName = x.first;
+			for (int i = 0; i < moudleName.size(); i++)
+			{
+				std::tolower(moudleName[i]);
+			}
+
+
+		}
+	}
+
+	if (doSaveData)
+	{
+		delete doSaveData;
+		doSaveData = nullptr;
+	}
+	if (redisSaveDataObj)
+	{
+		delete redisSaveDataObj;
+		redisSaveDataObj = nullptr;
+	}
+	return;
+}
+
+bool DataBaseMgr::LoadAllPublicData()
+{
+	doLoadData = new ClassDataBase();
+	redisLoadDataObj = new Redis();
+	bool res = true;
+	std::string moudleName = "";
+	auto it = luaMoudleFilesInfoPtr->GetMoudleInfo();
+
+	for (auto x : *it)
+	{
+		moudleName.clear();
+		if (x.second.first == Global::PUBLIC)
+		{
+			moudleName = x.first;
+			for (int i = 0; i < moudleName.size(); i++)
+			{
+				std::tolower(moudleName[i]);
+			}
+		}
+	}
+
+	if (doLoadData)
+	{
+		delete doLoadData;
+		doLoadData = nullptr;
+	}
+	if (redisLoadDataObj)
+	{
+		delete redisLoadDataObj;
+		redisLoadDataObj = nullptr;
+	}
+
+	return res;
+}
+
+Global::LuaMoudleFilesInfo* DataBaseMgr::GetLuaMoudleFilesInfoPtr()
+{
+	return luaMoudleFilesInfoPtr;
+}
+
+void DataBaseMgr::SetLuaMoudleFilesInfoPtr(Global::LuaMoudleFilesInfo* ptr)
+{
+	luaMoudleFilesInfoPtr = ptr;
+	return;
 }
 
