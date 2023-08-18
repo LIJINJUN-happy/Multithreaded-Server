@@ -37,9 +37,6 @@ private:
 	ClassDataBase* doLoadOffLineData;		//处理离线数据的数据库对象
 	Redis* redisObj;						//处理离线数据的Redis缓存对象（离线数据放进Redis中）
 
-
-	ClassDataBase* doLoadLoginOffLineMsg;	//处理登录待处理数据的数据库对象（登录待处理数据放进C++运行程序中即可）
-
 public:
 	
 	//加载离线数据
@@ -47,12 +44,6 @@ public:
 
 	//保存离线数据
 	void SaveOffLineData();
-
-	//加载登录待处理数据的数据
-	bool DoLoadLoginOffLineMsg();
-
-	//保存登录待处理数据的数据
-	void SaveLoginOffLineMsg();
 
 
 /**********************************************************************************************************/

@@ -15,7 +15,7 @@ DataBaseMgr::DataBaseMgr()
 	//this->dbArry.assign();
 	this->dbArryPtr = &(this->dbArry);
 
-	this->doLoadLoginOffLineMsg = nullptr;
+	this->redisObj = nullptr;
 	this->doLoadOffLineData = nullptr;
 
 	this->doSaveData = nullptr;
@@ -245,14 +245,6 @@ void DataBaseMgr::SaveOffLineData()
 	return ;
 }
 
-bool DataBaseMgr::DoLoadLoginOffLineMsg()
-{
-	return false;
-}
-
-void DataBaseMgr::SaveLoginOffLineMsg()
-{
-}
 
 void DataBaseMgr::SaveAllClientData()
 {
