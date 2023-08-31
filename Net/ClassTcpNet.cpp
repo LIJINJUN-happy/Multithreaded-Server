@@ -6,6 +6,20 @@ using std::string;
 using std::map;
 using std::list;
 
+//epoll define
+#define EPOLL_WAIT_ERRO -1          //EPOLL 错误
+#define EPOLL_WAIT_TIME_OUT 0       //EPOLL 超时,监听的socket均没有数据变动
+#define EPOLL_WAIT_ALREADY 1        //EPOLL 就绪的socket最少数量
+
+//socket accept
+#define SOCKET_ACCEPT_FAIL -1       //SOCKET 接受客户端 错误
+
+//socket read
+#define SOCKET_READ_FAIL -1       //SOCKET Read客户端数据 错误
+#define SOCKET_READ_CLOSE 0       //SOCKET 客户端下线
+#define SOCKET_READ_SUCCESS 1     //SOCKET Read客户端数据 正确
+
+
 //构造函数
 ClassTcpNet::ClassTcpNet(ClassPthreadMgr *p)
 {
@@ -125,17 +139,19 @@ void ClassTcpNet::StartEpoll()
         SERVER_OBJECT->SetMinTaskListIndex(minTaskListIndex);
         struct epoll_event events[eventsSize];
         int resEpollwait = epoll_wait(this->epollfd, events, eventsSize, -1); //阻塞（timeout参数为-1）
-        if (resEpollwait < 0)
+
+        //处理Epoll结果
+        if (resEpollwait <= EPOLL_WAIT_ERRO)
         {
             LOG.Log() << "epoll_wait出现了意外的错误!" << endl;
             break;
         }
-        else if (resEpollwait == 0)
+        else if (resEpollwait == EPOLL_WAIT_TIME_OUT)
         {
             LOG.Log() << "超时........." << endl;
             continue;
         }
-        else
+        else if(resEpollwait >= EPOLL_WAIT_ALREADY)
         {
             //接收到信息，开始循环读取文件描述符
             for (int index = 0; index < resEpollwait; index++)
@@ -146,7 +162,7 @@ void ClassTcpNet::StartEpoll()
                     struct sockaddr_in clientAddr;
                     socklen_t clientAddrSize = sizeof(clientAddr);
                     int clientSock = accept(this->serverSock, (sockaddr *)&clientAddr, &clientAddrSize); 
-                    if (clientSock == -1)
+                    if (clientSock == SOCKET_ACCEPT_FAIL)
                     {
                         //LOG.Log() << "accept函数接受客户端失败!" << endl;
                     }
@@ -191,7 +207,7 @@ void ClassTcpNet::StartEpoll()
                         memset(dataBuff, 0, 0);
                         int resRead = recv(events[index].data.fd, dataBuff, sizeof(dataBuff), MSG_DONTWAIT);
                         //客户端关闭了
-                        if (resRead == 0)
+                        if (resRead == SOCKET_READ_CLOSE)
                         {
                             //LOG.Log() << "Client:" << events[index].data.fd << "Close" << endl;
                             this->CloseClientByFd(std::to_string(events[index].data.fd));
@@ -202,7 +218,7 @@ void ClassTcpNet::StartEpoll()
                             break;
                         }
                         //出错啦
-                        else if (resRead < 0)
+                        else if (resRead <= SOCKET_READ_FAIL)
                         { 
                             if ((errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))//这三个都是正常的错误,没有影响,用来判断缓存是否全部读取完了
                             {
@@ -217,7 +233,7 @@ void ClassTcpNet::StartEpoll()
                             }
                         }
                         //数据正确
-                        else if (resRead >= 1)
+                        else if (resRead >= SOCKET_READ_SUCCESS)
                         {
                             string messageResidue = pClient->GetMessageResidue();
                             messageResidue += string(dataBuff, 0, resRead);
