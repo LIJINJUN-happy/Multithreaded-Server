@@ -43,7 +43,7 @@ std::string Redis::get(std::string key)
 
 	if ((this->_reply->type == REDIS_REPLY_NIL) || (this->_reply->type == REDIS_REPLY_ERROR))
 	{
-		LOG.Log() << "Redis::get : " << key << "ResultType = " << _reply->type << std::endl;
+		LOG.Log() << "Redis::get : " << key << ",   ResultType = " << _reply->type << std::endl;
 		freeReplyObject(this->_reply);
 		return "";
 	}
