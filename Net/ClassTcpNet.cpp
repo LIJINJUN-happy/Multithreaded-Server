@@ -192,10 +192,12 @@ void ClassTcpNet::StartEpoll()
                         eventClient.data.fd = clientSock;
                         eventClient.events = EPOLLIN | EPOLLET;
                         epoll_ctl(this->epollfd, EPOLL_CTL_ADD, clientSock, &eventClient);
+
                         string key = std::to_string(clientSock);
                         string ipAddr = inet_ntoa(clientAddr.sin_addr);
                         (pSockfdMap[key]) = new Client(clientSock, key, ipAddr);
                         pSockfdMap[key]->UpdateHeartBeatTime();
+
                         extern ClassServer* SERVER_OBJECT;
                         SERVER_OBJECT->ChangeClientAmount(1);
                         //LOG.Log() << "Ser Accept Client Success ! ClientSocket = " << clientSock << endl;
