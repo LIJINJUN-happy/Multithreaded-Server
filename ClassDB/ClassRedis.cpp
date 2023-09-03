@@ -40,6 +40,21 @@ bool Redis::checkoutData(std::string key)
 std::string Redis::get(std::string key)
 {
 	this->_reply = (redisReply*)redisCommand(this->_connect, "GET %s", key.c_str());
+
+	if ((this->_reply->type == REDIS_REPLY_NIL) || (this->_reply->type == REDIS_REPLY_ERROR))
+	{
+		LOG.Log() << "Redis::get : " << key << "ResultType = " << _reply->type << std::endl;
+		freeReplyObject(this->_reply);
+		return "";
+	}
+
+	if (this->_reply->type != REDIS_REPLY_STRING)
+	{
+		LOG.Log() << "Redis::get : " << key << "ResultType = " << _reply->type << std::endl;
+		freeReplyObject(this->_reply);
+		return "";
+	}
+
 	std::string str = this->_reply->str;
 	freeReplyObject(this->_reply);//释放redisCommand执行后返回的的redisReply所占用的内存
 	return str;
