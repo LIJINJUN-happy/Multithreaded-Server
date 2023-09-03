@@ -7,7 +7,7 @@ using std::map;
 using std::list;
 
 //epoll define
-#define EPOLL_CREATE_ERRO = -1      //EPOLL 创建失败
+#define EPOLL_CREATE_ERRO -1        //EPOLL 创建失败
 
 #define EPOLL_WAIT_ERRO -1          //EPOLL 错误
 #define EPOLL_WAIT_TIME_OUT 0       //EPOLL 超时,监听的socket均没有数据变动
@@ -16,13 +16,13 @@ using std::list;
 //socket define
 #define SOCKET_ACCEPT_FAIL -1       //SOCKET 接受客户端 错误
 
-#define SOCKET_READ_FAIL -1       //SOCKET Read客户端数据 错误
-#define SOCKET_READ_CLOSE 0       //SOCKET 客户端下线
-#define SOCKET_READ_SUCCESS 1     //SOCKET Read客户端数据 正确
+#define SOCKET_READ_FAIL -1         //SOCKET Read客户端数据 错误
+#define SOCKET_READ_CLOSE 0         //SOCKET 客户端下线
+#define SOCKET_READ_SUCCESS 1       //SOCKET Read客户端数据 正确
 
-#define SOCKET_ERRO = -1          //SOCKET 函数返回套接字失败
-#define SOCKET_BIND_ERRO = -1     //套接字绑定失败
-#define SOCKET_LISTEN_ERRO = -1   //套接字绑定失败
+#define SOCKET_ERRO -1              //SOCKET 函数返回套接字失败
+#define SOCKET_BIND_ERRO -1         //套接字绑定失败
+#define SOCKET_LISTEN_ERRO -1       //套接字绑定失败
 
 
 
