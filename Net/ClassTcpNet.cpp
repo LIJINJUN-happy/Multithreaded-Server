@@ -6,17 +6,16 @@ using std::string;
 using std::map;
 using std::list;
 
+//epoll define
 #define EPOLL_CREATE_ERRO = -1      //EPOLL 创建失败
 
-//epoll define
 #define EPOLL_WAIT_ERRO -1          //EPOLL 错误
 #define EPOLL_WAIT_TIME_OUT 0       //EPOLL 超时,监听的socket均没有数据变动
 #define EPOLL_WAIT_ALREADY 1        //EPOLL 就绪的socket最少数量
 
-//socket accept define
+//socket define
 #define SOCKET_ACCEPT_FAIL -1       //SOCKET 接受客户端 错误
 
-//socket read define
 #define SOCKET_READ_FAIL -1       //SOCKET Read客户端数据 错误
 #define SOCKET_READ_CLOSE 0       //SOCKET 客户端下线
 #define SOCKET_READ_SUCCESS 1     //SOCKET Read客户端数据 正确
