@@ -6,6 +6,8 @@ using std::string;
 using std::map;
 using std::list;
 
+#define EPOLL_CREATE_ERRO = -1      //EPOLL 创建失败
+
 //epoll define
 #define EPOLL_WAIT_ERRO -1          //EPOLL 错误
 #define EPOLL_WAIT_TIME_OUT 0       //EPOLL 超时,监听的socket均没有数据变动
@@ -18,6 +20,11 @@ using std::list;
 #define SOCKET_READ_FAIL -1       //SOCKET Read客户端数据 错误
 #define SOCKET_READ_CLOSE 0       //SOCKET 客户端下线
 #define SOCKET_READ_SUCCESS 1     //SOCKET Read客户端数据 正确
+
+#define SOCKET_ERRO = -1          //SOCKET 函数返回套接字失败
+#define SOCKET_BIND_ERRO = -1     //套接字绑定失败
+#define SOCKET_LISTEN_ERRO = -1   //套接字绑定失败
+
 
 
 //构造函数
@@ -64,7 +71,7 @@ void ClassTcpNet::Init()
 
     //开始执行socket bind listen
     this->serverSock = socket(AF_INET, SOCK_STREAM, 0);
-    if (this->serverSock == -1)
+    if (this->serverSock == SOCKET_ERRO)
     {
         LOG.Log() << "\033[31msocket 函数创建套接字失败\033[0m" << endl;
         return;
@@ -80,7 +87,7 @@ void ClassTcpNet::Init()
     string addr = Config::addrString;
     serverAddr.sin_addr.s_addr = inet_addr(addr.data());
     int resultBind = bind(this->serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr));
-    if (resultBind == -1)
+    if (resultBind == SOCKET_BIND_ERRO)
     {
         LOG.Log() << "\033[31mbind   函数绑定套接字失败\033[0m" << endl;
         return;
@@ -91,7 +98,7 @@ void ClassTcpNet::Init()
     }
 
     int resultListen = listen(this->serverSock, Config::maxConnect);
-    if (resultBind == -1)
+    if (resultBind == SOCKET_LISTEN_ERRO)
     {
         LOG.Log() << "\033[31mlisten 函数监听失败\033[0m" << endl;
         return;
@@ -103,7 +110,7 @@ void ClassTcpNet::Init()
              << endl;
     }
 
-    if (this->epollfd == -1)
+    if (this->epollfd == EPOLL_CREATE_ERRO)
     {
         LOG.Log() << "Epoll_create error ——————epoll创建失败" << endl;
         close(this->serverSock);
